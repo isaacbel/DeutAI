@@ -1,0 +1,254 @@
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────── */
+@theme inline {
+  --color-gold:          #D4AF37;
+  --color-gold-dark:     #B8962E;
+  --color-surface:       #0a0a0a;
+  --color-surface-2:     #111111;
+  --color-surface-3:     #1a1a1a;
+  --color-border:        #2a2a2a;
+  --color-text-primary:  #E0E0E0;
+  --color-text-muted:    #666666;
+  --color-error:         #CC5555;
+  --color-success:       #4A9A4A;
+  --color-rule-border:   #1a2a1a;
+
+  --font-mono:  'JetBrains Mono', 'Space Mono', monospace;
+  --font-sans:  'Inter', sans-serif;
+}
+
+/* ─── Base ───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  background: #000000;
+  color: #E0E0E0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: #0a0a0a; }
+::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+
+/* ─── Animations ─────────────────────────────────────── */
+@keyframes scanLine {
+  0%   { top: 0; }
+  100% { top: 100%; }
+}
+
+@keyframes scanLineLoop {
+  0%, 100% { top: -4px; opacity: 1; }
+  90%       { top: calc(100% + 4px); opacity: 1; }
+  91%       { opacity: 0; }
+  99%       { opacity: 0; top: -4px; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.3); }
+  50%       { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+@keyframes shimmer-slide {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(400%); }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes glitch {
+  0%, 100% { transform: translate(0); }
+  20%       { transform: translate(-2px, 1px); }
+  40%       { transform: translate(2px, -1px); }
+  60%       { transform: translate(-1px, 2px); }
+  80%       { transform: translate(1px, -2px); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Card stagger animations ────────────────────────── */
+.card-animate {
+  animation: slideUp 0.4s ease-out both;
+}
+.card-animate-1 { animation-delay: 0ms; }
+.card-animate-2 { animation-delay: 150ms; }
+.card-animate-3 { animation-delay: 300ms; }
+
+/* ─── Flip card ──────────────────────────────────────── */
+.flip-card {
+  perspective: 1000px;
+  cursor: pointer;
+}
+.flip-card-inner {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.flip-card.flipped .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-card-back {
+  transform: rotateY(180deg);
+}
+
+/* ─── Shimmer skeleton ───────────────────────────────── */
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    #111 0%,
+    #1a1a1a 50%,
+    #111 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ─── Scan button shimmer overlay ────────────────────── */
+.btn-scan-shimmer {
+  animation: shimmer-slide 2s ease-in-out infinite;
+}
+
+/* ─── Grid scan background ───────────────────────────── */
+.grid-scan-bg {
+  background-image:
+    linear-gradient(rgba(212,175,55,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212,175,55,0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ─── Wavy error underline ───────────────────────────── */
+.wavy-error {
+  text-decoration: underline wavy #CC5555;
+  text-underline-offset: 3px;
+}
+
+/* ─── System subtitle ────────────────────────────────── */
+.system-subtitle {
+  color: #444;
+  letter-spacing: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+/* ─── Buttons ────────────────────────────────────────── */
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #D4AF37;
+  color: #000000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.btn-gold:hover:not(:disabled) {
+  background: #B8962E;
+  box-shadow: 0 0 20px rgba(212,175,55,0.3);
+  transform: translateY(-1px);
+}
+.btn-gold:active:not(:disabled) {
+  transform: translateY(0);
+}
+.btn-gold:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: transparent;
+  color: #666;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 8px;
+  border: 1px solid #2a2a2a;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover:not(:disabled) {
+  border-color: rgba(212,175,55,0.4);
+  color: #D4AF37;
+}
+.btn-outline:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ─── Input dark ─────────────────────────────────────── */
+.input-dark {
+  background: #0a0a0a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  color: #E0E0E0;
+  font-family: 'Inter', sans-serif;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  display: block;
+}
+.input-dark::placeholder { color: #444; }
+.input-dark:focus {
+  border-color: rgba(212,175,55,0.4);
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
+}
+
+/* ─── Auth form container ────────────────────────────── */
+.auth-card {
+  background: #080808;
+  border: 1px solid #1a1a1a;
+  border-radius: 16px;
+}
+
+/* ─── Bottom nav active indicator ────────────────────── */
+.nav-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  background: #D4AF37;
+  border-radius: 2px 2px 0 0;
+}

@@ -1,0 +1,52 @@
+require('dotenv').config();
+
+const express = require('express');
+const cors = require('cors');
+
+const authRoutes = require('./routes/auth.routes');
+const analyzeRoutes = require('./routes/analyze.routes');
+const notebookRoutes = require('./routes/notebook.routes');
+const flashcardsRoutes = require('./routes/flashcards.routes');
+const statsRoutes = require('./routes/stats.routes');
+const unitsRoutes = require('./routes/units.routes');
+const errorHandler = require('./middleware/errorHandler');
+
+const app = express();
+
+// ─── CORS ────────────────────────────────────────────────────────────────────
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    methods: ['GET', 'POST','DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  })
+);
+
+// ─── Body parsing ─────────────────────────────────────────────────────────────
+// Images base64 peuvent être volumineuses (~5MB) → limite augmentée
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+
+// ─── Ping — cold start Render.com ─────────────────────────────────────────────
+app.get('/ping', (req, res) => {
+  res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// ─── Routes API ───────────────────────────────────────────────────────────────
+app.use('/auth', authRoutes);
+app.use('/analyze', analyzeRoutes);
+app.use('/notebook', notebookRoutes);
+app.use('/flashcards', flashcardsRoutes);
+app.use('/stats', statsRoutes);
+app.use('/units', unitsRoutes);
+
+// ─── 404 pour les routes inconnues ───────────────────────────────────────────
+app.use((req, res) => {
+  res.status(404).json({ error: 'NOT_FOUND' });
+});
+
+// ─── Gestionnaire d'erreurs global ───────────────────────────────────────────
+app.use(errorHandler);
+
+module.exports = app;
