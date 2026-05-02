@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     setUser(null);
-    router.replace('/login');
+    router.replace('/');
   }, [router]);
 
   return (
@@ -101,7 +101,7 @@ export function useAuthStandalone() {
   const logout = useCallback(() => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
-    router.replace('/login');
+    router.replace('/');
   }, [router]);
 
   return { user, loading, logout };

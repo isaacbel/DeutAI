@@ -144,7 +144,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
       </div>
 
       <div className="h-[220px] w-full min-w-0 sm:h-[260px]">
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={0}>
           <AreaChart data={chartData} margin={{ left: 4, right: 8, top: 12, bottom: 4 }}>
             <defs>
               <linearGradient id="evolutionFill" x1="0" y1="0" x2="0" y2="1">

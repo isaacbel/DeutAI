@@ -146,3 +146,11 @@ export function deleteHistoryItem(id) {
 export function clearHistory() {
   return authFetch(`${API_URL}/history/all`, { method: 'DELETE' });
 }
+
+/* ─── Quiz ─────────────────────────────────────────── */
+export function generateQuiz(category, difficulty, count) {
+  return authFetch(`${API_URL}/quiz/generate`, {
+    method: 'POST',
+    body: JSON.stringify({ category, difficulty, count }),
+  });
+}

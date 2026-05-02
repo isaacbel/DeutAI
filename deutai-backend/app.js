@@ -10,6 +10,7 @@ const flashcardsRoutes = require('./routes/flashcards.routes');
 const statsRoutes    = require('./routes/stats.routes');
 const unitsRoutes    = require('./routes/units.routes');
 const historyRoutes  = require('./routes/history.routes');
+const quizRoutes     = require('./routes/quiz.routes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -42,6 +43,7 @@ app.use('/flashcards', flashcardsRoutes);
 app.use('/stats',      statsRoutes);
 app.use('/units',      unitsRoutes);
 app.use('/history',    historyRoutes);
+app.use('/quiz',       quizRoutes);
 
 // ─── 404 pour les routes inconnues ───────────────────────────────────────────
 app.use((req, res) => {
