@@ -3,12 +3,13 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-const authRoutes = require('./routes/auth.routes');
-const analyzeRoutes = require('./routes/analyze.routes');
+const authRoutes     = require('./routes/auth.routes');
+const analyzeRoutes  = require('./routes/analyze.routes');
 const notebookRoutes = require('./routes/notebook.routes');
 const flashcardsRoutes = require('./routes/flashcards.routes');
-const statsRoutes = require('./routes/stats.routes');
-const unitsRoutes = require('./routes/units.routes');
+const statsRoutes    = require('./routes/stats.routes');
+const unitsRoutes    = require('./routes/units.routes');
+const historyRoutes  = require('./routes/history.routes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -34,12 +35,13 @@ app.get('/ping', (req, res) => {
 });
 
 // ─── Routes API ───────────────────────────────────────────────────────────────
-app.use('/auth', authRoutes);
-app.use('/analyze', analyzeRoutes);
-app.use('/notebook', notebookRoutes);
+app.use('/auth',       authRoutes);
+app.use('/analyze',    analyzeRoutes);
+app.use('/notebook',   notebookRoutes);
 app.use('/flashcards', flashcardsRoutes);
-app.use('/stats', statsRoutes);
-app.use('/units', unitsRoutes);
+app.use('/stats',      statsRoutes);
+app.use('/units',      unitsRoutes);
+app.use('/history',    historyRoutes);
 
 // ─── 404 pour les routes inconnues ───────────────────────────────────────────
 app.use((req, res) => {

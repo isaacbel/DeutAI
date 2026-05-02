@@ -2,14 +2,15 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { PenTool, Layers, BarChart2, LogOut, X } from 'lucide-react';
+import { PenTool, Layers, BarChart2, History, LogOut, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStandalone } from '@/lib/auth';
 
 const NAV_ITEMS = [
-  { href: '/analyze',    icon: PenTool,   label: 'Analyse' },
-  { href: '/flashcards', icon: Layers,    label: 'Flashcards' },
-  { href: '/stats',      icon: BarChart2, label: 'Stats' },
+  { href: '/analyze',   icon: PenTool,  label: 'Analyse' },
+  { href: '/flashcards',icon: Layers,   label: 'Flashcards' },
+  { href: '/stats',     icon: BarChart2,label: 'Stats' },
+  { href: '/history',   icon: History,  label: 'Historique' },
 ];
 
 export default function Sidebar({ isOpen, setIsOpen }) {

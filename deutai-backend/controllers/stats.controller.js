@@ -14,27 +14,61 @@ async function getStats(req, res, next) {
 
   try {
     const totalsResult = await pool.query(
-      `SELECT
-         COUNT(*)                                        AS total_analyses,
-         COUNT(*) FILTER (WHERE has_error = true)       AS total_errors,
+      `WITH filtered AS (
+         SELECT *
+         FROM analyses
+         WHERE user_id = $1
+           AND created_at >= NOW() - $2::interval
+       )
+       SELECT
+         COUNT(*) AS total_analyses,
+         COALESCE(SUM(
+           CASE
+             WHEN COALESCE(jsonb_typeof(errors_json), 'null') = 'array' THEN jsonb_array_length(errors_json)
+             WHEN has_error = true THEN 1
+             ELSE 0
+           END
+         ), 0) AS total_errors,
          ROUND(
            COUNT(*) FILTER (WHERE has_error = true)::numeric
            / NULLIF(COUNT(*), 0) * 100,
            1
-         )                                              AS error_percentage
-       FROM analyses
-       WHERE user_id = $1
-         AND created_at >= NOW() - $2::interval`,
+         ) AS error_percentage
+       FROM filtered`,
       [userId, interval]
     );
 
     const byTypeResult = await pool.query(
-      `SELECT error_type, COUNT(*) AS count
-       FROM analyses
-       WHERE user_id = $1
-         AND has_error = true
-         AND error_type != 'aucun'
-         AND created_at >= NOW() - $2::interval
+      `WITH filtered AS (
+         SELECT *
+         FROM analyses
+         WHERE user_id = $1
+           AND created_at >= NOW() - $2::interval
+       ),
+       expanded AS (
+         -- New format: one row per error in errors_json
+         SELECT
+           COALESCE(NULLIF(err->>'errorType', ''), 'autre') AS error_type
+         FROM filtered f
+         CROSS JOIN LATERAL jsonb_array_elements(
+           CASE
+             WHEN COALESCE(jsonb_typeof(f.errors_json), 'null') = 'array' THEN f.errors_json
+             ELSE '[]'::jsonb
+           END
+         ) AS err
+
+         UNION ALL
+
+         -- Legacy fallback: old rows with only single error_type
+         SELECT f.error_type
+         FROM filtered f
+         WHERE f.has_error = true
+           AND (COALESCE(jsonb_typeof(f.errors_json), 'null') <> 'array' OR jsonb_array_length(f.errors_json) = 0)
+           AND f.error_type IS NOT NULL
+           AND f.error_type <> 'aucun'
+       )
+       SELECT error_type, COUNT(*) AS count
+       FROM expanded
        GROUP BY error_type`,
       [userId, interval]
     );

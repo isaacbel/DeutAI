@@ -33,11 +33,11 @@ async function analyzeText(text) {
           errorType: 'auxiliaire',
           severity: 'high',
           rule: 'Les verbes de mouvement utilisent «sein» comme auxiliaire au passé composé.',
-          explanation: 'Le verbe «gehen» (aller) exprime un déplacement, il utilise donc «sein» et non «haben» au Perfekt.',
+          explanation: 'DE: Das Verb "gehen" beschreibt eine Bewegung und nutzt im Perfekt "sein" statt "haben". || AR: الفعل "gehen" يعبّر عن حركة، لذلك في صيغة Perfekt يستخدم "sein" وليس "haben".',
           suggestions: ['bin gegangen', 'ging (Präteritum)'],
         },
       ],
-      globalExplanation: 'La phrase contient une erreur de choix d\'auxiliaire au Perfekt.',
+      globalExplanation: 'DE: Der Satz enthält einen Fehler bei der Wahl des Hilfsverbs im Perfekt. || AR: الجملة تحتوي على خطأ في اختيار الفعل المساعد في صيغة Perfekt.',
       exercises: [
         { question: 'Quel auxiliaire utilise-t-on avec «gehen» au Perfekt ?', answer: 'sein — Ich bin gegangen.' },
         { question: 'Conjuguez «fahren» au Perfekt à la 3ème personne du singulier.', answer: 'Er ist gefahren.' },

@@ -32,13 +32,15 @@ async function persistAnalysis(userId, source, inputText, analysisResult, unit_i
   const errorType   = primaryError?.errorType || analysisResult.errorType || 'aucun';
 
   // Store all errors as JSONB alongside the analysis
-  const errorsJson  = JSON.stringify(analysisResult.errors || []);
-  const exercisesJson = JSON.stringify(analysisResult.exercises || []);
+  const errorsJson       = JSON.stringify(analysisResult.errors || []);
+  const exercisesJson    = JSON.stringify(analysisResult.exercises || []);
+  const globalExplanation = analysisResult.globalExplanation || null;
 
   const { rows } = await pool.query(
     `INSERT INTO analyses
-       (user_id, source, input_text, has_error, error_phrase, correction, rule, error_type, exercises_json, unit_id)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+       (user_id, source, input_text, has_error, error_phrase, correction, rule,
+        error_type, exercises_json, errors_json, global_explanation, unit_id)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
      RETURNING id`,
     [
       userId,
@@ -50,6 +52,8 @@ async function persistAnalysis(userId, source, inputText, analysisResult, unit_i
       rule,
       errorType,
       exercisesJson,
+      errorsJson,
+      globalExplanation,
       unit_id || null,
     ]
   );

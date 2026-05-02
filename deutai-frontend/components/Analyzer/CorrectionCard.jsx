@@ -7,7 +7,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
 
   const paragraphStyle = {
     fontFamily: 'Georgia, "Times New Roman", serif',
-    fontSize: '20px',
+    fontSize: '24px',
     lineHeight: 1.8,
   };
 
@@ -93,8 +93,8 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
           <Sparkles size={16} className="text-gold" />
         </div>
         <span
-          className="text-[11px] uppercase font-semibold"
-          style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.32em', color: '#D4AF37' }}
+          className="text-[13px] uppercase font-semibold"
+          style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.28em', color: '#E3C66F' }}
         >
           Correction
         </span>
@@ -103,14 +103,14 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
             style={{
               marginLeft: 'auto',
               fontFamily: 'Inter, sans-serif',
-              fontSize: '10px',
+              fontSize: '11px',
               letterSpacing: '0.16em',
               textTransform: 'uppercase',
-              padding: '4px 10px',
+              padding: '5px 11px',
               borderRadius: '999px',
-              color: '#B8962E',
-              border: '1px solid rgba(212,175,55,0.22)',
-              background: 'rgba(212,175,55,0.08)',
+              color: '#E3C66F',
+              border: '1px solid rgba(212,175,55,0.32)',
+              background: 'rgba(212,175,55,0.14)',
             }}
           >
             {errors.length} fix{errors.length > 1 ? 'es' : ''}
@@ -130,10 +130,10 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
             <p
               style={{
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '11px',
+                fontSize: '12px',
                 letterSpacing: '0.26em',
                 textTransform: 'uppercase',
-                color: '#A16F6F',
+                color: '#D08A8A',
                 marginBottom: '10px',
               }}
             >
@@ -158,10 +158,10 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
             <p
               style={{
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '11px',
+                fontSize: '12px',
                 letterSpacing: '0.26em',
                 textTransform: 'uppercase',
-                color: '#D4AF37',
+                color: '#E3C66F',
                 marginBottom: '10px',
               }}
             >
@@ -179,7 +179,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
               <p
                 style={{
                   ...paragraphStyle,
-                  color: '#F2DFA2',
+                  color: '#F6E5AF',
                   textShadow: '0 0 22px rgba(212,175,55,0.12)',
                 }}
               >
@@ -214,8 +214,8 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
             >
               <span
                 style={{
-                  fontSize: '11px',
-                  color: '#A16F6F',
+                  fontSize: '13px',
+                  color: '#D08A8A',
                   textDecoration: 'line-through',
                   textDecorationColor: 'rgba(224,82,82,0.78)',
                   textDecorationThickness: '1px',
@@ -230,8 +230,8 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
               <span style={{ color: 'rgba(212,175,55,0.55)', fontSize: '12px' }}>→</span>
               <span
                 style={{
-                  fontSize: '11px',
-                  color: '#D9B54C',
+                  fontSize: '13px',
+                  color: '#E3C66F',
                   background: 'rgba(212,175,55,0.09)',
                   border: '1px solid rgba(212,175,55,0.26)',
                   padding: '4px 8px',

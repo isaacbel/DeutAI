@@ -151,33 +151,19 @@ export default function StatsPage() {
                   <CardHeader>
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <CardTitle>Evolution</CardTitle>
-                        <CardDescription>Activite sur la periode selectionnee</CardDescription>
+                        <CardTitle>Activité d&apos;analyse</CardTitle>
+                        <CardDescription>
+                          Volume quotidien sur la fenêtre choisie (30 j · 3 mois · 6 mois · 1 an)
+                        </CardDescription>
                       </div>
-                      <TrendingUp size={18} className="text-[#d4af37]" />
+                      <TrendingUp size={18} className="shrink-0 text-[#d4af37]" />
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <EvolutionChart data={stats.evolution} />
+                    <EvolutionChart data={stats.evolution} period={period} />
                   </CardContent>
                 </Card>
               </div>
-
-              {stats.mostCommonError && (
-                <Card className="border-[#413716] bg-[#131107]">
-                  <CardContent className="flex items-center gap-3 p-4">
-                    <span className="text-gold">⊕</span>
-                    <div className="min-w-0">
-                      <p className="mb-1 font-mono text-[10px] uppercase tracking-[0.2em] text-[#8f8f9f]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                        Erreur la plus frequente
-                      </p>
-                      <p className="truncate text-base font-medium text-gold">
-                        {stats.mostCommonError}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
             </>
           )}
         </div>

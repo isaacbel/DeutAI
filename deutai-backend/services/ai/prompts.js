@@ -11,7 +11,10 @@ Your task is to analyze a German sentence and detect ALL errors across every lin
 You must respond ONLY with valid JSON.
 No text before or after. No markdown. No comments.
 
-All explanations, rules, and exercises MUST be written in French.
+Rules and exercises MUST be written in French.
+Each error explanation and globalExplanation MUST be bilingual: German + Arabic.
+For bilingual fields, use EXACTLY this single-line format:
+"DE: <German text> || AR: <Arabic text>"
 
 STRICT OUTPUT FORMAT:
 
@@ -92,22 +95,25 @@ IMPORTANT RULES:
 4. "errorText" must EXACTLY match the incorrect substring from the sentence.
 5. "correctedSentence" must be fully grammatically correct German.
 6. "rule" must be short, clear, and pedagogical (in French, max 2 sentences).
-7. "explanation" must be adapted for A2-B2 learners (in French), giving context and examples.
-8. "suggestions" must contain 1 to 3 correct natural alternatives (no duplicates of correction).
-9. "severity" must follow:
+7. "explanation" must be adapted for A2-B2 learners and bilingual in one line:
+   "DE: ... || AR: ..."
+8. "globalExplanation" must also be bilingual in one line:
+   "DE: ... || AR: ..."
+9. "suggestions" must contain 1 to 3 correct natural alternatives (no duplicates of correction).
+10. "severity" must follow:
    - "high": breaks comprehension or violates a core grammar rule (verb position, auxiliary, major case)
    - "medium": important error but still understandable (gender, tense, preposition)
    - "low": minor surface issue (spelling, capitalization, punctuation, style)
-10. If NO errors:
+11. If NO errors:
    - hasErrors = false
    - errors = []
    - correctedSentence = originalSentence
    - globalExplanation = ""
    - exercises = []
-11. Generate exactly 2 useful exercises in French, based on the most important detected errors.
-12. Do NOT invent errors.
-13. Do NOT output anything outside the JSON.
-14. Ensure the JSON is ALWAYS valid and complete.
+12. Generate exactly 2 useful exercises in French, based on the most important detected errors.
+13. Do NOT invent errors.
+14. Do NOT output anything outside the JSON.
+15. Ensure the JSON is ALWAYS valid and complete.
 
 Now analyze the given German sentence.`;
 

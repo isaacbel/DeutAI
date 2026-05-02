@@ -13,6 +13,7 @@ import { analyzeText } from '@/lib/api';
 
 const MIN_SCAN_DURATION = 1500;
 const MAX_ANALYZE_CHARS = 1000;
+const ANALYZE_DRAFT_STORAGE_KEY = 'deutai:analyze-session-v1';
 
 function AnalyzeContent() {
   const { loading: authLoading } = useAuthStandalone();
@@ -25,6 +26,37 @@ function AnalyzeContent() {
   const [error, setError] = useState('');
   const [offline, setOffline] = useState(false);
   const [retryAfter, setRetryAfter] = useState(null);
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem(ANALYZE_DRAFT_STORAGE_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw);
+        if (typeof saved.text === 'string') setText(saved.text);
+        if (saved.result && typeof saved.result === 'object') setResult(saved.result);
+      }
+    } catch {
+      // Ignore corrupted local session cache
+    } finally {
+      setHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    try {
+      localStorage.setItem(
+        ANALYZE_DRAFT_STORAGE_KEY,
+        JSON.stringify({
+          text,
+          result,
+        })
+      );
+    } catch {
+      // Ignore localStorage errors (quota/private mode)
+    }
+  }, [text, result, hydrated]);
 
   useEffect(() => {
     setOffline(!navigator.onLine);
@@ -93,6 +125,18 @@ function AnalyzeContent() {
 
   const isDisabled = !text.trim() || text.length > MAX_ANALYZE_CHARS || offline || scanning || !!retryAfter;
 
+  function handleRestartAnalysis() {
+    setText('');
+    setResult(null);
+    setError('');
+    setRetryAfter(null);
+    try {
+      localStorage.removeItem(ANALYZE_DRAFT_STORAGE_KEY);
+    } catch {
+      // Ignore localStorage errors
+    }
+  }
+
   if (authLoading) return null;
 
   return (
@@ -101,29 +145,29 @@ function AnalyzeContent() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-32 bg-gold/5 blur-[100px] pointer-events-none rounded-full" />
 
       {/* Header */}
-      <header className="sticky top-0 z-30 px-4 py-3 flex items-center justify-between transition-all" style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(42, 42, 42, 0.5)' }}>
+      <header className="sticky top-0 z-30 px-4 py-3.5 flex items-center justify-between transition-all" style={{ background: 'rgba(0,0,0,0.76)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(67, 67, 88, 0.55)' }}>
         <div className="flex flex-col">
-          <h1 className="text-xl font-bold text-gold font-mono tracking-[0.2em] flex items-center gap-2" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <h1 className="text-2xl font-bold text-gold font-mono tracking-[0.18em] flex items-center gap-2" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
             DeutAI
           </h1>
-          <p className="system-subtitle opacity-70 tracking-[0.3em] uppercase" style={{ fontSize: '8px' }}>Système 404</p>
+          <p className="system-subtitle opacity-85 tracking-[0.24em] uppercase" style={{ fontSize: '10px' }}>Système 404</p>
         </div>
         <div className="flex items-center gap-2">
           <Link
             href="/notebook"
-            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all border border-transparent bg-[#111] hover:bg-[#1a1a1a] hover:border-gold/30 hover:text-gold hover:shadow-[0_0_12px_rgba(212,175,55,0.1)] text-text-muted"
+            className="group flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-mono transition-all border border-transparent bg-[#14141a] hover:bg-surface-3 hover:border-gold/30 hover:text-gold hover:shadow-[0_0_12px_rgba(212,175,55,0.1)] text-text-muted"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
-            <Camera size={14} className="group-hover:text-gold transition-colors" />
+            <Camera size={15} className="group-hover:text-gold transition-colors" />
             <span className="hidden sm:inline">Notebook</span>
           </Link>
           <Link
             href="/scan"
-            className="group flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono transition-all border border-transparent bg-[#111] hover:bg-[#1a1a1a] hover:border-gold/30 hover:text-gold hover:shadow-[0_0_12px_rgba(212,175,55,0.1)] text-text-muted"
+            className="group flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-mono transition-all border border-transparent bg-[#14141a] hover:bg-surface-3 hover:border-gold/30 hover:text-gold hover:shadow-[0_0_12px_rgba(212,175,55,0.1)] text-text-muted"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
-            <QrCode size={14} className="group-hover:text-gold transition-colors" />
+            <QrCode size={15} className="group-hover:text-gold transition-colors" />
             <span className="hidden sm:inline">QR</span>
           </Link>
         </div>
@@ -134,7 +178,7 @@ function AnalyzeContent() {
         <div className="mx-4 mt-4 px-3 py-2.5 rounded-lg flex items-center gap-2.5 relative overflow-hidden group" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
           <div className="absolute left-0 top-0 bottom-0 w-1 bg-gold/50 rounded-l-lg group-hover:bg-gold transition-colors" />
           <Crosshair size={14} className="text-gold" />
-          <span className="text-xs font-mono text-gold/90 tracking-wide" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <span className="text-sm font-mono text-gold/95 tracking-wide" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             Unité active : {unitId}
           </span>
           <Link href="/analyze" className="ml-auto text-text-muted hover:text-error transition-all p-1 hover:bg-error/10 rounded">✕</Link>
@@ -145,8 +189,8 @@ function AnalyzeContent() {
       <div className="px-4 py-6 max-w-2xl mx-auto relative z-10">
         {/* Offline message */}
         {offline && (
-          <div className="mb-5 px-4 py-3 rounded-lg text-sm text-error flex items-center gap-2.5 border border-error/20 bg-error/5 shadow-[0_0_15px_rgba(204,85,85,0.05)]">
-            <WifiOff size={16} />
+          <div className="mb-5 px-4 py-3 rounded-lg text-base text-error flex items-center gap-2.5 border border-error/20 bg-error/5 shadow-[0_0_15px_rgba(204,85,85,0.05)]">
+            <WifiOff size={18} />
             <span className="font-medium">Mode hors ligne — L'analyse est indisponible</span>
           </div>
         )}
@@ -155,7 +199,7 @@ function AnalyzeContent() {
         <div className="mb-6 relative">
           <div className="flex items-center gap-2 mb-2.5">
             <div className="w-1 h-3 bg-text-muted/50 rounded-full" />
-            <label className="block text-[10px] font-mono text-text-muted tracking-[0.2em] font-medium" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+            <label className="block text-[12px] font-mono text-text-muted tracking-[0.2em] font-semibold" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
               PHRASE À ANALYSER
             </label>
           </div>
@@ -168,14 +212,14 @@ function AnalyzeContent() {
 
         {/* Error message */}
         {error && !scanning && (
-          <div className="mb-6 p-4 rounded-xl text-sm border border-error/20 bg-[#1A0A0A] text-error flex flex-col gap-3 shadow-[0_0_20px_rgba(204,85,85,0.05)]">
+          <div className="mb-6 p-4 rounded-xl text-base border border-error/20 bg-[#1A0A0A] text-error flex flex-col gap-3 shadow-[0_0_20px_rgba(204,85,85,0.05)]">
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-2.5">
-                <TriangleAlert size={16} className="mt-0.5 shrink-0" />
+                <TriangleAlert size={18} className="mt-0.5 shrink-0" />
                 <span className="leading-snug">{error}</span>
               </div>
               {retryAfter && retryAfter > 0 && (
-                <span className="text-xs font-mono shrink-0 px-2 py-1 bg-error/10 rounded" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                <span className="text-sm font-mono shrink-0 px-2 py-1 bg-error/10 rounded" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                   {retryAfter}s
                 </span>
               )}
@@ -183,10 +227,10 @@ function AnalyzeContent() {
             {(error.includes('indisponible') || error.includes('serveur')) && (
               <button
                 onClick={handleAnalyze}
-                className="flex items-center gap-1.5 self-start text-xs text-gold hover:text-gold/80 transition-colors font-mono py-1 px-2 -ml-2 rounded hover:bg-gold/10"
+                className="flex items-center gap-1.5 self-start text-sm text-gold hover:text-gold/80 transition-colors font-mono py-1 px-2 -ml-2 rounded hover:bg-gold/10"
                 style={{ fontFamily: 'JetBrains Mono, monospace' }}
               >
-                <RefreshCw size={12} />
+                <RefreshCw size={14} />
                 Réessayer
               </button>
             )}
@@ -194,11 +238,25 @@ function AnalyzeContent() {
         )}
 
         {/* Scan button */}
-        <ScanButton
-          onClick={handleAnalyze}
-          disabled={isDisabled}
-          loading={scanning}
-        />
+        <div className="flex flex-col sm:flex-row gap-2">
+          <div className="flex-1">
+            <ScanButton
+              onClick={handleAnalyze}
+              disabled={isDisabled}
+              loading={scanning}
+            />
+          </div>
+          {(result || text) && (
+            <button
+              onClick={handleRestartAnalysis}
+              disabled={scanning}
+              className="btn-outline px-4 py-3 text-sm whitespace-nowrap"
+              style={{ fontFamily: 'JetBrains Mono, monospace' }}
+            >
+              Nouvelle analyse
+            </button>
+          )}
+        </div>
 
         {/* Results */}
         {!scanning && result && (
@@ -208,9 +266,9 @@ function AnalyzeContent() {
         {/* Empty state */}
         {!scanning && !result && !error && (
           <div className="mt-12 flex flex-col items-center justify-center opacity-40">
-            <div className="w-px h-12 bg-gradient-to-b from-transparent via-text-muted to-transparent mb-4" />
-            <p className="text-[11px] font-mono text-text-muted tracking-widest flex items-center gap-2" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-              <ChevronRight size={12} />
+            <div className="w-px h-12 bg-linear-to-b from-transparent via-text-muted to-transparent mb-4" />
+            <p className="text-[12px] font-mono text-text-muted tracking-[0.2em] flex items-center gap-2" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <ChevronRight size={14} />
               EN ATTENTE DE DONNÉES
             </p>
           </div>

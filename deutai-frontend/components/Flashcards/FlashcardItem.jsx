@@ -48,6 +48,13 @@ function parseBack(back) {
   return { correction, rule, explanation, suggestions };
 }
 
+function parseBilingualExplanation(text) {
+  if (!text) return null;
+  const match = text.match(/DE:\s*(.*?)\s*\|\|\s*AR:\s*(.*)$/i);
+  if (!match) return null;
+  return { de: match[1], ar: match[2] };
+}
+
 const CARD_STYLES = `
   .fc-scene { perspective: 1400px; }
   .fc-inner {
@@ -70,7 +77,46 @@ const CARD_STYLES = `
   }
   .fc-del {
     opacity: 1;
-    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.12s ease;
+  }
+  .fc-del:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: #1b1b22 !important;
+    border-color: #47475a !important;
+    color: #d6d8ea !important;
+  }
+  @media (max-width: 900px) {
+    .fc-front-layout,
+    .fc-back-layout {
+      flex-direction: column !important;
+    }
+    .fc-front-side,
+    .fc-back-side {
+      width: 100% !important;
+      border-right: none !important;
+      border-bottom: 1px solid #1e1e24;
+      padding: 14px 16px !important;
+      gap: 8px !important;
+    }
+    .fc-front-main,
+    .fc-back-main {
+      padding: 16px !important;
+    }
+    .fc-right-rail {
+      width: 100% !important;
+      min-height: 46px;
+      border-left: none !important;
+      border-top: 1px solid #1a1a1f;
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      padding: 8px 12px !important;
+    }
+    .fc-rail-text {
+      writing-mode: horizontal-tb !important;
+      text-orientation: initial !important;
+      transform: none !important;
+      font-size: 11px !important;
+    }
   }
 `;
 
@@ -78,9 +124,14 @@ export default function FlashcardItem({ flashcard, onDelete }) {
   const [flipped, setFlipped] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [explanationLanguage, setExplanationLanguage] = useState('de');
 
   const meta = ERROR_TYPE_META[flashcard.error_type] || { label: flashcard.error_type ?? 'Erreur', hue: '#777' };
   const { correction, rule, explanation, suggestions } = parseBack(flashcard.back);
+  const bilingualExplanation = parseBilingualExplanation(explanation);
+  const visibleExplanation = bilingualExplanation
+    ? (explanationLanguage === 'ar' ? bilingualExplanation.ar : bilingualExplanation.de)
+    : explanation;
 
   function handleDeleteClick(e) {
     e.stopPropagation();
@@ -105,7 +156,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
       <div className="fc-inner" style={{ minHeight: '220px' }}>
 
         {/* ── FRONT ── */}
-        <div className="fc-face" style={{
+        <div className="fc-face fc-front-layout" style={{
           position: 'absolute', inset: 0,
           background: '#111113',
           border: '1px solid #222228',
@@ -122,7 +173,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
           }} />
 
           {/* Left panel — error info */}
-          <div style={{
+          <div className="fc-front-side" style={{
             flex: '0 0 auto',
             width: '220px',
             padding: '20px 20px',
@@ -135,9 +186,9 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             <div>
               <span style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '9px', fontWeight: 600,
+                fontSize: '11px', fontWeight: 700,
                 letterSpacing: '2.5px', textTransform: 'uppercase',
-                color: meta.hue, opacity: 0.9,
+                color: meta.hue, opacity: 1,
                 display: 'block', marginBottom: '14px',
               }}>
                 {meta.label}
@@ -149,13 +200,13 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                 </div>
               )}
             </div>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '9px', color: '#2a2a32', letterSpacing: '1px' }}>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color: '#8e94ac', letterSpacing: '1px' }}>
               {formatDate(flashcard.created_at)}
             </span>
           </div>
 
           {/* Center panel — main content */}
-          <div style={{
+          <div className="fc-front-main" style={{
             flex: 1,
             padding: '20px 24px',
             display: 'flex',
@@ -167,8 +218,8 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             {/* Erroneous phrase */}
             <p style={{
               fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: '20px', lineHeight: '1.65',
-              color: '#505058',
+              fontSize: '24px', lineHeight: '1.7',
+              color: '#D7DBEE',
               textDecoration: 'line-through',
               textDecorationColor: meta.hue + 'AA',
               textDecorationThickness: '1.5px',
@@ -181,13 +232,13 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             {flashcard.input_text && flashcard.input_text !== flashcard.front && (
               <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <span style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '8px',
-                  letterSpacing: '2px', color: '#303038',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+                  letterSpacing: '2px', color: '#8e94ac',
                   paddingTop: '3px', flexShrink: 0, textTransform: 'uppercase',
                 }}>Phrase</span>
                 <span style={{
                   fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: '13px', color: '#454550',
+                  fontSize: '15px', color: '#b8bed8',
                   fontStyle: 'italic', lineHeight: '1.65',
                   wordBreak: 'break-word',
                 }}>
@@ -198,7 +249,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
           </div>
 
           {/* Right panel — flip hint + delete */}
-          <div style={{
+          <div className="fc-right-rail" style={{
             flex: '0 0 auto',
             width: '56px',
             display: 'flex',
@@ -213,32 +264,38 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               onClick={handleDeleteClick}
               disabled={deleting}
               style={{
-                background: confirmDelete ? `${meta.hue}18` : '#141419',
-                border: `1px solid ${confirmDelete ? meta.hue + '50' : '#2a2a33'}`,
-                borderRadius: '8px', padding: '4px 6px', cursor: 'pointer',
-                fontSize: '13px', color: confirmDelete ? meta.hue : '#6c6c78',
-                transition: 'all 0.18s', width: '36px', textAlign: 'center',
+                background: confirmDelete ? `${meta.hue}20` : '#171720',
+                border: `1px solid ${confirmDelete ? meta.hue + '60' : '#303040'}`,
+                borderRadius: '10px', padding: '6px 9px', cursor: 'pointer',
+                fontSize: '12px',
+                fontFamily: 'JetBrains Mono, monospace',
+                fontWeight: 700,
+                letterSpacing: '0.3px',
+                color: confirmDelete ? meta.hue : '#9ca2bd',
+                transition: 'all 0.18s',
+                minWidth: '44px',
+                textAlign: 'center',
               }}
               title={confirmDelete ? 'Confirmer la suppression' : 'Supprimer'}
             >
-              {deleting ? '…' : confirmDelete ? '✓' : '×'}
+              {deleting ? '...' : confirmDelete ? 'CONF' : 'DEL'}
             </button>
 
-            <span style={{
+            <span className="fc-rail-text" style={{
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '9px', color: '#252530',
+              fontSize: '11px', color: '#6f758d',
               letterSpacing: '1px',
               writingMode: 'vertical-rl',
               textOrientation: 'mixed',
               transform: 'rotate(180deg)',
             }}>
-              retourner ↺
+              retourner la carte ↺
             </span>
           </div>
         </div>
 
         {/* ── BACK ── */}
-        <div className="fc-face fc-back-face" style={{
+        <div className="fc-face fc-back-face fc-back-layout" style={{
           background: '#0c0d09',
           border: '1px solid #252518',
           display: 'flex',
@@ -254,7 +311,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
           }} />
 
           {/* Left label panel */}
-          <div style={{
+          <div className="fc-back-side" style={{
             flex: '0 0 auto',
             width: '120px',
             padding: '20px 16px',
@@ -266,16 +323,56 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             background: 'linear-gradient(135deg, rgba(201,162,39,0.06) 0%, transparent 60%)',
           }}>
             <span style={{
-              fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
+              fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
               letterSpacing: '2.5px', textTransform: 'uppercase',
-              color: '#8a7820', fontWeight: 600,
+              color: '#bca54b', fontWeight: 700,
             }}>
               Correction
             </span>
+            {bilingualExplanation && (
+              <div
+                onClick={(e) => e.stopPropagation()}
+                style={{
+                  marginTop: '8px',
+                  display: 'flex',
+                  gap: '6px',
+                  alignItems: 'center',
+                }}
+              >
+                <button
+                  onClick={() => setExplanationLanguage('de')}
+                  style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '9px',
+                    padding: '2px 7px',
+                    borderRadius: '6px',
+                    border: '1px solid rgba(201,162,39,0.24)',
+                    background: explanationLanguage === 'de' ? 'rgba(201,162,39,0.18)' : 'transparent',
+                    color: explanationLanguage === 'de' ? '#C9A227' : '#66623f',
+                  }}
+                >
+                  DE
+                </button>
+                <button
+                  onClick={() => setExplanationLanguage('ar')}
+                  style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '9px',
+                    padding: '2px 7px',
+                    borderRadius: '6px',
+                    border: '1px solid rgba(201,162,39,0.24)',
+                    background: explanationLanguage === 'ar' ? 'rgba(201,162,39,0.18)' : 'transparent',
+                    color: explanationLanguage === 'ar' ? '#C9A227' : '#66623f',
+                  }}
+                >
+                  AR
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Center — correction content */}
-          <div style={{
+          <div className="fc-back-main" style={{
             flex: 1,
             padding: '20px 24px',
             display: 'flex',
@@ -300,7 +397,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             {rule && (
               <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                 <span style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '8px',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
                   letterSpacing: '2px', color: '#484820',
                   paddingTop: '3px', flexShrink: 0,
                   textTransform: 'uppercase', minWidth: '36px',
@@ -316,10 +413,10 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               </div>
             )}
 
-            {explanation && explanation !== rule && (
+            {visibleExplanation && visibleExplanation !== rule && (
               <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                 <span style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '8px',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
                   letterSpacing: '2px', color: '#484820',
                   paddingTop: '3px', flexShrink: 0,
                   textTransform: 'uppercase', minWidth: '36px',
@@ -329,8 +426,10 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   fontSize: '11px', color: '#585840',
                   lineHeight: '1.65', margin: 0,
                   wordBreak: 'break-word',
+                  direction: explanationLanguage === 'ar' && bilingualExplanation ? 'rtl' : 'ltr',
+                  textAlign: explanationLanguage === 'ar' && bilingualExplanation ? 'right' : 'left',
                 }}>
-                  {explanation}
+                  {visibleExplanation}
                 </p>
               </div>
             )}
@@ -338,7 +437,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             {suggestions.length > 0 && (
               <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                 <span style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '8px',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
                   letterSpacing: '2px', color: '#484820',
                   paddingTop: '5px', flexShrink: 0,
                   textTransform: 'uppercase', minWidth: '36px',
@@ -359,7 +458,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
           </div>
 
           {/* Right flip hint */}
-          <div style={{
+          <div className="fc-right-rail" style={{
             flex: '0 0 auto',
             width: '56px',
             display: 'flex',
@@ -367,15 +466,15 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             justifyContent: 'center',
             borderLeft: '1px solid #202010',
           }}>
-            <span style={{
+            <span className="fc-rail-text" style={{
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '9px', color: '#303020',
+              fontSize: '11px', color: '#6f6c3f',
               letterSpacing: '1px',
               writingMode: 'vertical-rl',
               textOrientation: 'mixed',
               transform: 'rotate(180deg)',
             }}>
-              retourner ↺
+              retourner la carte ↺
             </span>
           </div>
         </div>

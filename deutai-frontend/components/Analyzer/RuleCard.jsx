@@ -48,6 +48,32 @@ function highlightKeywords(text) {
   });
 }
 
+function parseBilingualExplanation(text) {
+  if (!text) return null;
+  const match = text.match(/DE:\s*(.*?)\s*\|\|\s*AR:\s*(.*)$/i);
+  if (!match) return null;
+  return { de: match[1], ar: match[2] };
+}
+
+function renderBilingualExplanation(text, language) {
+  const parsed = parseBilingualExplanation(text);
+  if (!parsed) return text;
+
+  if (language === 'ar') {
+    return (
+      <span dir="rtl" style={{ textAlign: 'right', display: 'block' }}>
+        <strong style={{ color: '#c7a1d8' }}>AR:</strong> {parsed.ar}
+      </span>
+    );
+  }
+
+  return (
+    <span style={{ display: 'block' }}>
+      <strong style={{ color: '#9aa3c8' }}>DE:</strong> {parsed.de}
+    </span>
+  );
+}
+
 function ExerciseItem({ exercise, index }) {
   const [revealed, setRevealed] = useState(false);
 
@@ -123,7 +149,7 @@ function ExerciseItem({ exercise, index }) {
   );
 }
 
-function ErrorRuleBlock({ error, index }) {
+function ErrorRuleBlock({ error, index, explanationLanguage }) {
   const [open, setOpen] = useState(true);
   const color = ERROR_TYPE_COLORS[error.errorType] || '#CC5555';
 
@@ -172,7 +198,7 @@ function ErrorRuleBlock({ error, index }) {
           {/* Explanation */}
           {error.explanation && error.explanation !== error.rule && (
             <p className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: '#777', lineHeight: '1.75', margin: 0, fontStyle: 'italic' }}>
-              💡 {error.explanation}
+              💡 {renderBilingualExplanation(error.explanation, explanationLanguage)}
             </p>
           )}
         </div>
@@ -183,8 +209,13 @@ function ErrorRuleBlock({ error, index }) {
 
 export default function RuleCard({ rule, exercises, errors = [], globalExplanation }) {
   const [exercisesOpen, setExercisesOpen] = useState(true);
+  const [explanationLanguage, setExplanationLanguage] = useState('de');
   const hasExercises = exercises && exercises.length > 0;
   const hasMultiErrors = errors.length > 0;
+  const hasBilingualExplanations = Boolean(
+    parseBilingualExplanation(globalExplanation) ||
+    errors.some((err) => parseBilingualExplanation(err?.explanation))
+  );
 
   return (
     <div
@@ -214,12 +245,41 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
         >
           RÈGLES GRAMMATICALES
         </span>
+        {hasBilingualExplanations && (
+          <div
+            className="ml-auto flex items-center gap-1 rounded-md p-1"
+            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)' }}
+          >
+            <button
+              onClick={() => setExplanationLanguage('de')}
+              className="px-2 py-1 text-[10px] rounded"
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                background: explanationLanguage === 'de' ? 'rgba(212,175,55,0.16)' : 'transparent',
+                color: explanationLanguage === 'de' ? '#D4AF37' : '#777',
+              }}
+            >
+              DE
+            </button>
+            <button
+              onClick={() => setExplanationLanguage('ar')}
+              className="px-2 py-1 text-[10px] rounded"
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                background: explanationLanguage === 'ar' ? 'rgba(212,175,55,0.16)' : 'transparent',
+                color: explanationLanguage === 'ar' ? '#D4AF37' : '#777',
+              }}
+            >
+              AR
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Global explanation */}
       {globalExplanation && (
         <p className="text-sm leading-relaxed text-text-muted pl-0.5 mb-4" style={{ fontFamily: 'Inter, sans-serif', lineHeight: '1.75' }}>
-          {highlightKeywords(globalExplanation)}
+          {renderBilingualExplanation(globalExplanation, explanationLanguage)}
         </p>
       )}
 
@@ -227,7 +287,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
       {hasMultiErrors ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: hasExercises ? '16px' : 0 }}>
           {errors.map((err, i) => (
-            <ErrorRuleBlock key={i} error={err} index={i} />
+            <ErrorRuleBlock key={i} error={err} index={i} explanationLanguage={explanationLanguage} />
           ))}
         </div>
       ) : rule ? (

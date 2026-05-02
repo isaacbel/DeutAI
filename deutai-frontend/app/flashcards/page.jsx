@@ -5,6 +5,32 @@ import FlashcardList from '@/components/Flashcards/FlashcardList';
 import { useAuthStandalone } from '@/lib/auth';
 import { getFlashcards, deleteFlashcard } from '@/lib/api';
 
+const ERROR_TYPE_LABELS = {
+  conjugaison: 'Conjugaison',
+  temps: 'Temps verbal',
+  auxiliaire: 'Auxiliaire',
+  déclinaison: 'Déclinaison',
+  genre: 'Genre',
+  nombre: 'Nombre',
+  accord: 'Accord',
+  ordre: 'Ordre des mots',
+  position_verbe: 'Position verbe',
+  subordonnée: 'Subordonnée',
+  préposition: 'Préposition',
+  cas_prépositionnel: 'Cas prép.',
+  choix_mot: 'Choix du mot',
+  faux_ami: 'Faux ami',
+  collocation: 'Collocation',
+  registre: 'Registre',
+  orthographe: 'Orthographe',
+  majuscule: 'Majuscule',
+  ponctuation: 'Ponctuation',
+  verbe_séparable: 'Verbe séparable',
+  infinitif_zu: 'Infinitif + zu',
+  modalverbe: 'Verbe modal',
+  autre: 'Autre',
+};
+
 const PAGE_STYLES = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
 
@@ -43,7 +69,7 @@ const PAGE_STYLES = `
   .page-header {
     position: sticky; top: 0; z-index: 30;
     padding: 0 28px;
-    height: 60px;
+    height: 72px;
     flex-shrink: 0;
     background: rgba(8,8,9,0.92);
     backdrop-filter: blur(20px) saturate(1.4);
@@ -53,8 +79,8 @@ const PAGE_STYLES = `
   .header-left { display: flex; flex-direction: column; gap: 3px; }
   .header-title {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; font-weight: 600;
-    color: #C9A227; letter-spacing: 4px;
+    font-size: 14px; font-weight: 700;
+    color: #E3C66F; letter-spacing: 4px;
     text-transform: uppercase; margin: 0;
     display: flex; align-items: center; gap: 8px;
   }
@@ -66,18 +92,18 @@ const PAGE_STYLES = `
   }
   .header-sub {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 8.5px; color: #28282e;
-    letter-spacing: 3px; text-transform: uppercase;
+    font-size: 10px; color: #7f859d;
+    letter-spacing: 2.4px; text-transform: uppercase;
     margin: 0 0 0 10px;
   }
   .count-badge {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
-    padding: 5px 14px;
+    font-size: 11px;
+    padding: 6px 14px;
     border-radius: 8px;
-    background: rgba(201,162,39,0.05);
-    border: 1px solid rgba(201,162,39,0.14);
-    color: #7a6418;
+    background: rgba(201,162,39,0.14);
+    border: 1px solid rgba(201,162,39,0.28);
+    color: #e5c266;
     letter-spacing: 1px;
     transition: all 0.3s ease;
   }
@@ -140,10 +166,10 @@ const PAGE_STYLES = `
   .retry-btn:hover { opacity: 1; }
   .hint-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 9px; color: '#252530';
+    font-size: 10px; color: #80859c;
     letter-spacing: 2.5px; text-transform: uppercase;
     margin-bottom: 16px;
-    color: #252530;
+    color: #80859c;
   }
 `;
 
@@ -152,6 +178,7 @@ export default function FlashcardsPage() {
   const [flashcards, setFlashcards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selectedType, setSelectedType] = useState('all');
 
   useEffect(() => {
     if (!authLoading) loadFlashcards();
@@ -187,6 +214,18 @@ export default function FlashcardsPage() {
 
   if (authLoading) return null;
 
+  const typeOptions = [
+    { value: 'all', label: 'Tous' },
+    ...Array.from(new Set(flashcards.map((c) => c.error_type).filter(Boolean))).map((type) => ({
+      value: type,
+      label: ERROR_TYPE_LABELS[type] || type,
+    })),
+  ];
+
+  const filteredFlashcards = selectedType === 'all'
+    ? flashcards
+    : flashcards.filter((card) => card.error_type === selectedType);
+
   return (
     <AppShell>
       <style>{PAGE_STYLES}</style>
@@ -203,7 +242,9 @@ export default function FlashcardsPage() {
 
           {!loading && (
             <div className="count-badge">
-              {flashcards.length}&thinsp;carte{flashcards.length !== 1 ? 's' : ''}
+              {filteredFlashcards.length}
+              {selectedType !== 'all' ? ` / ${flashcards.length}` : ''}&thinsp;
+              carte{filteredFlashcards.length !== 1 ? 's' : ''}
             </div>
           )}
         </header>
@@ -228,9 +269,35 @@ export default function FlashcardsPage() {
             ) : (
               <>
                 {flashcards.length > 0 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
+                    {typeOptions.map((opt) => {
+                      const active = selectedType === opt.value;
+                      return (
+                        <button
+                          key={opt.value}
+                          onClick={() => setSelectedType(opt.value)}
+                          style={{
+                            fontFamily: 'JetBrains Mono, monospace',
+                            fontSize: '10px',
+                            padding: '6px 10px',
+                            borderRadius: '999px',
+                            border: active ? '1px solid rgba(201,162,39,0.35)' : '1px solid #1f1f28',
+                            background: active ? 'rgba(201,162,39,0.12)' : '#101016',
+                            color: active ? '#C9A227' : '#646476',
+                            cursor: 'pointer',
+                            transition: 'all 0.18s',
+                          }}
+                        >
+                          {opt.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+                {filteredFlashcards.length > 0 && (
                   <p className="hint-label">Cliquez pour retourner la carte</p>
                 )}
-                <FlashcardList flashcards={flashcards} onDelete={handleDelete} />
+                <FlashcardList flashcards={filteredFlashcards} onDelete={handleDelete} />
               </>
             )}
 

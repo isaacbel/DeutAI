@@ -4,12 +4,12 @@
 @theme inline {
   --color-gold:          #D4AF37;
   --color-gold-dark:     #B8962E;
-  --color-surface:       #0a0a0a;
-  --color-surface-2:     #111111;
-  --color-surface-3:     #1a1a1a;
-  --color-border:        #2a2a2a;
-  --color-text-primary:  #E0E0E0;
-  --color-text-muted:    #666666;
+  --color-surface:       #0d0d11;
+  --color-surface-2:     #14141b;
+  --color-surface-3:     #1d1d27;
+  --color-border:        #343444;
+  --color-text-primary:  #F1F3FF;
+  --color-text-muted:    #A3A8BF;
   --color-error:         #CC5555;
   --color-success:       #4A9A4A;
   --color-rule-border:   #1a2a1a;
@@ -23,10 +23,22 @@
 
 html, body {
   height: 100%;
-  background: #000000;
-  color: #E0E0E0;
-  font-family: 'Inter', sans-serif;
+  background: #06060a;
+  color: #F1F3FF;
+  font-family: var(--font-inter), 'Inter', 'Segoe UI', sans-serif;
+  font-size: clamp(16px, 0.28vw + 15px, 18px);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  color: #F7F8FF;
+  line-height: 1.3;
+}
+
+p, li, label, input, textarea, button {
+  font-size: 1em;
 }
 
 /* ─── Scrollbar ──────────────────────────────────────── */
@@ -155,10 +167,10 @@ html, body {
 
 /* ─── System subtitle ────────────────────────────────── */
 .system-subtitle {
-  color: #444;
+  color: #7f859b;
   letter-spacing: 3px;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9px;
+  font-size: 10px;
   text-transform: uppercase;
 }
 
@@ -171,7 +183,7 @@ html, body {
   background: #D4AF37;
   color: #000000;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 2px;
   border-radius: 8px;
@@ -198,13 +210,13 @@ html, body {
   justify-content: center;
   gap: 8px;
   background: transparent;
-  color: #666;
+  color: #a3a8bf;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 1px;
   border-radius: 8px;
-  border: 1px solid #2a2a2a;
+  border: 1px solid #343444;
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s;
 }
@@ -219,10 +231,10 @@ html, body {
 
 /* ─── Input dark ─────────────────────────────────────── */
 .input-dark {
-  background: #0a0a0a;
-  border: 1px solid #2a2a2a;
+  background: #111117;
+  border: 1px solid #343444;
   border-radius: 10px;
-  color: #E0E0E0;
+  color: #F1F3FF;
   font-family: 'Inter', sans-serif;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;

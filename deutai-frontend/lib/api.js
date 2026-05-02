@@ -128,3 +128,21 @@ export function notebookAnalyze(text) {
 export function ping() {
   return fetch(`${API_URL}/ping`, { method: 'GET' });
 }
+
+/* ─── History ──────────────────────────────────────── */
+export function getHistory(page = 1, limit = 30) {
+  const q = new URLSearchParams({ page, limit }).toString();
+  return authFetch(`${API_URL}/history?${q}`);
+}
+
+export function getHistoryItem(id) {
+  return authFetch(`${API_URL}/history/${id}`);
+}
+
+export function deleteHistoryItem(id) {
+  return authFetch(`${API_URL}/history/${id}`, { method: 'DELETE' });
+}
+
+export function clearHistory() {
+  return authFetch(`${API_URL}/history/all`, { method: 'DELETE' });
+}
