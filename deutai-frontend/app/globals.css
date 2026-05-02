@@ -4,12 +4,12 @@
 @theme inline {
   --color-gold:          #D4AF37;
   --color-gold-dark:     #B8962E;
-  --color-surface:       #0d0d11;
-  --color-surface-2:     #14141b;
-  --color-surface-3:     #1d1d27;
-  --color-border:        #343444;
+  --color-surface:       #12121a;
+  --color-surface-2:     #1a1a24;
+  --color-surface-3:     #252532;
+  --color-border:        #47475e;
   --color-text-primary:  #F1F3FF;
-  --color-text-muted:    #A3A8BF;
+  --color-text-muted:    #BCC1D7;
   --color-error:         #CC5555;
   --color-success:       #4A9A4A;
   --color-rule-border:   #1a2a1a;
@@ -26,7 +26,7 @@ html, body {
   background: #06060a;
   color: #F1F3FF;
   font-family: var(--font-inter), 'Inter', 'Segoe UI', sans-serif;
-  font-size: clamp(16px, 0.28vw + 15px, 18px);
+  font-size: clamp(14px, 0.24vw + 14px, 16px);
   line-height: 1.6;
   letter-spacing: 0.01em;
   -webkit-font-smoothing: antialiased;
@@ -38,7 +38,7 @@ h1, h2, h3, h4 {
 }
 
 p, li, label, input, textarea, button {
-  font-size: 1em;
+  font-size: 0.96em;
 }
 
 /* ─── Scrollbar ──────────────────────────────────────── */
@@ -183,7 +183,7 @@ p, li, label, input, textarea, button {
   background: #D4AF37;
   color: #000000;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 2px;
   border-radius: 8px;
@@ -212,7 +212,7 @@ p, li, label, input, textarea, button {
   background: transparent;
   color: #a3a8bf;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   letter-spacing: 1px;
   border-radius: 8px;
@@ -240,7 +240,7 @@ p, li, label, input, textarea, button {
   transition: border-color 0.2s, box-shadow 0.2s;
   display: block;
 }
-.input-dark::placeholder { color: #444; }
+.input-dark::placeholder { color: #8389a3; }
 .input-dark:focus {
   border-color: rgba(212,175,55,0.4);
   box-shadow: 0 0 0 3px rgba(212,175,55,0.08);

@@ -2,35 +2,73 @@
 import { Cpu, Loader2, ScanLine } from 'lucide-react';
 
 export default function ScanButton({ onClick, disabled, loading }) {
+  const isActive = !disabled && !loading;
+
   return (
     <button
       onClick={onClick}
       disabled={disabled || loading}
-      className={`
-        w-full py-4 text-[14px] relative overflow-hidden rounded-xl font-bold font-mono transition-all duration-300
-        ${disabled && !loading 
-          ? 'bg-[#15151b] text-[#666d86] border border-[#2b2b37] cursor-not-allowed' 
-          : 'bg-linear-to-r from-gold/12 via-gold/22 to-gold/12 border border-gold/40 text-[#f0d787] hover:shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:border-gold/60 cursor-pointer'}
-      `}
-      style={{ letterSpacing: '2.5px', fontFamily: 'JetBrains Mono, monospace' }}
+      className="w-full py-[15px] rounded-xl font-bold font-mono relative overflow-hidden transition-all duration-300 select-none"
+      style={{
+        fontFamily: 'JetBrains Mono, monospace',
+        fontSize: '13px',
+        letterSpacing: '2.5px',
+        ...(isActive ? {
+          background: 'linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.18), rgba(212,175,55,0.1))',
+          border: '1px solid rgba(212,175,55,0.4)',
+          color: '#f0d787',
+          cursor: 'pointer',
+        } : loading ? {
+          background: 'linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.14), rgba(212,175,55,0.08))',
+          border: '1px solid rgba(212,175,55,0.28)',
+          color: '#d4af37',
+          cursor: 'not-allowed',
+        } : {
+          background: '#13131a',
+          border: '1px solid rgba(52,52,68,0.8)',
+          color: '#4a4a5c',
+          cursor: 'not-allowed',
+        }),
+      }}
+      onMouseEnter={e => { if (isActive) e.currentTarget.style.boxShadow = '0 0 24px rgba(212,175,55,0.16)'; }}
+      onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
+      onMouseDown={e => { if (isActive) e.currentTarget.style.transform = 'scale(0.99)'; }}
+      onMouseUp={e => { e.currentTarget.style.transform = 'scale(1)'; }}
+      aria-label={loading ? 'Analyse en cours' : 'Lancer l\'analyse'}
     >
-      {/* Animated shimmer overlay on active state */}
-      {!disabled && !loading && (
-        <div className="btn-scan-shimmer absolute top-0 bottom-0 w-1/4 bg-linear-to-r from-transparent via-gold/20 to-transparent pointer-events-none" />
+      {/* Shimmer on active */}
+      {isActive && (
+        <span
+          className="absolute inset-y-0 w-1/3 pointer-events-none"
+          style={{
+            background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.18), transparent)',
+            animation: 'shimmerSlide 2.4s ease-in-out infinite',
+          }}
+        />
       )}
 
-      {loading ? (
-        <span className="flex items-center justify-center gap-3 relative z-10">
-          <Loader2 className="animate-spin text-gold" size={18} />
-          <span className="tracking-[4px] animate-pulse">SCAN EN COURS...</span>
-        </span>
-      ) : (
-        <span className="flex items-center justify-center gap-3 relative z-10 group">
-          <ScanLine size={19} className="group-hover:scale-110 transition-transform duration-300" />
-          <span>ANALYSER — SCAN 404</span>
-          <Cpu size={15} className="opacity-60" />
-        </span>
-      )}
+      <span className="flex items-center justify-center gap-3 relative z-10">
+        {loading ? (
+          <>
+            <Loader2 size={17} className="animate-spin text-[#D4AF37]" />
+            <span className="animate-pulse tracking-[4px]">SCAN EN COURS...</span>
+          </>
+        ) : (
+          <>
+            <ScanLine size={18} />
+            <span>ANALYSER — SCAN 404</span>
+            <Cpu size={14} style={{ opacity: 0.55 }} />
+          </>
+        )}
+      </span>
+
+      <style>{`
+        @keyframes shimmerSlide {
+          0% { transform: translateX(-120%) }
+          50% { transform: translateX(380%) }
+          100% { transform: translateX(380%) }
+        }
+      `}</style>
     </button>
   );
 }

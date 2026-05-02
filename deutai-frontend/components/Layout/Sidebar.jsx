@@ -1,113 +1,384 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { PenTool, Layers, BarChart2, History, LogOut, X } from 'lucide-react';
+import { PenTool, Layers, BarChart2, History, LogOut, Zap, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStandalone } from '@/lib/auth';
 
 const NAV_ITEMS = [
-  { href: '/analyze',   icon: PenTool,  label: 'Analyse' },
-  { href: '/flashcards',icon: Layers,   label: 'Flashcards' },
-  { href: '/stats',     icon: BarChart2,label: 'Stats' },
-  { href: '/history',   icon: History,  label: 'Historique' },
+  { href: '/analyze',    icon: PenTool,   label: 'Analyse' },
+  { href: '/flashcards', icon: Layers,    label: 'Flashcards' },
+  { href: '/stats',      icon: BarChart2, label: 'Stats' },
+  { href: '/history',    icon: History,   label: 'Historique' },
 ];
 
+/* ── Desktop tooltip ─────────────────────────────────────── */
+function Tooltip({ label, visible }) {
+  return (
+    <AnimatePresence>
+      {visible && (
+        <motion.span
+          initial={{ opacity: 0, x: -6, scale: 0.92 }}
+          animate={{ opacity: 1, x: 0, scale: 1 }}
+          exit={{ opacity: 0, x: -6, scale: 0.92 }}
+          transition={{ duration: 0.13, ease: 'easeOut' }}
+          className="absolute left-[calc(100%+10px)] top-1/2 -translate-y-1/2 z-[200] pointer-events-none"
+        >
+          <span
+            className="relative px-3 py-1.5 rounded-lg font-mono text-[11px] tracking-[.08em] font-semibold whitespace-nowrap block"
+            style={{
+              background: 'rgba(14,14,22,0.98)',
+              border: '1px solid rgba(212,175,55,0.22)',
+              color: '#e8e0c8',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.55)',
+            }}
+          >
+            <span style={{
+              position: 'absolute', right: '100%', top: '50%',
+              transform: 'translateY(-50%)', width: 0, height: 0,
+              borderTop: '5px solid transparent', borderBottom: '5px solid transparent',
+              borderRight: '5px solid rgba(212,175,55,0.22)', display: 'block',
+            }} />
+            {label}
+          </span>
+        </motion.span>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ── Sidebar ─────────────────────────────────────────────── */
 export default function Sidebar({ isOpen, setIsOpen }) {
   const pathname = usePathname();
   const { logout } = useAuthStandalone();
+  const [hovered, setHovered] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const prevPathRef = useRef(pathname);
 
-  // Close sidebar on route change for mobile
   useEffect(() => {
-    setIsOpen(false);
-  }, [pathname, setIsOpen]);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Close on route change (mobile only)
+  useEffect(() => {
+    if (prevPathRef.current !== pathname) {
+      prevPathRef.current = pathname;
+      if (isMobile) setIsOpen(false);
+    }
+  }, [pathname, isMobile, setIsOpen]);
+
+  // Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e) => { if (e.key === 'Escape') setIsOpen(false); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [isOpen, setIsOpen]);
+
+  /* ── shared sidebar style ── */
+  const sidebarStyle = {
+    background: 'rgba(10,10,16,0.99)',
+    backdropFilter: 'blur(28px)',
+    borderRight: !isMobile ? '1px solid rgba(255,255,255,0.07)' : 'none',
+    borderTop: isMobile ? '1px solid rgba(255,255,255,0.07)' : 'none',
+    boxShadow: isMobile
+      ? '0 -10px 40px rgba(0,0,0,0.7)'
+      : '8px 0 40px rgba(0,0,0,0.7)',
+  };
 
   return (
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Mobile Overlay */}
-          <motion.div 
+          {/* Backdrop — both mobile & desktop */}
+          <motion.div
+            key="overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] md:hidden"
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-[90]"
+            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(3px)' }}
             onClick={() => setIsOpen(false)}
+            aria-hidden="true"
           />
 
-          {/* Sidebar Container */}
-          <motion.aside 
-            initial={{ x: '-100%', opacity: 0.5 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: '-100%', opacity: 0.5 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 40 }}
-            className="fixed top-0 left-0 h-full w-64 bg-[#080809]/95 backdrop-blur-xl border-r border-[#16161c] z-[70] flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.5)]"
-          >
-            <div className="p-6 flex items-center justify-between border-b border-[#16161c]">
-              <h1 className="text-xl font-bold text-[#C9A227] font-mono tracking-[0.2em] flex items-center gap-2" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C9A227] animate-pulse shadow-[0_0_8px_rgba(201,162,39,0.8)]" />
-                DeutAI
-              </h1>
-              <motion.button 
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setIsOpen(false)} 
-                className="text-[#7d7d8f] hover:text-[#f3f4fa] transition-colors p-1 bg-[#111118] rounded-md border border-[#2d2d38]"
-              >
-                <X size={18} />
-              </motion.button>
-            </div>
-
-            <nav className="flex-1 py-8 px-4 flex flex-col gap-3 overflow-y-auto">
-              {NAV_ITEMS.map((item, idx) => {
-                const Icon = item.icon;
-                const isActive = pathname.startsWith(item.href);
-                return (
-                  <motion.div
-                    key={item.href}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 + idx * 0.05 }}
-                  >
-                    <Link
-                      href={item.href}
-                      className={`group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all relative overflow-hidden ${
-                        isActive 
-                          ? 'bg-gradient-to-r from-[#C9A227]/10 to-transparent text-[#C9A227] shadow-[inset_0_0_0_1px_rgba(201,162,39,0.2),0_0_20px_rgba(201,162,39,0.05)]' 
-                          : 'text-[#8f8fa0] hover:bg-[#111118] hover:text-[#d7d7e3]'
-                      }`}
-                    >
-                      {isActive && (
-                        <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-8 bg-[#C9A227] rounded-r shadow-[0_0_12px_rgba(201,162,39,0.8)]" />
-                      )}
-                      <Icon size={18} className={`transition-colors ${isActive ? 'text-[#C9A227]' : 'text-[#7d7d8f] group-hover:text-[#d7d7e3]'}`} />
-                      <span className="font-mono text-[13px] tracking-wide" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                        {item.label}
-                      </span>
-                    </Link>
-                  </motion.div>
-                );
-              })}
-            </nav>
-
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="p-4 border-t border-[#16161c]"
+          {/* ══════════════════════════════════════
+              MOBILE — bottom sheet full menu
+          ══════════════════════════════════════ */}
+          {isMobile && (
+            <motion.aside
+              key="mobile-menu"
+              initial={{ y: '100%', opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: '100%', opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 380, damping: 36, mass: 0.8 }}
+              className="fixed bottom-0 left-0 right-0 z-[100] rounded-t-3xl flex flex-col pb-safe"
+              style={{ ...sidebarStyle, maxHeight: '80vh' }}
+              aria-label="Navigation principale"
             >
-              <button
-                onClick={logout}
-                className="w-full group flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all text-[#a65c5c] hover:bg-[#1a0a0a] hover:text-[#e06c6c] hover:shadow-[inset_0_0_0_1px_rgba(204,85,85,0.2)]"
+              {/* Handle bar */}
+              <div className="flex justify-center pt-3 pb-1">
+                <div
+                  className="w-10 h-1 rounded-full"
+                  style={{ background: 'rgba(255,255,255,0.15)' }}
+                />
+              </div>
+
+              {/* Header */}
+              <div
+                className="flex items-center justify-between px-5 py-3"
+                style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
               >
-                <LogOut size={18} className="group-hover:translate-x-[-2px] transition-transform" />
-                <span className="font-mono text-[13px] tracking-wide" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                  Déconnexion
-                </span>
-              </button>
-            </motion.div>
-          </motion.aside>
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{
+                      background: 'linear-gradient(135deg,#C9A227,#f1d98d)',
+                      boxShadow: '0 3px 12px rgba(201,162,39,0.4)',
+                    }}
+                  >
+                    <Zap size={15} className="text-black" fill="black" />
+                  </div>
+                  <span
+                    className="font-mono text-[13px] tracking-[.18em] font-bold uppercase"
+                    style={{ color: '#c8b87a' }}
+                  >
+                    DeutAI
+                  </span>
+                </div>
+
+                <motion.button
+                  whileHover={{ scale: 1.1, rotate: 90 }}
+                  whileTap={{ scale: 0.88 }}
+                  onClick={() => setIsOpen(false)}
+                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  style={{
+                    background: 'rgba(255,255,255,0.06)',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    color: '#686880',
+                  }}
+                  aria-label="Fermer le menu"
+                >
+                  <X size={14} />
+                </motion.button>
+              </div>
+
+              {/* Nav items */}
+              <nav className="flex flex-col gap-1 px-3 py-3 overflow-y-auto" aria-label="Menu principal">
+                {NAV_ITEMS.map((item, idx) => {
+                  const Icon = item.icon;
+                  const isActive = pathname.startsWith(item.href);
+                  return (
+                    <motion.div
+                      key={item.href}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.05 + idx * 0.055, type: 'spring', stiffness: 340, damping: 28 }}
+                    >
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-4 px-4 py-3.5 rounded-2xl relative overflow-hidden"
+                        style={isActive ? {
+                          background: 'linear-gradient(90deg,rgba(212,175,55,0.15),rgba(212,175,55,0.04))',
+                          border: '1px solid rgba(212,175,55,0.28)',
+                          color: '#f1d98d',
+                        } : {
+                          border: '1px solid transparent',
+                          color: '#8890aa',
+                        }}
+                        aria-current={isActive ? 'page' : undefined}
+                      >
+                        {/* Active left bar */}
+                        {isActive && (
+                          <span
+                            className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-r-full"
+                            style={{ background: '#D4AF37', boxShadow: '0 0 8px rgba(212,175,55,0.8)' }}
+                            aria-hidden="true"
+                          />
+                        )}
+                        <div
+                          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                          style={isActive ? {
+                            background: 'rgba(212,175,55,0.15)',
+                            border: '1px solid rgba(212,175,55,0.2)',
+                          } : {
+                            background: 'rgba(255,255,255,0.05)',
+                            border: '1px solid rgba(255,255,255,0.07)',
+                          }}
+                        >
+                          <Icon size={16} />
+                        </div>
+                        <span className="font-mono text-[13px] tracking-[.06em] font-semibold">
+                          {item.label}
+                        </span>
+                        {isActive && (
+                          <span
+                            className="ml-auto w-1.5 h-1.5 rounded-full"
+                            style={{ background: '#D4AF37', boxShadow: '0 0 6px rgba(212,175,55,0.9)' }}
+                          />
+                        )}
+                      </Link>
+                    </motion.div>
+                  );
+                })}
+              </nav>
+
+              {/* Logout */}
+              <div
+                className="px-3 pb-6 pt-2"
+                style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
+              >
+                <button
+                  onClick={logout}
+                  className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-150"
+                  style={{
+                    background: 'rgba(204,85,85,0.06)',
+                    border: '1px solid rgba(204,85,85,0.15)',
+                    color: '#b06060',
+                  }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+                    style={{ background: 'rgba(204,85,85,0.1)', border: '1px solid rgba(204,85,85,0.2)' }}
+                  >
+                    <LogOut size={15} />
+                  </div>
+                  <span className="font-mono text-[13px] tracking-[.06em] font-semibold">
+                    Déconnexion
+                  </span>
+                </button>
+              </div>
+            </motion.aside>
+          )}
+
+          {/* ══════════════════════════════════════
+              DESKTOP — slim icon rail
+          ══════════════════════════════════════ */}
+          {!isMobile && (
+            <motion.aside
+              key="desktop-sidebar"
+              initial={{ x: '-100%', opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: '-100%', opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 420, damping: 38, mass: 0.7 }}
+              className="fixed top-0 left-0 h-full z-[100] flex flex-col items-center py-5"
+              style={{ width: '68px', ...sidebarStyle }}
+              aria-label="Navigation principale"
+            >
+              {/* Logo */}
+              <motion.div
+                initial={{ opacity: 0, scale: 0.7 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.04, type: 'spring', stiffness: 320, damping: 22 }}
+                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mb-2"
+                style={{
+                  background: 'linear-gradient(135deg,#C9A227 0%,#f1d98d 100%)',
+                  boxShadow: '0 4px 18px rgba(201,162,39,0.4)',
+                }}
+              >
+                <Zap size={18} className="text-black" fill="black" />
+              </motion.div>
+
+              {/* Close button */}
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.09, type: 'spring', stiffness: 300, damping: 22 }}
+                onClick={() => setIsOpen(false)}
+                whileHover={{ scale: 1.1, rotate: 90 }}
+                whileTap={{ scale: 0.88 }}
+                className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 flex-shrink-0"
+                style={{
+                  background: 'rgba(255,255,255,0.04)',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  color: '#686880',
+                }}
+                aria-label="Fermer le menu"
+              >
+                <X size={15} />
+              </motion.button>
+
+              {/* Divider */}
+              <div className="w-8 flex-shrink-0 mb-3" style={{ height: '1px', background: 'rgba(255,255,255,0.07)' }} />
+
+              {/* Nav items */}
+              <nav className="flex flex-col gap-1.5 flex-1 items-center w-full px-2" aria-label="Menu principal">
+                {NAV_ITEMS.map((item, idx) => {
+                  const Icon = item.icon;
+                  const isActive = pathname.startsWith(item.href);
+                  return (
+                    <motion.div
+                      key={item.href}
+                      className="relative w-full flex justify-center"
+                      initial={{ opacity: 0, x: -12 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 0.1 + idx * 0.05, type: 'spring', stiffness: 340, damping: 28 }}
+                      onMouseEnter={() => setHovered(item.href)}
+                      onMouseLeave={() => setHovered(null)}
+                    >
+                      <Link
+                        href={item.href}
+                        className="relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-150"
+                        style={isActive ? {
+                          background: 'linear-gradient(135deg,rgba(212,175,55,0.22),rgba(212,175,55,0.07))',
+                          border: '1px solid rgba(212,175,55,0.32)',
+                          color: '#f1d98d',
+                          boxShadow: '0 0 14px rgba(212,175,55,0.14)',
+                        } : {
+                          background: hovered === item.href ? 'rgba(255,255,255,0.06)' : 'transparent',
+                          border: '1px solid ' + (hovered === item.href ? 'rgba(255,255,255,0.09)' : 'transparent'),
+                          color: hovered === item.href ? '#dde0f0' : '#686880',
+                        }}
+                        aria-current={isActive ? 'page' : undefined}
+                        aria-label={item.label}
+                      >
+                        {isActive && (
+                          <span
+                            className="absolute -left-[3px] top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
+                            style={{ background: '#D4AF37', boxShadow: '0 0 8px rgba(212,175,55,0.8)' }}
+                            aria-hidden="true"
+                          />
+                        )}
+                        <Icon size={17} />
+                      </Link>
+                      <Tooltip label={item.label} visible={hovered === item.href} />
+                    </motion.div>
+                  );
+                })}
+              </nav>
+
+              {/* Logout */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.3 }}
+                className="relative flex justify-center w-full px-2 pt-3"
+                style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
+                onMouseEnter={() => setHovered('logout')}
+                onMouseLeave={() => setHovered(null)}
+              >
+                <button
+                  onClick={logout}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-150"
+                  style={{
+                    background: hovered === 'logout' ? 'rgba(204,85,85,0.1)' : 'transparent',
+                    border: '1px solid ' + (hovered === 'logout' ? 'rgba(204,85,85,0.25)' : 'transparent'),
+                    color: hovered === 'logout' ? '#e06c6c' : '#7a4040',
+                  }}
+                  aria-label="Déconnexion"
+                >
+                  <LogOut size={16} />
+                </button>
+                <Tooltip label="Déconnexion" visible={hovered === 'logout'} />
+              </motion.div>
+
+            </motion.aside>
+          )}
         </>
       )}
     </AnimatePresence>

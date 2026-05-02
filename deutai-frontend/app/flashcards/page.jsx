@@ -137,7 +137,7 @@ const PAGE_STYLES = `
   }
 
   .page-inner {
-    max-width: 100%;
+    max-width: 1180px;
     width: 100%;
     margin: 0 auto;
   }
@@ -170,6 +170,16 @@ const PAGE_STYLES = `
     letter-spacing: 2.5px; text-transform: uppercase;
     margin-bottom: 16px;
     color: #80859c;
+  }
+  .filter-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 6px;
+    border-radius: 12px;
+    border: 1px solid #1b1b24;
+    background: rgba(10,10,14,0.7);
   }
 `;
 
@@ -269,7 +279,7 @@ export default function FlashcardsPage() {
             ) : (
               <>
                 {flashcards.length > 0 && (
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '14px' }}>
+                  <div className="filter-wrap">
                     {typeOptions.map((opt) => {
                       const active = selectedType === opt.value;
                       return (
@@ -278,14 +288,15 @@ export default function FlashcardsPage() {
                           onClick={() => setSelectedType(opt.value)}
                           style={{
                             fontFamily: 'JetBrains Mono, monospace',
-                            fontSize: '10px',
-                            padding: '6px 10px',
+                            fontSize: '11px',
+                            padding: '7px 12px',
                             borderRadius: '999px',
-                            border: active ? '1px solid rgba(201,162,39,0.35)' : '1px solid #1f1f28',
-                            background: active ? 'rgba(201,162,39,0.12)' : '#101016',
-                            color: active ? '#C9A227' : '#646476',
+                            border: active ? '1px solid rgba(201,162,39,0.45)' : '1px solid #2b2b36',
+                            background: active ? 'rgba(201,162,39,0.18)' : '#14141b',
+                            color: active ? '#E3C66F' : '#8a90a8',
                             cursor: 'pointer',
                             transition: 'all 0.18s',
+                            boxShadow: active ? '0 0 0 1px rgba(201,162,39,0.08), 0 4px 14px rgba(201,162,39,0.08)' : 'none',
                           }}
                         >
                           {opt.label}

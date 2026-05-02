@@ -11,7 +11,7 @@ const { createFlashcards } = require('../services/flashcard.service');
 // ─── Validation schemas ────────────────────────────────────────────────────────
 
 const analyzeTextSchema = Joi.object({
-  text: Joi.string().min(1).max(500).required(),
+  text: Joi.string().min(1).max(1000).required(),
   unit_id: Joi.string().uuid().optional(),
 });
 

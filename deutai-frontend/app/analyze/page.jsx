@@ -11,9 +11,9 @@ import ResultCards from '@/components/Analyzer/ResultCards';
 import { useAuthStandalone } from '@/lib/auth';
 import { analyzeText } from '@/lib/api';
 
-const MIN_SCAN_DURATION = 1500;
+const MIN_SCAN_DURATION = 300;
 const MAX_ANALYZE_CHARS = 1000;
-const ANALYZE_DRAFT_STORAGE_KEY = 'deutai:analyze-session-v1';
+const DRAFT_KEY = 'deutai:analyze-session-v1';
 
 function AnalyzeContent() {
   const { loading: authLoading } = useAuthStandalone();
@@ -28,51 +28,39 @@ function AnalyzeContent() {
   const [retryAfter, setRetryAfter] = useState(null);
   const [hydrated, setHydrated] = useState(false);
 
+  // Hydrate from localStorage
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(ANALYZE_DRAFT_STORAGE_KEY);
+      const raw = localStorage.getItem(DRAFT_KEY);
       if (raw) {
         const saved = JSON.parse(raw);
         if (typeof saved.text === 'string') setText(saved.text);
         if (saved.result && typeof saved.result === 'object') setResult(saved.result);
       }
-    } catch {
-      // Ignore corrupted local session cache
-    } finally {
-      setHydrated(true);
-    }
+    } catch { /* ignore */ } finally { setHydrated(true); }
   }, []);
 
+  // Persist draft
   useEffect(() => {
     if (!hydrated) return;
-    try {
-      localStorage.setItem(
-        ANALYZE_DRAFT_STORAGE_KEY,
-        JSON.stringify({
-          text,
-          result,
-        })
-      );
-    } catch {
-      // Ignore localStorage errors (quota/private mode)
-    }
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ text, result })); }
+    catch { /* ignore */ }
   }, [text, result, hydrated]);
 
+  // Offline detection
   useEffect(() => {
     setOffline(!navigator.onLine);
     const onOnline = () => setOffline(false);
     const onOffline = () => setOffline(true);
     window.addEventListener('online', onOnline);
     window.addEventListener('offline', onOffline);
-    return () => {
-      window.removeEventListener('online', onOnline);
-      window.removeEventListener('offline', onOffline);
-    };
+    return () => { window.removeEventListener('online', onOnline); window.removeEventListener('offline', onOffline); };
   }, []);
 
+  // Retry countdown
   useEffect(() => {
     if (retryAfter && retryAfter > 0) {
-      const t = setTimeout(() => setRetryAfter(prev => (prev > 0 ? prev - 1 : null)), 1000);
+      const t = setTimeout(() => setRetryAfter(p => (p > 0 ? p - 1 : null)), 1000);
       return () => clearTimeout(t);
     }
   }, [retryAfter]);
@@ -82,127 +70,154 @@ function AnalyzeContent() {
     setError('');
     setResult(null);
     setScanning(true);
-
     const startTime = Date.now();
     try {
       const res = await analyzeText(text, unitId || undefined);
-
       if (res.status === 429) {
-        const retry = parseInt(res.headers.get('retry-after') || '60');
+        const retry = parseInt(res.headers.get('retry-after') || '60', 10);
         setRetryAfter(retry);
         setError(`Trop de requêtes. Réessayez dans ${retry}s.`);
         return;
       }
-
       if (!res.ok) {
-        if (res.status === 401) {
-          window.location.href = '/login';
-          return;
-        }
+        if (res.status === 401) { window.location.href = '/login'; return; }
         const data = await res.json().catch(() => ({}));
-        if (res.status === 503 || res.status === 502) {
-          setError('Service IA indisponible. Réessayez dans quelques instants.');
-        } else {
-          setError(data.message || 'Erreur lors de l\'analyse.');
-        }
+        setError(
+          res.status === 503 || res.status === 502
+            ? 'Service IA indisponible. Réessayez dans quelques instants.'
+            : data.message || "Erreur lors de l'analyse."
+        );
         return;
       }
-
       const data = await res.json();
-
       const elapsed = Date.now() - startTime;
-      if (elapsed < MIN_SCAN_DURATION) {
-        await new Promise(r => setTimeout(r, MIN_SCAN_DURATION - elapsed));
-      }
-
+      if (elapsed < MIN_SCAN_DURATION) await new Promise(r => setTimeout(r, MIN_SCAN_DURATION - elapsed));
       setResult({ ...data, input: text });
-    } catch (err) {
+    } catch {
       setError('Impossible de contacter le serveur. Vérifiez votre connexion.');
     } finally {
       setScanning(false);
     }
   }, [text, unitId, offline]);
 
-  const isDisabled = !text.trim() || text.length > MAX_ANALYZE_CHARS || offline || scanning || !!retryAfter;
-
-  function handleRestartAnalysis() {
+  const handleReset = useCallback(() => {
     setText('');
     setResult(null);
     setError('');
     setRetryAfter(null);
-    try {
-      localStorage.removeItem(ANALYZE_DRAFT_STORAGE_KEY);
-    } catch {
-      // Ignore localStorage errors
-    }
-  }
+    try { localStorage.removeItem(DRAFT_KEY); } catch { /* ignore */ }
+  }, []);
+
+  const isDisabled = !text.trim() || text.length > MAX_ANALYZE_CHARS || offline || scanning || !!retryAfter;
 
   if (authLoading) return null;
 
   return (
-    <div className="min-h-screen bg-black relative">
-      <div className="absolute inset-0 grid-scan-bg opacity-20 pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] h-32 bg-gold/5 blur-[100px] pointer-events-none rounded-full" />
+    <div className="min-h-screen bg-[#08080a] relative">
+      {/* Background accents */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(212,175,55,0.04) 0%, transparent 60%)',
+        }}
+      />
 
-      {/* Header */}
-      <header className="sticky top-0 z-30 px-4 py-3.5 flex items-center justify-between transition-all" style={{ background: 'rgba(0,0,0,0.76)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(67, 67, 88, 0.55)' }}>
-        <div className="flex flex-col">
-          <h1 className="text-2xl font-bold text-gold font-mono tracking-[0.18em] flex items-center gap-2" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            <span className="w-1.5 h-1.5 rounded-full bg-gold animate-pulse shadow-[0_0_8px_rgba(212,175,55,0.8)]" />
+      {/* ── Header ── */}
+      <header
+        className="sticky top-0 z-30 px-4 sm:px-6 py-3.5 flex items-center justify-between"
+        style={{
+          background: 'rgba(8,8,12,0.88)',
+          backdropFilter: 'blur(20px)',
+          borderBottom: '1px solid rgba(255,255,255,0.07)',
+          minHeight: '60px',
+        }}
+      >
+        <div className="pl-12 sm:pl-14">
+          <h1
+            className="text-[18px] font-bold font-mono tracking-[.16em] flex items-center gap-2"
+            style={{ color: '#D4AF37', fontFamily: 'JetBrains Mono, monospace' }}
+          >
+            <span
+              className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse"
+              style={{ boxShadow: '0 0 8px rgba(212,175,55,0.8)' }}
+            />
             DeutAI
           </h1>
-          <p className="system-subtitle opacity-85 tracking-[0.24em] uppercase" style={{ fontSize: '10px' }}>Système 404</p>
+          <p className="text-[9px] text-[#4a4a58] tracking-[.26em] uppercase mt-0.5">Système 404</p>
         </div>
-        <div className="flex items-center gap-2">
-          <Link
-            href="/notebook"
-            className="group flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-mono transition-all border border-transparent bg-[#14141a] hover:bg-surface-3 hover:border-gold/30 hover:text-gold hover:shadow-[0_0_12px_rgba(212,175,55,0.1)] text-text-muted"
-            style={{ fontFamily: 'JetBrains Mono, monospace' }}
-          >
-            <Camera size={15} className="group-hover:text-gold transition-colors" />
-            <span className="hidden sm:inline">Notebook</span>
-          </Link>
-          <Link
-            href="/scan"
-            className="group flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-mono transition-all border border-transparent bg-[#14141a] hover:bg-surface-3 hover:border-gold/30 hover:text-gold hover:shadow-[0_0_12px_rgba(212,175,55,0.1)] text-text-muted"
-            style={{ fontFamily: 'JetBrains Mono, monospace' }}
-          >
-            <QrCode size={15} className="group-hover:text-gold transition-colors" />
-            <span className="hidden sm:inline">QR</span>
-          </Link>
+
+        <div className="flex items-center gap-2 pr-12 sm:pr-0">
+          {[
+            { href: '/notebook', icon: Camera, label: 'Notebook' },
+            { href: '/scan',     icon: QrCode,  label: 'QR' },
+          ].map(({ href, icon: Icon, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className="flex items-center gap-1.5 px-2.5 py-[7px] rounded-lg text-[12px] font-mono transition-all"
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                border: '1px solid rgba(255,255,255,0.08)',
+                background: 'rgba(255,255,255,0.03)',
+                color: '#8a8aaa',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(212,175,55,0.35)'; e.currentTarget.style.color='#D4AF37'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.08)'; e.currentTarget.style.color='#8a8aaa'; }}
+            >
+              <Icon size={14} />
+              <span className="hidden sm:inline">{label}</span>
+            </Link>
+          ))}
         </div>
       </header>
 
-      {/* Unit badge */}
+      {/* ── Unit badge ── */}
       {unitId && (
-        <div className="mx-4 mt-4 px-3 py-2.5 rounded-lg flex items-center gap-2.5 relative overflow-hidden group" style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.15)' }}>
-          <div className="absolute left-0 top-0 bottom-0 w-1 bg-gold/50 rounded-l-lg group-hover:bg-gold transition-colors" />
-          <Crosshair size={14} className="text-gold" />
-          <span className="text-sm font-mono text-gold/95 tracking-wide" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+        <div
+          className="mx-4 mt-4 px-4 py-2.5 rounded-xl flex items-center gap-2.5 relative overflow-hidden"
+          style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.22)' }}
+        >
+          <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4AF37]/50 rounded-l-xl" />
+          <Crosshair size={13} className="text-[#D4AF37] flex-shrink-0" />
+          <span className="text-[12px] font-mono text-[#D4AF37]/95 tracking-wide flex-1" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             Unité active : {unitId}
           </span>
-          <Link href="/analyze" className="ml-auto text-text-muted hover:text-error transition-all p-1 hover:bg-error/10 rounded">✕</Link>
+          <Link
+            href="/analyze"
+            className="text-[#7a7a90] hover:text-[#e05252] transition-colors p-1 hover:bg-[rgba(204,85,85,0.1)] rounded-md text-sm"
+            aria-label="Retirer l'unité"
+          >
+            ✕
+          </Link>
         </div>
       )}
 
-      {/* Main content */}
-      <div className="px-4 py-6 max-w-2xl mx-auto relative z-10">
-        {/* Offline message */}
+      {/* ── Main content ── */}
+      <div className="px-4 sm:px-6 py-6 max-w-2xl mx-auto relative z-10">
+
+        {/* Offline banner */}
         {offline && (
-          <div className="mb-5 px-4 py-3 rounded-lg text-base text-error flex items-center gap-2.5 border border-error/20 bg-error/5 shadow-[0_0_15px_rgba(204,85,85,0.05)]">
-            <WifiOff size={18} />
+          <div
+            className="mb-5 px-4 py-3 rounded-xl flex items-center gap-2.5 text-[13px]"
+            style={{ background: 'rgba(204,85,85,0.07)', border: '1px solid rgba(204,85,85,0.2)', color: '#e05252' }}
+          >
+            <WifiOff size={16} className="flex-shrink-0" />
             <span className="font-medium">Mode hors ligne — L'analyse est indisponible</span>
           </div>
         )}
 
         {/* Input area */}
-        <div className="mb-6 relative">
+        <div className="mb-5">
           <div className="flex items-center gap-2 mb-2.5">
-            <div className="w-1 h-3 bg-text-muted/50 rounded-full" />
-            <label className="block text-[12px] font-mono text-text-muted tracking-[0.2em] font-semibold" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-              PHRASE À ANALYSER
+            <span className="w-[3px] h-[11px] bg-[#4a4a60] rounded-full" />
+            <label
+              className="text-[10px] font-mono text-[#6a6a80] tracking-[.18em] font-semibold uppercase"
+              style={{ fontFamily: 'JetBrains Mono, monospace' }}
+            >
+              Phrase à analyser
             </label>
           </div>
+
           {scanning ? (
             <ScanAnimation text={text} />
           ) : (
@@ -212,14 +227,20 @@ function AnalyzeContent() {
 
         {/* Error message */}
         {error && !scanning && (
-          <div className="mb-6 p-4 rounded-xl text-base border border-error/20 bg-[#1A0A0A] text-error flex flex-col gap-3 shadow-[0_0_20px_rgba(204,85,85,0.05)]">
+          <div
+            className="mb-5 p-4 rounded-xl text-[13px] flex flex-col gap-3"
+            style={{ background: '#140a0a', border: '1px solid rgba(204,85,85,0.2)', color: '#e05252' }}
+          >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-2.5">
-                <TriangleAlert size={18} className="mt-0.5 shrink-0" />
+                <TriangleAlert size={16} className="mt-0.5 flex-shrink-0" />
                 <span className="leading-snug">{error}</span>
               </div>
-              {retryAfter && retryAfter > 0 && (
-                <span className="text-sm font-mono shrink-0 px-2 py-1 bg-error/10 rounded" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              {retryAfter > 0 && (
+                <span
+                  className="font-mono text-sm flex-shrink-0 px-2 py-0.5 rounded"
+                  style={{ fontFamily: 'JetBrains Mono, monospace', background: 'rgba(204,85,85,0.1)' }}
+                >
                   {retryAfter}s
                 </span>
               )}
@@ -227,31 +248,36 @@ function AnalyzeContent() {
             {(error.includes('indisponible') || error.includes('serveur')) && (
               <button
                 onClick={handleAnalyze}
-                className="flex items-center gap-1.5 self-start text-sm text-gold hover:text-gold/80 transition-colors font-mono py-1 px-2 -ml-2 rounded hover:bg-gold/10"
-                style={{ fontFamily: 'JetBrains Mono, monospace' }}
+                className="flex items-center gap-1.5 self-start text-[12px] font-mono px-2 py-1 -ml-1 rounded transition-all"
+                style={{ fontFamily: 'JetBrains Mono, monospace', color: '#D4AF37' }}
+                onMouseEnter={e => { e.currentTarget.style.background='rgba(212,175,55,0.08)'; }}
+                onMouseLeave={e => { e.currentTarget.style.background='transparent'; }}
               >
-                <RefreshCw size={14} />
+                <RefreshCw size={13} />
                 Réessayer
               </button>
             )}
           </div>
         )}
 
-        {/* Scan button */}
+        {/* Action buttons */}
         <div className="flex flex-col sm:flex-row gap-2">
-          <div className="flex-1">
-            <ScanButton
-              onClick={handleAnalyze}
-              disabled={isDisabled}
-              loading={scanning}
-            />
+          <div className="flex-1 min-w-0">
+            <ScanButton onClick={handleAnalyze} disabled={isDisabled} loading={scanning} />
           </div>
-          {(result || text) && (
+          {(result || text) && !scanning && (
             <button
-              onClick={handleRestartAnalysis}
-              disabled={scanning}
-              className="btn-outline px-4 py-3 text-sm whitespace-nowrap"
-              style={{ fontFamily: 'JetBrains Mono, monospace' }}
+              onClick={handleReset}
+              className="px-4 py-[14px] rounded-xl text-[12px] font-mono transition-all whitespace-nowrap sm:w-auto"
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                border: '1px solid rgba(255,255,255,0.1)',
+                background: 'rgba(255,255,255,0.03)',
+                color: '#8a8aaa',
+                letterSpacing: '.06em',
+              }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.15)'; e.currentTarget.style.color='#c0c0d0'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; e.currentTarget.style.color='#8a8aaa'; }}
             >
               Nouvelle analyse
             </button>
@@ -259,16 +285,15 @@ function AnalyzeContent() {
         </div>
 
         {/* Results */}
-        {!scanning && result && (
-          <ResultCards result={result} />
-        )}
+        {!scanning && result && <ResultCards result={result} />}
 
         {/* Empty state */}
         {!scanning && !result && !error && (
-          <div className="mt-12 flex flex-col items-center justify-center opacity-40">
-            <div className="w-px h-12 bg-linear-to-b from-transparent via-text-muted to-transparent mb-4" />
-            <p className="text-[12px] font-mono text-text-muted tracking-[0.2em] flex items-center gap-2" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-              <ChevronRight size={14} />
+          <div className="mt-14 flex flex-col items-center justify-center opacity-30" aria-hidden="true">
+            <div className="w-px h-10 mb-4" style={{ background: 'linear-gradient(to bottom, transparent, #6a6a80)' }} />
+            <p className="text-[11px] font-mono text-[#6a6a80] tracking-[.2em] flex items-center gap-1.5"
+               style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <ChevronRight size={13} />
               EN ATTENTE DE DONNÉES
             </p>
           </div>

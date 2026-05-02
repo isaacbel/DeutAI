@@ -111,9 +111,10 @@ function SidebarItem({ item, isSelected, onSelect, onDelete }) {
           ? 'rgba(212,175,55,0.1)'
           : hovered ? 'rgba(255,255,255,0.045)' : 'transparent',
         border: `1px solid ${isSelected ? 'rgba(212,175,55,0.28)' : 'rgba(255,255,255,0.05)'}`,
-        transition: 'background 0.14s, border-color 0.14s, box-shadow 0.14s',
+        transition: 'background 0.14s, border-color 0.14s, box-shadow 0.14s, transform 0.12s',
         userSelect: 'none',
         boxShadow: isSelected ? '0 8px 24px rgba(0,0,0,0.32)' : 'none',
+        transform: hovered && !isSelected ? 'translateX(1px)' : 'none',
       }}
     >
       {/* Active indicator */}
@@ -183,13 +184,13 @@ function SidebarItem({ item, isSelected, onSelect, onDelete }) {
             position: 'absolute', bottom: '9px', right: '9px',
             background: confirmDel ? 'rgba(180,40,40,0.2)' : 'rgba(18,18,24,0.98)',
             border: confirmDel ? '1px solid rgba(180,40,40,0.42)' : '1px solid rgba(255,255,255,0.12)',
-            borderRadius: '6px', padding: '3px 8px', cursor: 'pointer',
+            borderRadius: '6px', padding: '4px 9px', cursor: 'pointer',
             fontSize: '9px', fontFamily: 'JetBrains Mono, monospace',
             color: confirmDel ? '#ff6a6a' : '#8f95ad',
             transition: 'all 0.12s',
           }}
         >
-          {confirmDel ? 'Confirmer?' : '×'}
+          {confirmDel ? 'CONF?' : 'DEL'}
         </button>
       )}
     </div>
@@ -331,6 +332,17 @@ export default function HistoryPage() {
 
   useEffect(() => { if (!authLoading) load(); }, [authLoading, load]);
 
+  useEffect(() => {
+    if (pageLoading) return;
+    if (items.length === 0) {
+      if (selected) setSelected(null);
+      return;
+    }
+    // Keep the selected item if it still exists, otherwise pick latest.
+    const stillExists = selected && items.some((it) => it.id === selected.id);
+    if (!stillExists) setSelected(items[0]);
+  }, [items, selected, pageLoading]);
+
   async function handleDelete(id) {
     await deleteHistoryItem(id);
     setItems(prev => prev.filter(i => i.id !== id));
@@ -355,7 +367,7 @@ export default function HistoryPage() {
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
 
         /* ── Root: full viewport, no overflow ── */
-        .hp { display:flex; height:100vh; overflow:hidden; background:#080809; }
+        .hp { display:flex; min-height:100vh; overflow:hidden; background:#080809; }
 
         /* ── Left sidebar ── */
         .hp-side {
@@ -372,6 +384,7 @@ export default function HistoryPage() {
           padding: 18px 14px 14px;
           border-bottom: 1px solid #181824;
           flex-shrink: 0;
+          background: linear-gradient(to bottom, rgba(201,162,39,0.04), rgba(201,162,39,0));
         }
         .hp-side-list {
           flex: 1 1 auto;
@@ -427,7 +440,7 @@ export default function HistoryPage() {
 
         /* ── Mobile ── */
         @media(max-width:820px){
-          .hp { flex-direction:column; height:auto; overflow:auto; }
+          .hp { flex-direction:column; min-height:100%; overflow:auto; }
           .hp-side { width:100%; height:auto; border-right:none; border-bottom:1px solid #0e0e16; }
           .hp-side-list { max-height:200px; }
           .hp-main { height:auto; overflow:visible; }

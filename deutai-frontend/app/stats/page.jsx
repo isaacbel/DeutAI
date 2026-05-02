@@ -5,18 +5,59 @@ import AppShell from '@/components/Layout/AppShell';
 import StatsSummary from '@/components/Stats/StatsSummary';
 import ErrorTypeChart from '@/components/Stats/ErrorTypeChart';
 import EvolutionChart from '@/components/Stats/EvolutionChart';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { useAuthStandalone } from '@/lib/auth';
 import { getStats } from '@/lib/api';
 
 const PERIOD_OPTIONS = [
   { key: '30d', label: '30 jours' },
-  { key: '3m', label: '3 mois' },
-  { key: '6m', label: '6 mois' },
-  { key: '1y', label: '1 an' },
+  { key: '3m',  label: '3 mois'  },
+  { key: '6m',  label: '6 mois'  },
+  { key: '1y',  label: '1 an'    },
 ];
+
+function PeriodSelector({ period, onChange }) {
+  return (
+    <div
+      className="flex flex-wrap items-center gap-2 p-3 rounded-xl mb-4"
+      style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+    >
+      {PERIOD_OPTIONS.map(opt => {
+        const active = opt.key === period;
+        return (
+          <button
+            key={opt.key}
+            onClick={() => onChange(opt.key)}
+            className="px-3.5 py-[7px] rounded-lg text-[12px] font-mono transition-all"
+            style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              background: active ? '#201a0c' : 'rgba(255,255,255,0.02)',
+              border: `1px solid ${active ? 'rgba(111,90,31,0.7)' : 'transparent'}`,
+              color: active ? '#e5c266' : '#6a6a80',
+              letterSpacing: '.06em',
+            }}
+            onMouseEnter={e => { if (!active) { e.currentTarget.style.color='#b0b0c8'; e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; }}}
+            onMouseLeave={e => { if (!active) { e.currentTarget.style.color='#6a6a80'; e.currentTarget.style.borderColor='transparent'; }}}
+          >
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function Skeleton({ h = 'h-72' }) {
+  return (
+    <div
+      className={`${h} rounded-xl`}
+      style={{
+        background: 'linear-gradient(90deg, #0f0f14 25%, #14141a 50%, #0f0f14 75%)',
+        backgroundSize: '200% 100%',
+        animation: 'shimmer 1.4s infinite',
+      }}
+    />
+  );
+}
 
 export default function StatsPage() {
   const { loading: authLoading } = useAuthStandalone();
@@ -29,19 +70,15 @@ export default function StatsPage() {
     if (!authLoading) loadStats(period);
   }, [authLoading, period]);
 
-  async function loadStats(selectedPeriod = period) {
+  async function loadStats(p = period) {
     setError('');
     setLoading(true);
     try {
-      const res = await getStats(selectedPeriod);
-      if (!res.ok) {
-        setError('Impossible de charger les statistiques.');
-        return;
-      }
-      const data = await res.json();
-      setStats(data);
+      const res = await getStats(p);
+      if (!res.ok) { setError('Impossible de charger les statistiques.'); return; }
+      setStats(await res.json());
     } catch {
-      setError('Erreur reseau. Verifiez votre connexion.');
+      setError('Erreur réseau. Vérifiez votre connexion.');
     } finally {
       setLoading(false);
     }
@@ -49,124 +86,171 @@ export default function StatsPage() {
 
   if (authLoading) return null;
 
-  const hasData = stats && (stats.totalAnalyses > 0 || Object.values(stats.errorsByType || {}).some(v => v > 0));
+  const hasData = stats && (
+    stats.totalAnalyses > 0 ||
+    Object.values(stats.errorsByType || {}).some(v => v > 0)
+  );
 
   return (
     <AppShell>
-      <div className="relative min-h-screen bg-[#08080a]">
-        <div className="pointer-events-none absolute inset-0 grid-scan-bg opacity-10" />
-        <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[70%] -translate-x-1/2 rounded-full bg-gold/10 blur-[120px]" />
+      <div className="relative min-h-screen" style={{ background: '#08080a' }}>
 
-        <header className="sticky top-0 z-30 border-b border-white/10 bg-black/60 px-4 py-4 backdrop-blur-xl">
-          <div className="mx-auto flex w-full max-w-6xl items-center justify-between">
+        {/* Background glow */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse 70% 30% at 50% 0%, rgba(212,175,55,0.06) 0%, transparent 60%)',
+          }}
+        />
+
+        {/* ── Header ── */}
+        <header
+          className="sticky top-0 z-30 px-4 sm:px-6 py-4"
+          style={{
+            background: 'rgba(8,8,12,0.9)',
+            backdropFilter: 'blur(20px)',
+            borderBottom: '1px solid rgba(255,255,255,0.07)',
+          }}
+        >
+          <div className="mx-auto max-w-6xl flex items-center justify-between">
             <div>
-              <div className="mb-2 flex items-center gap-2">
-                <Badge className="border-[#453a16] bg-[#171306] text-[#d6b354]">Dashboard</Badge>
-                <Badge>{PERIOD_OPTIONS.find((opt) => opt.key === period)?.label || '30 jours'}</Badge>
+              <div className="flex items-center gap-2 mb-2">
+                <span
+                  className="text-[9px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
+                  style={{ fontFamily: 'JetBrains Mono, monospace', background: '#171306', border: '1px solid #453a16', color: '#d6b354' }}
+                >
+                  Dashboard
+                </span>
+                <span
+                  className="text-[9px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
+                  style={{ fontFamily: 'JetBrains Mono, monospace', background: '#131318', border: '1px solid rgba(255,255,255,0.1)', color: '#7a7a90' }}
+                >
+                  {PERIOD_OPTIONS.find(o => o.key === period)?.label}
+                </span>
               </div>
-              <h1 className="font-mono text-xl font-bold tracking-[0.18em] text-[#f3f4fa]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <h1
+                className="font-mono text-[17px] font-bold tracking-[.18em] text-[#f0f0f8]"
+                style={{ fontFamily: 'JetBrains Mono, monospace' }}
+              >
                 STATISTIQUES
               </h1>
-              <p className="mt-1 text-xs uppercase tracking-[0.22em] text-[#7d7d8f]">Performance et erreurs de vos analyses</p>
+              <p className="text-[9px] uppercase tracking-[.22em] text-[#5a5a70] mt-1">
+                Performance et erreurs de vos analyses
+              </p>
             </div>
-            <BarChart3 className="hidden text-[#d4af37] sm:block" size={28} />
+            <BarChart3 size={26} className="hidden sm:block text-[#D4AF37] opacity-80" />
           </div>
         </header>
 
-        <div className="mx-auto flex w-full max-w-6xl flex-col gap-4 px-4 py-6">
-          <Card>
-            <CardContent className="p-3">
-              <div className="flex flex-wrap items-center gap-2">
-                {PERIOD_OPTIONS.map((option) => {
-                  const active = option.key === period;
-                  return (
-                    <button
-                      key={option.key}
-                      onClick={() => setPeriod(option.key)}
-                      className={`rounded-md px-3 py-1.5 text-xs transition ${
-                        active
-                          ? 'border border-[#6f5a1f] bg-[#201a0c] text-[#e5c266]'
-                          : 'border border-transparent bg-[#111118] text-[#8f8fa0] hover:border-[#2d2d38] hover:text-[#d7d7e3]'
-                      }`}
-                    >
-                      {option.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+        {/* ── Content ── */}
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6 flex flex-col gap-4 relative z-10">
 
+          <PeriodSelector period={period} onChange={p => { setPeriod(p); loadStats(p); }} />
+
+          {/* Error state */}
           {error && (
-            <Card className="border-[#4d2222] bg-[#170d0d]">
-              <CardContent className="flex items-center justify-between p-4">
-                <p className="text-sm text-[#f08e8e]">⚠ {error}</p>
-                <Button onClick={loadStats} className="gap-2">
-                  <RefreshCw size={14} />
-                  Reessayer
-                </Button>
-              </CardContent>
-            </Card>
+            <div
+              className="flex items-center justify-between p-4 rounded-xl text-[13px]"
+              style={{ background: 'rgba(23,13,13,0.9)', border: '1px solid rgba(77,34,34,0.7)', color: '#f08e8e' }}
+            >
+              <span>⚠ {error}</span>
+              <button
+                onClick={() => loadStats()}
+                className="flex items-center gap-1.5 text-[12px] font-mono px-3 py-1.5 rounded-lg transition-all"
+                style={{ fontFamily: 'JetBrains Mono, monospace', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#c0c0d0' }}
+              >
+                <RefreshCw size={13} />
+                Réessayer
+              </button>
+            </div>
           )}
 
           {loading ? (
             <div className="flex flex-col gap-4">
-              <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-                {[...Array(3)].map((_, i) => <div key={i} className="h-24 rounded-xl shimmer" />)}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {[...Array(3)].map((_, i) => (
+                  <Skeleton key={i} h="h-24" />
+                ))}
               </div>
-              <div className="h-72 rounded-xl shimmer" />
-              <div className="h-64 rounded-xl shimmer" />
+              <div className="grid grid-cols-1 xl:grid-cols-5 gap-4">
+                <div className="xl:col-span-3"><Skeleton h="h-80" /></div>
+                <div className="xl:col-span-2"><Skeleton h="h-80" /></div>
+              </div>
             </div>
           ) : !hasData ? (
-            <Card>
-              <CardContent className="flex flex-col items-center justify-center gap-4 py-16 text-center">
-                <Sparkles size={36} className="text-[#d4af37]" />
-                <p className="font-mono text-sm text-[#d2d2df]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                  Aucune analyse effectuee pour l instant
-                </p>
-                <p className="text-sm text-[#8c8c98]">Analysez une phrase pour generer votre dashboard.</p>
-              </CardContent>
-            </Card>
+            <div
+              className="flex flex-col items-center justify-center gap-4 py-16 text-center rounded-xl"
+              style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+            >
+              <Sparkles size={34} className="text-[#D4AF37] opacity-60" />
+              <p className="font-mono text-[13px] text-[#c8c8d8]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                Aucune analyse effectuée pour l'instant
+              </p>
+              <p className="text-[12px] text-[#5a5a70]">Analysez une phrase pour générer votre dashboard.</p>
+            </div>
           ) : (
             <>
               <StatsSummary stats={stats} />
 
+              {/* Charts — responsive stacked on mobile, side-by-side on xl */}
               <div className="grid grid-cols-1 gap-4 xl:grid-cols-5">
-                <Card className="xl:col-span-3">
-                  <CardHeader>
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <CardTitle>Erreurs par type</CardTitle>
-                        <CardDescription>Methode Kleppin - repartition complete</CardDescription>
-                      </div>
-                      <Badge>Types</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <ErrorTypeChart data={stats.errorsByType} />
-                  </CardContent>
-                </Card>
 
-                <Card className="xl:col-span-2">
-                  <CardHeader>
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <CardTitle>Activité d&apos;analyse</CardTitle>
-                        <CardDescription>
-                          Volume quotidien sur la fenêtre choisie (30 j · 3 mois · 6 mois · 1 an)
-                        </CardDescription>
-                      </div>
-                      <TrendingUp size={18} className="shrink-0 text-[#d4af37]" />
+                {/* Error type chart — wider */}
+                <div
+                  className="xl:col-span-3 rounded-xl overflow-hidden"
+                  style={{ background: '#0d0d12', border: '1px solid rgba(255,255,255,0.07)' }}
+                >
+                  <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div>
+                      <p className="font-mono text-[13px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                        Erreurs par type
+                      </p>
+                      <p className="text-[10px] text-[#5a5a70] mt-0.5 tracking-wide">Méthode Kleppin · répartition complète</p>
                     </div>
-                  </CardHeader>
-                  <CardContent>
+                    <span
+                      className="text-[9px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
+                      style={{ fontFamily: 'JetBrains Mono, monospace', background: '#131318', border: '1px solid rgba(255,255,255,0.1)', color: '#7a7a90' }}
+                    >
+                      Types
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <ErrorTypeChart data={stats.errorsByType} />
+                  </div>
+                </div>
+
+                {/* Evolution chart — narrower */}
+                <div
+                  className="xl:col-span-2 rounded-xl overflow-hidden"
+                  style={{ background: '#0d0d12', border: '1px solid rgba(255,255,255,0.07)' }}
+                >
+                  <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                    <div>
+                      <p className="font-mono text-[13px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                        Activité d&apos;analyse
+                      </p>
+                      <p className="text-[10px] text-[#5a5a70] mt-0.5 tracking-wide">
+                        Volume quotidien · {PERIOD_OPTIONS.find(o => o.key === period)?.label}
+                      </p>
+                    </div>
+                    <TrendingUp size={17} className="text-[#D4AF37] opacity-70 flex-shrink-0" />
+                  </div>
+                  <div className="p-5">
                     <EvolutionChart data={stats.evolution} period={period} />
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
+
               </div>
             </>
           )}
         </div>
+
+        <style>{`
+          @keyframes shimmer {
+            0%   { background-position: -200% 0 }
+            100% { background-position:  200% 0 }
+          }
+        `}</style>
       </div>
     </AppShell>
   );
