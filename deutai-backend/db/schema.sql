@@ -51,6 +51,8 @@ CREATE TABLE IF NOT EXISTS analyses (
                     )
                   ),
   exercises_json  JSONB,
+  errors_json     JSONB,
+  global_explanation TEXT,
   unit_id         UUID REFERENCES units(id) ON DELETE SET NULL,
   created_at      TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );

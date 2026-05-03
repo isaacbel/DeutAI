@@ -235,7 +235,7 @@ export default function RootPage() {
           </Link>
           <Link href="/register" className="lp-cta-primary" style={{ padding: '8px 20px', fontSize: '12px' }}>
             Commencer
-          </Link>
+          </Link> 
         </div>
       </nav>
 
