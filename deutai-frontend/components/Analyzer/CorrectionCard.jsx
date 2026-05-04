@@ -7,7 +7,6 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
 
   const paragraphStyle = {
     fontFamily: 'Georgia, "Times New Roman", serif',
-    fontSize: '24px',
     lineHeight: 1.8,
   };
 
@@ -22,7 +21,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
 
     if (!tokens.length) {
       return (
-        <p style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)' }}>
+        <p className="text-lg md:text-2xl" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)' }}>
           {beforeSentence}
         </p>
       );
@@ -32,7 +31,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
     const parts = beforeSentence.split(pattern);
 
     return (
-      <p style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)' }}>
+      <p className="text-lg md:text-2xl" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)' }}>
         {parts.map((part, idx) => {
           const isError = errors.some((err) => err?.errorText?.toLowerCase() === part.toLowerCase());
           if (!isError) return <span key={idx}>{part}</span>;
@@ -119,9 +118,8 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
       </div>
 
       <div
-        className="relative z-10 grid gap-4"
+        className="relative z-10 flex flex-col md:grid md:grid-cols-2 gap-4"
         style={{
-          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
           marginBottom: fullCorrectedSentence && errors.length > 0 ? '18px' : 0,
         }}
       >
@@ -177,6 +175,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
               }}
             >
               <p
+                className="text-lg md:text-2xl"
                 style={{
                   ...paragraphStyle,
                   color: '#F6E5AF',

@@ -220,8 +220,8 @@ export default function ErrorTypeChart({ data }) {
           >
             Répartition
           </p>
-          <div className="relative w-full max-w-[280px]">
-            <ResponsiveContainer width="100%" height={240} minWidth={0} minHeight={0}>
+          <div className="relative w-full max-w-[280px] h-[240px]">
+            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
               <PieChart>
                 <Pie
                   data={pieData}

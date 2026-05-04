@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Brain, BookOpen, MessageCircle, FileText, ChevronRight, Zap } from 'lucide-react';
+import AppShell from '@/components/Layout/AppShell';
 
 const QUESTION_TYPES = [
   {
@@ -12,7 +13,7 @@ const QUESTION_TYPES = [
     icon: BookOpen,
     color: '#C9A227',
     glow: 'rgba(201,162,39,0.4)',
-    questionsCount: 150
+    questionsCount: 150,
   },
   {
     id: 'grammaire',
@@ -21,7 +22,7 @@ const QUESTION_TYPES = [
     icon: FileText,
     color: '#4DA8DA',
     glow: 'rgba(77,168,218,0.4)',
-    questionsCount: 85
+    questionsCount: 85,
   },
   {
     id: 'conjugaison',
@@ -30,7 +31,7 @@ const QUESTION_TYPES = [
     icon: Zap,
     color: '#E06C6C',
     glow: 'rgba(224,108,108,0.4)',
-    questionsCount: 120
+    questionsCount: 120,
   },
   {
     id: 'comprehension',
@@ -39,8 +40,8 @@ const QUESTION_TYPES = [
     icon: MessageCircle,
     color: '#7B61FF',
     glow: 'rgba(123,97,255,0.4)',
-    questionsCount: 45
-  }
+    questionsCount: 45,
+  },
 ];
 
 export default function QuestionsPage() {
@@ -54,15 +55,20 @@ export default function QuestionsPage() {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ background: '#0a0a10', color: '#e8e0c8' }}>
-      {/* Background elements */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 pointer-events-none"
-           style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.4) 0%, transparent 70%)' }} />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full blur-[100px] opacity-10 pointer-events-none"
-           style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)' }} />
+    <AppShell>
+      <div className="min-h-screen relative overflow-hidden" style={{ background: '#0a0a10', color: '#e8e0c8' }}>
+        {/* Background blobs */}
+      <div
+        className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.4) 0%, transparent 70%)' }}
+      />
+      <div
+        className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full blur-[100px] opacity-10 pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)' }}
+      />
 
       <div className="max-w-5xl mx-auto px-6 py-12 lg:py-16 relative z-10">
-        
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -70,8 +76,10 @@ export default function QuestionsPage() {
           transition={{ duration: 0.5 }}
           className="mb-12"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg mb-4"
-               style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}>
+          <div
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg mb-4"
+            style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}
+          >
             <Brain size={14} style={{ color: '#D4AF37' }} />
             <span className="font-mono text-[11px] tracking-[0.1em] font-semibold uppercase" style={{ color: '#D4AF37' }}>
               Mode Test
@@ -107,25 +115,23 @@ export default function QuestionsPage() {
                 }}
               >
                 {/* Hover Glow */}
-                <div 
+                <div
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                  style={{
-                    background: `radial-gradient(circle at 80% 20%, ${type.glow} 0%, transparent 60%)`,
-                  }}
+                  style={{ background: `radial-gradient(circle at 80% 20%, ${type.glow} 0%, transparent 60%)` }}
                 />
 
                 <div className="flex justify-between items-start mb-6">
-                  <div 
+                  <div
                     className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
-                    style={{ 
+                    style={{
                       background: `linear-gradient(135deg, ${type.color}33, ${type.color}11)`,
                       border: `1px solid ${type.color}44`,
-                      color: type.color
+                      color: type.color,
                     }}
                   >
                     <Icon size={24} />
                   </div>
-                  <div 
+                  <div
                     className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300"
                     style={{ background: 'rgba(255,255,255,0.1)', color: '#fff' }}
                   >
@@ -152,6 +158,7 @@ export default function QuestionsPage() {
         </div>
 
       </div>
-    </div>
+      </div>
+    </AppShell>
   );
 }

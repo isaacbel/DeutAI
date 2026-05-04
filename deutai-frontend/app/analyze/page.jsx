@@ -193,7 +193,7 @@ function AnalyzeContent() {
       )}
 
       {/* ── Main content ── */}
-      <div className="px-4 sm:px-6 py-6 max-w-2xl mx-auto relative z-10">
+      <div className="px-4 sm:px-6 py-6 w-full lg:w-[80%] max-w-7xl mx-auto relative z-10">
 
         {/* Offline banner */}
         {offline && (
