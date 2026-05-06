@@ -11,10 +11,12 @@ import ProgressBar from '@/components/quiz/ProgressBar';
 import QuestionCard from '@/components/quiz/QuestionCard';
 import ResultsScreen from '@/components/quiz/ResultsScreen';
 import QuizLoader from '@/components/quiz/QuizLoader';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 const QUESTION_COUNT = 10;
 
 export default function QuizClient({ slug }) {
+  const { t, lang } = useLanguage();
   const meta = getCategoryMeta(slug);
 
   const [phase, setPhase] = useState('welcome');
@@ -36,20 +38,20 @@ export default function QuizClient({ slug }) {
     setWrongItems([]);
 
     try {
-      const res = await generateQuiz(slug, difficulty, QUESTION_COUNT);
+      const res = await generateQuiz(slug, difficulty, QUESTION_COUNT, lang);
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setGenError(data.message || 'Impossible de générer le quiz.');
+        setGenError(data.message || t('quiz.errorGenerate'));
         setPhase('welcome');
         return;
       }
       setQuestions(data.questions || []);
       setPhase('quiz');
     } catch {
-      setGenError('Erreur réseau. Réessayez.');
+      setGenError(t('quiz.errorNetwork'));
       setPhase('welcome');
     }
-  }, [slug, difficulty]);
+  }, [slug, difficulty, lang, t]);
 
   const handleAdvance = useCallback(
     ({ correct, userAnswer, question }) => {
@@ -93,6 +95,8 @@ export default function QuizClient({ slug }) {
     <div
       className="min-h-screen font-sans"
       style={{ background: '#08080a', color: '#e8e8f0' }}
+      dir={lang === 'ar' ? 'rtl' : 'ltr'}
+      lang={lang}
     >
       <div
         className="sticky top-0 z-20 px-4 py-3 flex items-center justify-between gap-3"
@@ -108,7 +112,7 @@ export default function QuizClient({ slug }) {
           style={{ color: '#8a90a8' }}
         >
           <ArrowLeft size={14} />
-          Accueil
+          {t('quiz.home')}
         </Link>
         {phase === 'quiz' && questions.length > 0 && (
           <div className="flex-1 max-w-md mx-2 hidden sm:block">
@@ -116,7 +120,7 @@ export default function QuizClient({ slug }) {
           </div>
         )}
         <span className="font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: '#c9a227' }}>
-          Quiz
+          {t('quiz.title')}
         </span>
       </div>
 
@@ -152,7 +156,7 @@ export default function QuizClient({ slug }) {
             </p>
 
             <p className="font-mono text-[10px] tracking-[0.18em] uppercase mb-3" style={{ color: '#6b7088' }}>
-              Difficulté
+              {t('quiz.difficulty')}
             </p>
             <DifficultySelector value={difficulty} onChange={setDifficulty} />
 
@@ -172,7 +176,7 @@ export default function QuizClient({ slug }) {
                   className="mt-3 block font-mono text-[10px] uppercase tracking-wider underline"
                   style={{ color: '#f1d98d' }}
                 >
-                  Réessayer
+                  {t('quiz.retry')}
                 </button>
               </div>
             )}
@@ -188,7 +192,7 @@ export default function QuizClient({ slug }) {
                 boxShadow: '0 4px 24px rgba(201,162,39,0.35)',
               }}
             >
-              Commencer ({QUESTION_COUNT} questions)
+              {t('quiz.start', { count: QUESTION_COUNT })}
             </button>
           </motion.div>
         )}

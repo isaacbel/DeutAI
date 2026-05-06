@@ -1,6 +1,8 @@
 'use client';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function OfflineBanner() {
+  const { t } = useLanguage();
   return (
     <div
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-2 py-2 px-4"
@@ -15,7 +17,7 @@ export default function OfflineBanner() {
         className="text-xs font-mono text-error"
         style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '1px' }}
       >
-        Mode hors ligne — Toutes les fonctionnalités sont indisponibles
+        {t('analyze.offline')}
       </span>
     </div>
   );

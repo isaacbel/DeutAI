@@ -110,17 +110,17 @@ export function getUnit(slug) {
 }
 
 /* ─── Notebook ─────────────────────────────────────── */
-export function notebookOcr(base64Image) {
+export function notebookOcr(payload) {
   return authFetch(`${API_URL}/notebook/ocr`, {
     method: 'POST',
-    body: JSON.stringify({ image: base64Image }),
+    body: JSON.stringify(payload),
   });
 }
 
-export function notebookAnalyze(text) {
+export function notebookAnalyze(payload) {
   return authFetch(`${API_URL}/notebook/analyze`, {
     method: 'POST',
-    body: JSON.stringify({ text }),
+    body: JSON.stringify(payload),
   });
 }
 
@@ -148,9 +148,9 @@ export function clearHistory() {
 }
 
 /* ─── Quiz ─────────────────────────────────────────── */
-export function generateQuiz(category, difficulty, count) {
+export function generateQuiz(category, difficulty, count, lang = 'fr') {
   return authFetch(`${API_URL}/quiz/generate`, {
     method: 'POST',
-    body: JSON.stringify({ category, difficulty, count }),
+    body: JSON.stringify({ category, difficulty, count, lang }),
   });
 }

@@ -5,10 +5,7 @@ import AppShell from '@/components/Layout/AppShell';
 import ResultCards from '@/components/Analyzer/ResultCards';
 import { useAuthStandalone } from '@/lib/auth';
 import { getHistory, deleteHistoryItem, clearHistory } from '@/lib/api';
-
-// ─── Data mapper ──────────────────────────────────────────────────────────────
-// Converts a history DB row into the exact shape that ResultCards / ErrorCard /
-// CorrectionCard / RuleCard expect — same as what the analyze endpoint returns.
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 function buildResult(row) {
   const parseJsonField = (value, fallback) => {
@@ -23,7 +20,6 @@ function buildResult(row) {
   const parsedErrors = parseJsonField(row.errors_json, []);
   if (Array.isArray(parsedErrors) && parsedErrors.length > 0) errors = parsedErrors;
 
-  // Legacy fallback: single-error rows stored before multi-error support
   if (errors.length === 0 && row.has_error && row.error_phrase) {
     errors = [{
       errorText: row.error_phrase,
@@ -39,42 +35,36 @@ function buildResult(row) {
   exercises = Array.isArray(parsedExercises) ? parsedExercises : [];
 
   return {
-    // fields read by ErrorCard
     hasError: row.has_error,
     hasErrors: row.has_error,
     errors,
     originalSentence: row.input_text,
     input: row.input_text,
-    // fields read by CorrectionCard
     correctedSentence: row.correction,
     correction: row.correction,
-    // fields read by RuleCard
     rule: row.rule,
     globalExplanation: row.global_explanation,
     exercises,
-    // misc
     errorType: row.error_type,
   };
 }
 
-function fmtDate(d) {
-  return new Date(d).toLocaleDateString('fr-FR', {
+function fmtDate(d, lang) {
+  return new Date(d).toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'de-DE', {
     day: '2-digit', month: 'short', year: '2-digit',
     hour: '2-digit', minute: '2-digit',
   });
 }
 
-function fmtRelative(d) {
+function fmtRelative(d, t) {
   const diff = Math.floor((Date.now() - new Date(d)) / 86400000);
-  if (diff === 0) return "Aujourd'hui";
-  if (diff === 1) return 'Hier';
-  if (diff < 7) return `Il y a ${diff}j`;
-  return new Date(d).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+  if (diff === 0) return t('history.today');
+  if (diff === 1) return t('history.yesterday');
+  const short = new Date(d).toLocaleDateString(undefined, { day: '2-digit', month: 'short' });
+  return short;
 }
 
-// ─── Sidebar conversation item ────────────────────────────────────────────────
-
-function SidebarItem({ item, isSelected, onSelect, onDelete }) {
+function SidebarItem({ item, isSelected, onSelect, onDelete, t }) {
   const [hovered, setHovered] = useState(false);
   const [confirmDel, setConfirmDel] = useState(false);
 
@@ -85,9 +75,7 @@ function SidebarItem({ item, isSelected, onSelect, onDelete }) {
     try {
       const parsed = JSON.parse(item.errors_json || '[]');
       errCount = Array.isArray(parsed) ? parsed.length : 0;
-    } catch {
-      errCount = 0;
-    }
+    } catch { errCount = 0; }
   }
 
   function handleDel(e) {
@@ -117,7 +105,6 @@ function SidebarItem({ item, isSelected, onSelect, onDelete }) {
         transform: hovered && !isSelected ? 'translateX(1px)' : 'none',
       }}
     >
-      {/* Active indicator */}
       {isSelected && (
         <div style={{
           position: 'absolute', left: 0, top: '16%', bottom: '16%',
@@ -126,13 +113,12 @@ function SidebarItem({ item, isSelected, onSelect, onDelete }) {
         }} />
       )}
 
-      {/* Top row: date + status badge */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '5px' }}>
         <span style={{
           fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
           color: isSelected ? '#c9a227b8' : '#8c91a9', letterSpacing: '0.5px',
         }}>
-          {fmtRelative(item.created_at)}
+          {fmtRelative(item.created_at, t)}
         </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           {item.source === 'image' && (
@@ -160,7 +146,6 @@ function SidebarItem({ item, isSelected, onSelect, onDelete }) {
         </div>
       </div>
 
-      {/* Text preview */}
       <p style={{
         margin: 0,
         fontFamily: "'Playfair Display', Georgia, serif",
@@ -176,7 +161,6 @@ function SidebarItem({ item, isSelected, onSelect, onDelete }) {
         {item.input_text}
       </p>
 
-      {/* Delete button — visible on hover */}
       {(hovered || confirmDel) && (
         <button
           onClick={handleDel}
@@ -190,20 +174,17 @@ function SidebarItem({ item, isSelected, onSelect, onDelete }) {
             transition: 'all 0.12s',
           }}
         >
-          {confirmDel ? 'CONF?' : 'DEL'}
+          {confirmDel ? t('history.confirmDelete') : 'DEL'}
         </button>
       )}
     </div>
   );
 }
 
-// ─── Right panel: exact replica of the analyze page result ───────────────────
-
-function AnalyzeReplay({ selected }) {
+function AnalyzeReplay({ selected, lang }) {
   const result = buildResult(selected);
   const scrollRef = useRef(null);
 
-  // Scroll to top whenever a new item is selected
   useEffect(() => {
     if (scrollRef.current) scrollRef.current.scrollTop = 0;
   }, [selected.id]);
@@ -211,16 +192,10 @@ function AnalyzeReplay({ selected }) {
   return (
     <div
       ref={scrollRef}
-      style={{
-        height: '100%',
-        overflowY: 'auto',
-        overflowX: 'hidden',
-      }}
+      style={{ height: '100%', overflowY: 'auto', overflowX: 'hidden' }}
     >
-      {/* Inner content — conversation view (single thread) */}
       <div style={{ maxWidth: '980px', margin: '0 auto', padding: '32px 18px 80px' }}>
 
-        {/* ── Timestamp ── */}
         <div style={{ textAlign: 'center', marginBottom: '24px' }}>
           <span style={{
             display: 'inline-block',
@@ -229,13 +204,11 @@ function AnalyzeReplay({ selected }) {
             padding: '3px 12px', borderRadius: '20px',
             border: '1px solid #111118',
           }}>
-            {fmtDate(selected.created_at)}
+            {fmtDate(selected.created_at, lang)}
           </span>
         </div>
 
-        {/* ── Conversation (single thread) ── */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          {/* User message */}
           <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
             <div style={{
               width: 'min(860px, 100%)',
@@ -247,36 +220,28 @@ function AnalyzeReplay({ selected }) {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
                 <span style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '9px',
-                  letterSpacing: '2.5px',
-                  textTransform: 'uppercase',
-                  color: '#343445',
+                  fontSize: '9px', letterSpacing: '2.5px',
+                  textTransform: 'uppercase', color: '#343445',
                 }}>
                   You
                 </span>
                 <span style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '8px',
-                  letterSpacing: '1px',
-                  color: '#262634',
+                  fontSize: '8px', letterSpacing: '1px', color: '#262634',
                 }}>
-                  {selected.source === 'image' ? '📷 IMAGE' : '✎ TEXTE'}
+                  {selected.source === 'image' ? '📷 IMAGE' : '✎ TEXT'}
                 </span>
               </div>
               <p style={{
                 margin: '10px 0 0',
                 fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: '16px',
-                lineHeight: 1.8,
-                color: '#d0d0e0',
-                wordBreak: 'break-word',
+                fontSize: '16px', lineHeight: 1.8, color: '#d0d0e0', wordBreak: 'break-word',
               }}>
                 {selected.input_text}
               </p>
             </div>
           </div>
 
-          {/* Assistant message — includes ALL results inside the same message */}
           <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
             <div style={{
               width: 'min(920px, 100%)',
@@ -287,14 +252,11 @@ function AnalyzeReplay({ selected }) {
             }}>
               <span style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '9px',
-                letterSpacing: '2.5px',
-                textTransform: 'uppercase',
-                color: '#9a8030',
+                fontSize: '9px', letterSpacing: '2.5px',
+                textTransform: 'uppercase', color: '#9a8030',
               }}>
                 DeutAI
               </span>
-
               <div style={{ marginTop: '12px' }}>
                 <ResultCards result={result} />
               </div>
@@ -307,9 +269,8 @@ function AnalyzeReplay({ selected }) {
   );
 }
 
-// ─── Main history page ────────────────────────────────────────────────────────
-
 export default function HistoryPage() {
+  const { t, lang } = useLanguage();
   const { loading: authLoading } = useAuthStandalone();
   const [items, setItems] = useState([]);
   const [pageLoading, setPageLoading] = useState(true);
@@ -323,22 +284,18 @@ export default function HistoryPage() {
     setPageLoading(true); setFetchError('');
     try {
       const res = await getHistory(1, 50);
-      if (!res.ok) { setFetchError("Impossible de charger l'historique."); return; }
+      if (!res.ok) { setFetchError(t('history.errorLoadHistory')); return; }
       const data = await res.json();
       setItems(data.history || []);
-    } catch { setFetchError('Erreur réseau.'); }
+    } catch { setFetchError(t('history.errorNetwork')); }
     finally { setPageLoading(false); }
-  }, []);
+  }, [t]);
 
   useEffect(() => { if (!authLoading) load(); }, [authLoading, load]);
 
   useEffect(() => {
     if (pageLoading) return;
-    if (items.length === 0) {
-      if (selected) setSelected(null);
-      return;
-    }
-    // Keep the selected item if it still exists, otherwise pick latest.
+    if (items.length === 0) { if (selected) setSelected(null); return; }
     const stillExists = selected && items.some((it) => it.id === selected.id);
     if (!stillExists) setSelected(items[0]);
   }, [items, selected, pageLoading]);
@@ -366,79 +323,50 @@ export default function HistoryPage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
 
-        /* ── Root: full viewport, no overflow ── */
         .hp { display:flex; min-height:100vh; overflow:hidden; background:#080809; }
 
-        /* ── Left sidebar ── */
         .hp-side {
-          width: 270px;
-          flex-shrink: 0;
-          display: flex;
-          flex-direction: column;
-          background: #06060a;
-          border-right: 1px solid #181824;
-          height: 100vh;
-          overflow: hidden;
+          width: 270px; flex-shrink: 0;
+          display: flex; flex-direction: column;
+          background: #06060a; border-right: 1px solid #181824;
+          height: 100vh; overflow: hidden;
         }
         .hp-side-head {
-          padding: 18px 14px 14px;
-          border-bottom: 1px solid #181824;
+          padding: 18px 14px 14px; border-bottom: 1px solid #181824;
           flex-shrink: 0;
           background: linear-gradient(to bottom, rgba(201,162,39,0.04), rgba(201,162,39,0));
         }
-        .hp-side-list {
-          flex: 1 1 auto;
-          overflow-y: auto;
-          padding: 6px;
-        }
+        .hp-side-list { flex: 1 1 auto; overflow-y: auto; padding: 6px; }
         .hp-side-list::-webkit-scrollbar { width: 3px; }
         .hp-side-list::-webkit-scrollbar-thumb { background: #141420; border-radius: 3px; }
-        .hp-side-foot {
-          padding: 10px;
-          border-top: 1px solid #181824;
-          flex-shrink: 0;
-        }
+        .hp-side-foot { padding: 10px; border-top: 1px solid #181824; flex-shrink: 0; }
 
-        /* ── Right main ── */
         .hp-main {
-          flex: 1 1 auto;
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-          background: #080809;
+          flex: 1 1 auto; display: flex; flex-direction: column;
+          overflow: hidden; background: #080809;
         }
-        /* scrollbar for the replay inner div */
         .hp-main *::-webkit-scrollbar { width: 4px; }
         .hp-main *::-webkit-scrollbar-thumb { background: #111118; border-radius: 3px; }
 
-        /* ── Skeleton shimmer ── */
         @keyframes sk { 0%{background-position:-280px 0}100%{background-position:280px 0} }
         .sk {
           border-radius: 8px;
           background: linear-gradient(90deg,#0b0b0e 25%,#101014 50%,#0b0b0e 75%);
-          background-size: 280px 100%;
-          animation: sk 1.3s infinite linear;
+          background-size: 280px 100%; animation: sk 1.3s infinite linear;
         }
 
-        /* ── Item entrance ── */
         @keyframes sl { from{opacity:0;transform:translateX(-4px)}to{opacity:1;transform:translateX(0)} }
         .sl { animation: sl 0.16s ease both; }
 
-        /* ── Main content entrance ── */
         @keyframes fu { from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)} }
         .fu { animation: fu 0.2s ease both; }
 
-        /* ── card-animate classes used by ResultCards children ── */
-        @keyframes card-rise {
-          from { opacity:0; transform:translateY(12px); }
-          to   { opacity:1; transform:translateY(0); }
-        }
+        @keyframes card-rise { from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);} }
         .card-animate   { animation: card-rise 0.35s ease both; }
         .card-animate-1 { animation-delay: 0.05s; }
         .card-animate-2 { animation-delay: 0.15s; }
         .card-animate-3 { animation-delay: 0.25s; }
 
-        /* ── Mobile ── */
         @media(max-width:820px){
           .hp { flex-direction:column; min-height:100%; overflow:auto; }
           .hp-side { width:100%; height:auto; border-right:none; border-bottom:1px solid #0e0e16; }
@@ -450,10 +378,9 @@ export default function HistoryPage() {
 
       <div className="hp">
 
-        {/* ══════════════════ SIDEBAR ══════════════════ */}
+        {/* ══ SIDEBAR ══ */}
         <aside className="hp-side">
 
-          {/* Header */}
           <div className="hp-side-head">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
@@ -466,14 +393,13 @@ export default function HistoryPage() {
                     display: 'inline-block', width: '2px', height: '10px', borderRadius: '2px',
                     background: 'linear-gradient(to bottom,#C9A227,#C9A22728)',
                   }} />
-                  Historique
+                  {t('history.title')}
                 </h1>
                 {!pageLoading && items.length > 0 && (
                   <p style={{
                     fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
-                    color: '#8c91a9', letterSpacing: '1.2px', margin: '4px 0 0 9px', textTransform: 'uppercase',
                   }}>
-                    {items.length} analyse{items.length !== 1 ? 's' : ''}
+                    {t(items.length !== 1 ? 'history.analyses_other' : 'history.analyses_one', { count: items.length })}
                   </p>
                 )}
               </div>
@@ -488,15 +414,13 @@ export default function HistoryPage() {
                 onMouseEnter={e => { e.currentTarget.style.background = 'rgba(201,162,39,0.2)'; e.currentTarget.style.borderColor = 'rgba(201,162,39,0.46)'; }}
                 onMouseLeave={e => { e.currentTarget.style.background = 'rgba(201,162,39,0.12)'; e.currentTarget.style.borderColor = 'rgba(201,162,39,0.32)'; }}
               >
-                + Analyser
+                {t('history.analyzeNew')}
               </button>
             </div>
           </div>
 
-          {/* Scrollable list */}
           <div className="hp-side-list">
 
-            {/* Skeletons */}
             {pageLoading && (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', padding: '4px 0' }}>
                 {[68, 55, 78, 62, 50].map((h, i) => (
@@ -505,30 +429,24 @@ export default function HistoryPage() {
               </div>
             )}
 
-            {/* Error */}
             {!pageLoading && fetchError && (
               <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '9px', color: '#bb4444', padding: '16px 8px', margin: 0 }}>
                 ⚠ {fetchError}
               </p>
             )}
 
-            {/* Empty */}
             {!pageLoading && !fetchError && items.length === 0 && (
               <div style={{ padding: '44px 12px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
                 <div style={{
-                  width: '44px',
-                  height: '44px',
-                  borderRadius: '12px',
+                  width: '44px', height: '44px', borderRadius: '12px',
                   border: '1px solid rgba(201,162,39,0.18)',
                   background: 'rgba(201,162,39,0.06)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
                   <span style={{ fontSize: '18px', opacity: 0.7 }}>🗂</span>
                 </div>
                 <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color: '#8c91a9', letterSpacing: '2px', margin: 0, textTransform: 'uppercase' }}>
-                  Aucun historique
+                  {t('history.noHistory')}
                 </p>
                 <button
                   onClick={() => router.push('/analyze')}
@@ -538,11 +456,10 @@ export default function HistoryPage() {
                     background: 'rgba(201,162,39,0.12)', border: '1px solid rgba(201,162,39,0.3)',
                     color: '#e3c66f', letterSpacing: '1px',
                   }}
-                >→ Analyser</button>
+                >{t('history.analyzeNow')}</button>
               </div>
             )}
 
-            {/* Items */}
             {!pageLoading && !fetchError && items.map((item, i) => (
               <div key={item.id} className="sl" style={{ animationDelay: `${Math.min(i * 18, 160)}ms` }}>
                 <SidebarItem
@@ -550,12 +467,12 @@ export default function HistoryPage() {
                   isSelected={selected?.id === item.id}
                   onSelect={setSelected}
                   onDelete={handleDelete}
+                  t={t}
                 />
               </div>
             ))}
           </div>
 
-          {/* Footer: clear all */}
           {!pageLoading && items.length > 0 && (
             <div className="hp-side-foot">
               <button
@@ -573,18 +490,17 @@ export default function HistoryPage() {
                 onMouseEnter={e => { if (!confirmClear && !clearing) e.currentTarget.style.color = '#d2d7ee'; }}
                 onMouseLeave={e => { if (!confirmClear) e.currentTarget.style.color = '#979db5'; }}
               >
-                {clearing ? '···' : confirmClear ? 'Confirmer la suppression ?' : 'Tout effacer'}
+                {clearing ? t('history.clearing') : confirmClear ? t('history.confirmClearAll') : t('history.clearAll')}
               </button>
             </div>
           )}
         </aside>
 
-        {/* ══════════════════ MAIN CONTENT ══════════════════ */}
+        {/* ══ MAIN CONTENT ══ */}
         <main className="hp-main">
           {selected ? (
-            /* key forces remount + scroll-to-top animation on every item switch */
             <div key={selected.id} className="fu" style={{ height: '100%' }}>
-              <AnalyzeReplay selected={selected} />
+              <AnalyzeReplay selected={selected} lang={lang} />
             </div>
           ) : (
             <div style={{
@@ -600,7 +516,7 @@ export default function HistoryPage() {
                 fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
                 letterSpacing: '2.5px', color: '#1e1e2a', textTransform: 'uppercase', margin: 0,
               }}>
-                Sélectionnez une analyse
+                {t('history.selectAnalysis')}
               </p>
             </div>
           )}

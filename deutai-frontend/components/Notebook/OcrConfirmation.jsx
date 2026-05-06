@@ -1,22 +1,48 @@
 'use client';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
+
+const CONFIDENCE_STYLES = {
+  low: {
+    bg: '#1A0A0A',
+    border: '#3A1A1A',
+    color: '#CC5555',
+  },
+  medium: {
+    bg: 'rgba(212,175,55,0.08)',
+    border: 'rgba(212,175,55,0.3)',
+    color: '#D4AF37',
+  },
+  high: {
+    bg: 'rgba(74,154,74,0.1)',
+    border: 'rgba(74,154,74,0.3)',
+    color: '#4A9A4A',
+  },
+};
 
 export default function OcrConfirmation({ text, onChange, confidence, onConfirm, onRetake, loading }) {
-  const isLowConfidence = confidence === 'low';
+  const { t, lang } = useLanguage();
+  const isRtl = lang === 'ar';
+
+  const normalizedConfidence = CONFIDENCE_STYLES[confidence] ? confidence : 'medium';
+  const isLowConfidence = normalizedConfidence === 'low';
+  const styles = CONFIDENCE_STYLES[normalizedConfidence];
+
+  const hasValidText = text?.trim().length > 0;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Confidence indicator */}
       <div className="flex items-center gap-2">
         <span
           className="text-[10px] font-mono tracking-wider px-2 py-1 rounded"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
-            background: isLowConfidence ? '#1A0A0A' : confidence === 'medium' ? 'rgba(212,175,55,0.08)' : 'rgba(74,154,74,0.1)',
-            border: `1px solid ${isLowConfidence ? '#3A1A1A' : confidence === 'medium' ? 'rgba(212,175,55,0.3)' : 'rgba(74,154,74,0.3)'}`,
-            color: isLowConfidence ? '#CC5555' : confidence === 'medium' ? '#D4AF37' : '#4A9A4A',
+            background: styles.bg,
+            border: `1px solid ${styles.border}`,
+            color: styles.color,
           }}
         >
-          OCR {confidence?.toUpperCase() || 'MEDIUM'} CONFIANCE
+          {t('notebook.ocrConfidence', { level: normalizedConfidence.toUpperCase() })}
         </span>
       </div>
 
@@ -27,30 +53,35 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
           style={{ background: '#1A0A0A', border: '1px solid #3A1A1A', animation: 'fadeIn 0.3s ease-out' }}
         >
           <span>⚠</span>
-          <span>Texte peu lisible — vérifiez bien le texte avant de valider. Vous pouvez le corriger directement ci-dessous.</span>
+          <span>{t('notebook.lowConfidenceWarning')}</span>
         </div>
       )}
 
       {/* Extracted text editable area */}
       <div>
         <label className="block text-[11px] font-mono text-text-muted mb-2 tracking-wider" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-          TEXTE EXTRAIT — VÉRIFIEZ ET CORRIGEZ SI NÉCESSAIRE
+          {t('notebook.extractedTextLabel')}
         </label>
         <textarea
           value={text}
           onChange={e => onChange(e.target.value)}
           rows={6}
           className="input-dark px-4 py-3 text-sm resize-none w-full"
-          style={{ fontFamily: 'Inter, sans-serif' }}
-          placeholder="Texte extrait par OCR..."
+          style={{ fontFamily: 'Inter, sans-serif', direction: 'ltr', textAlign: 'left' }}
+          placeholder={t('notebook.ocrPlaceholder')}
+          maxLength={1000}
+          lang="de"
         />
+        <p className="text-[10px] font-mono text-text-muted mt-1 text-right" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          {text?.length ?? 0} / 1000
+        </p>
       </div>
 
       {/* Action buttons */}
       <div className="flex flex-col gap-3">
         <button
           onClick={onConfirm}
-          disabled={loading || !text.trim()}
+          disabled={loading || !hasValidText}
           className="btn-gold w-full py-3 text-sm"
         >
           {loading ? (
@@ -59,10 +90,10 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
               </svg>
-              ANALYSE EN COURS...
+              {t('notebook.analyzingInProgress')}
             </span>
           ) : (
-            '→ VALIDER ET ANALYSER'
+            t('notebook.validateAndAnalyze')
           )}
         </button>
         <button
@@ -70,7 +101,7 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
           disabled={loading}
           className="btn-outline w-full py-3 text-sm"
         >
-          ↺ Reprendre une photo
+          {t('notebook.retakePhoto')}
         </button>
       </div>
     </div>

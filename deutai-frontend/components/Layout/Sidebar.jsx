@@ -5,17 +5,19 @@ import { usePathname } from 'next/navigation';
 import { PenTool, Layers, BarChart2, History, LogOut, Zap, X, Brain } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStandalone } from '@/lib/auth';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
+import LanguageSwitcher from '@/components/UI/LanguageSwitcher';
 
 const NAV_ITEMS = [
-  { href: '/analyze',    icon: PenTool,   label: 'Analyse' },
-  { href: '/flashcards', icon: Layers,    label: 'Flashcards' },
-  { href: '/questions',  icon: Brain,     label: 'Questions' },
-  { href: '/stats',      icon: BarChart2, label: 'Stats' },
-  { href: '/history',    icon: History,   label: 'Historique' },
+  { href: '/analyze', icon: PenTool, labelKey: 'sidebar.analyze' },
+  { href: '/flashcards', icon: Layers, labelKey: 'sidebar.flashcards' },
+  { href: '/questions', icon: Brain, labelKey: 'sidebar.questions' },
+  { href: '/stats', icon: BarChart2, labelKey: 'sidebar.stats' },
+  { href: '/history', icon: History, labelKey: 'sidebar.history' },
 ];
 
 /* ── Desktop tooltip ─────────────────────────────────────── */
-function Tooltip({ label, visible }) {
+function Tooltip({ label, visible, lang }) {
   return (
     <AnimatePresence>
       {visible && (
@@ -24,7 +26,7 @@ function Tooltip({ label, visible }) {
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: -6, scale: 0.92 }}
           transition={{ duration: 0.13, ease: 'easeOut' }}
-          className="absolute left-[calc(100%+10px)] top-1/2 -translate-y-1/2 z-[200] pointer-events-none"
+          className={`absolute ${lang === 'ar' ? 'right-[calc(100%+10px)]' : 'left-[calc(100%+10px)]'} top-1/2 -translate-y-1/2 z-[200] pointer-events-none`}
         >
           <span
             className="relative px-3 py-1.5 rounded-lg font-mono text-[11px] tracking-[.08em] font-semibold whitespace-nowrap block"
@@ -51,6 +53,7 @@ function Tooltip({ label, visible }) {
 
 /* ── Sidebar ─────────────────────────────────────────────── */
 export default function Sidebar({ isOpen, setIsOpen }) {
+  const { t, lang } = useLanguage();
   const pathname = usePathname();
   const { logout } = useAuthStandalone();
   const [hovered, setHovered] = useState(null);
@@ -120,7 +123,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               transition={{ type: 'spring', stiffness: 380, damping: 36, mass: 0.8 }}
               className="fixed bottom-0 left-0 right-0 z-[100] rounded-t-3xl flex flex-col pb-safe"
               style={{ ...sidebarStyle, maxHeight: '80vh' }}
-              aria-label="Navigation principale"
+              aria-label={t('sidebar.mainNavigation')}
             >
               {/* Handle bar */}
               <div className="flex justify-center pt-3 pb-1">
@@ -163,17 +166,18 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                     border: '1px solid rgba(255,255,255,0.1)',
                     color: '#686880',
                   }}
-                  aria-label="Fermer le menu"
+                  aria-label={t('nav.closeMenu')}
                 >
                   <X size={14} />
                 </motion.button>
               </div>
 
               {/* Nav items */}
-              <nav className="flex flex-col gap-1 px-3 py-3 overflow-y-auto" aria-label="Menu principal">
+              <nav className="flex flex-col gap-1 px-3 py-3 overflow-y-auto" aria-label={t('sidebar.mainMenu')}>
                 {NAV_ITEMS.map((item, idx) => {
                   const Icon = item.icon;
                   const isActive = pathname.startsWith(item.href);
+                  const label = t(item.labelKey);
                   return (
                     <motion.div
                       key={item.href}
@@ -197,7 +201,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                         {/* Active left bar */}
                         {isActive && (
                           <span
-                            className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-6 rounded-r-full"
+                            className={`absolute ${lang === 'ar' ? 'right-0 rounded-l-full' : 'left-0 rounded-r-full'} top-1/2 -translate-y-1/2 w-[3px] h-6`}
                             style={{ background: '#D4AF37', boxShadow: '0 0 8px rgba(212,175,55,0.8)' }}
                             aria-hidden="true"
                           />
@@ -215,11 +219,11 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                           <Icon size={16} />
                         </div>
                         <span className="font-mono text-[13px] tracking-[.06em] font-semibold">
-                          {item.label}
+                          {label}
                         </span>
                         {isActive && (
                           <span
-                            className="ml-auto w-1.5 h-1.5 rounded-full"
+                            className={`w-1.5 h-1.5 rounded-full ${lang === 'ar' ? 'mr-auto' : 'ml-auto'}`}
                             style={{ background: '#D4AF37', boxShadow: '0 0 6px rgba(212,175,55,0.9)' }}
                           />
                         )}
@@ -229,14 +233,15 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                 })}
               </nav>
 
-              {/* Logout */}
+              {/* Language Switcher and Logout */}
               <div
-                className="px-3 pb-6 pt-2"
+                className="px-3 pb-6 pt-2 flex items-center justify-between gap-2"
                 style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
               >
+                <LanguageSwitcher isMobile={true} />
                 <button
                   onClick={logout}
-                  className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-150"
+                  className="flex-1 flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-150"
                   style={{
                     background: 'rgba(204,85,85,0.06)',
                     border: '1px solid rgba(204,85,85,0.15)',
@@ -250,7 +255,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                     <LogOut size={15} />
                   </div>
                   <span className="font-mono text-[13px] tracking-[.06em] font-semibold">
-                    Déconnexion
+                    {t('sidebar.logout')}
                   </span>
                 </button>
               </div>
@@ -267,9 +272,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: '-100%', opacity: 0 }}
               transition={{ type: 'spring', stiffness: 420, damping: 38, mass: 0.7 }}
-              className="fixed top-0 left-0 h-full z-[100] flex flex-col items-center py-5"
+              className={`fixed top-0 ${lang === 'ar' ? 'right-0' : 'left-0'} h-full z-[100] flex flex-col items-center py-5`}
               style={{ width: '68px', ...sidebarStyle }}
-              aria-label="Navigation principale"
+              aria-label={t('sidebar.mainNavigation')}
             >
               {/* Logo */}
               <motion.div
@@ -299,7 +304,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                   border: '1px solid rgba(255,255,255,0.08)',
                   color: '#686880',
                 }}
-                aria-label="Fermer le menu"
+                aria-label={t('nav.closeMenu')}
               >
                 <X size={15} />
               </motion.button>
@@ -308,10 +313,11 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               <div className="w-8 flex-shrink-0 mb-3" style={{ height: '1px', background: 'rgba(255,255,255,0.07)' }} />
 
               {/* Nav items */}
-              <nav className="flex flex-col gap-1.5 flex-1 items-center w-full px-2" aria-label="Menu principal">
+              <nav className="flex flex-col gap-1.5 flex-1 items-center w-full px-2" aria-label={t('sidebar.mainMenu')}>
                 {NAV_ITEMS.map((item, idx) => {
                   const Icon = item.icon;
                   const isActive = pathname.startsWith(item.href);
+                  const label = t(item.labelKey);
                   return (
                     <motion.div
                       key={item.href}
@@ -336,34 +342,39 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                           color: hovered === item.href ? '#dde0f0' : '#686880',
                         }}
                         aria-current={isActive ? 'page' : undefined}
-                        aria-label={item.label}
+                        aria-label={label}
                       >
                         {isActive && (
                           <span
-                            className="absolute -left-[3px] top-1/2 -translate-y-1/2 w-[3px] h-5 rounded-r-full"
+                            className={`absolute ${lang === 'ar' ? '-right-[3px] rounded-l-full' : '-left-[3px] rounded-r-full'} top-1/2 -translate-y-1/2 w-[3px] h-5`}
                             style={{ background: '#D4AF37', boxShadow: '0 0 8px rgba(212,175,55,0.8)' }}
                             aria-hidden="true"
                           />
                         )}
                         <Icon size={17} />
                       </Link>
-                      <Tooltip label={item.label} visible={hovered === item.href} />
+                      <Tooltip label={label} visible={hovered === item.href} lang={lang} />
                     </motion.div>
                   );
                 })}
               </nav>
 
-              {/* Logout */}
+              {/* Lang + Logout */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
-                className="relative flex justify-center w-full px-2 pt-3"
+                className="relative flex flex-col items-center w-full px-2 pt-3 gap-2"
                 style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
-                onMouseEnter={() => setHovered('logout')}
-                onMouseLeave={() => setHovered(null)}
               >
-                <button
+                <LanguageSwitcher />
+
+                <div
+                  className="relative flex justify-center w-full"
+                  onMouseEnter={() => setHovered('logout')}
+                  onMouseLeave={() => setHovered(null)}
+                >
+                  <button
                   onClick={logout}
                   className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-150"
                   style={{
@@ -371,11 +382,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                     border: '1px solid ' + (hovered === 'logout' ? 'rgba(204,85,85,0.25)' : 'transparent'),
                     color: hovered === 'logout' ? '#e06c6c' : '#7a4040',
                   }}
-                  aria-label="Déconnexion"
+                  aria-label={t('sidebar.logout')}
                 >
                   <LogOut size={16} />
                 </button>
-                <Tooltip label="Déconnexion" visible={hovered === 'logout'} />
+                <Tooltip label={t('sidebar.logout')} visible={hovered === 'logout'} lang={lang} />
+                </div>
               </motion.div>
 
             </motion.aside>

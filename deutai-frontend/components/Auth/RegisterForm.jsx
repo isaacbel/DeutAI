@@ -3,9 +3,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { register } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function RegisterForm() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -15,11 +17,11 @@ export default function RegisterForm() {
   async function handleSubmit(e) {
     e.preventDefault();
     if (password !== confirm) {
-      setError('Les mots de passe ne correspondent pas.');
+      setError(t('auth.errorPasswordsDoNotMatch'));
       return;
     }
     if (password.length < 8) {
-      setError('Le mot de passe doit contenir au moins 8 caractères.');
+      setError(t('auth.errorPasswordTooShort'));
       return;
     }
     setError('');
@@ -28,7 +30,7 @@ export default function RegisterForm() {
       const res = await register(email, password);
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.message || 'Impossible de créer le compte.');
+        setError(data.message || t('auth.errorUnableToCreateAccount'));
         return;
       }
       if (data.access_token) {
@@ -40,7 +42,7 @@ export default function RegisterForm() {
         router.replace('/login');
       }
     } catch {
-      setError('Impossible de contacter le serveur. Vérifiez votre connexion.');
+      setError(t('auth.errorCannotReachServer'));
     } finally {
       setLoading(false);
     }
@@ -62,13 +64,13 @@ export default function RegisterForm() {
           className="text-[11px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
-          ADRESSE EMAIL
+          {t('auth.email')}
         </label>
         <input
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          placeholder="vous@exemple.com"
+          placeholder="you@example.com"
           required
           disabled={loading}
           className="input-dark px-4 py-3 text-sm"
@@ -81,13 +83,13 @@ export default function RegisterForm() {
           className="text-[11px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
-          MOT DE PASSE
+          {t('auth.password')}
         </label>
         <input
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}
-          placeholder="Min. 8 caractères"
+          placeholder={t('auth.minCharsPlaceholder')}
           required
           disabled={loading}
           className="input-dark px-4 py-3 text-sm"
@@ -100,7 +102,7 @@ export default function RegisterForm() {
           className="text-[11px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
-          CONFIRMER LE MOT DE PASSE
+          {t('auth.confirmPassword')}
         </label>
         <input
           type="password"
@@ -129,17 +131,17 @@ export default function RegisterForm() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
-            CRÉATION...
+            {t('auth.registerLoading')}
           </span>
         ) : (
-          '→ CRÉER UN COMPTE'
+          t('auth.registerBtn')
         )}
       </button>
 
       <p className="text-xs text-center text-text-muted" style={{ fontFamily: 'Inter, sans-serif' }}>
-        Déjà inscrit ?{' '}
+        {t('auth.alreadyRegistered')}{' '}
         <Link href="/login" className="text-gold hover:underline">
-          Se connecter
+          {t('landing.signIn')}
         </Link>
       </p>
     </form>

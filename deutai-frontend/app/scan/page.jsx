@@ -6,8 +6,10 @@ import AppShell from '@/components/Layout/AppShell';
 import QRScanner from '@/components/UI/QRScanner';
 import { useAuthStandalone } from '@/lib/auth';
 import { getUnit } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function ScanPage() {
+  const { t } = useLanguage();
   const { loading: authLoading } = useAuthStandalone();
   const router = useRouter();
   const [status, setStatus] = useState('scanning'); // scanning | loading | error | success
@@ -28,7 +30,7 @@ export default function ScanPage() {
       const res = await getUnit(slug);
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message || 'QR code non reconnu.');
+        setError(data.message || t('scan.unrecognized'));
         setStatus('error');
         return;
       }
@@ -40,7 +42,7 @@ export default function ScanPage() {
         router.replace(`/analyze?unit=${slug}`);
       }, 1500);
     } catch {
-      setError('Impossible de résoudre le QR code.');
+      setError(t('scan.resolveError'));
       setStatus('error');
     }
   }
@@ -65,9 +67,9 @@ export default function ScanPage() {
           <Link href="/analyze" className="text-text-muted hover:text-gold transition-colors text-sm">←</Link>
           <div>
             <h1 className="text-sm font-bold text-gold font-mono" style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '2px' }}>
-              SCANNER QR
+              {t('scan.title')}
             </h1>
-            <p className="system-subtitle" style={{ fontSize: '8px', letterSpacing: '2px' }}>ACCÈS AUX UNITÉS</p>
+            <p className="system-subtitle" style={{ fontSize: '8px', letterSpacing: '2px' }}>{t('scan.subtitle')}</p>
           </div>
         </header>
 
@@ -75,7 +77,7 @@ export default function ScanPage() {
           {status === 'scanning' && (
             <>
               <p className="text-xs font-mono text-text-muted text-center" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                Pointez la caméra sur le QR code de votre carte ou cahier
+                {t('scan.pointCamera')}
               </p>
               <QRScanner onDetected={handleDetected} onError={handleError} />
             </>
@@ -88,7 +90,7 @@ export default function ScanPage() {
                 style={{ animation: 'spin-slow 1s linear infinite', borderTopColor: '#D4AF37' }}
               />
               <p className="text-sm font-mono text-gold" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                Résolution de l'unité...
+                {t('scan.resolving')}
               </p>
             </div>
           )}
@@ -100,17 +102,17 @@ export default function ScanPage() {
             >
               <span className="text-4xl">✓</span>
               <p className="text-gold font-mono font-bold" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                Unité trouvée !
+                {t('scan.found')}
               </p>
               <p className="text-sm text-text-primary" style={{ fontFamily: 'Inter, sans-serif' }}>
                 {unitInfo.title}
               </p>
               {unitInfo.chapter_number && (
                 <span className="text-xs font-mono text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                  Chapitre {unitInfo.chapter_number}
+                  {t('scan.chapter')} {unitInfo.chapter_number}
                 </span>
               )}
-              <p className="text-xs text-text-muted mt-1">Redirection vers l'analyseur...</p>
+              <p className="text-xs text-text-muted mt-1">{t('scan.redirecting')}</p>
             </div>
           )}
 
@@ -126,10 +128,10 @@ export default function ScanPage() {
                 onClick={() => { setStatus('scanning'); setError(''); }}
                 className="btn-gold w-full py-3 text-sm"
               >
-                ↺ Réessayer
+                {t('scan.retry')}
               </button>
               <Link href="/analyze" className="btn-outline w-full py-3 text-sm text-center block">
-                ← Retour à l'analyseur
+                {t('scan.back')}
               </Link>
             </div>
           )}

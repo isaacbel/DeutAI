@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 function SkeletonLine({ w }) {
   return (
@@ -21,6 +22,7 @@ function SkeletonLine({ w }) {
 }
 
 export default function QuizLoader() {
+  const { t } = useLanguage();
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
@@ -37,7 +39,7 @@ export default function QuizLoader() {
         className="font-mono text-[11px] tracking-[0.22em] uppercase text-center mb-6"
         style={{ color: '#c9a227' }}
       >
-        Génération des questions…
+        {t('quiz.generatingQuestions')}
       </p>
       <div className="space-y-4">
         <SkeletonLine w="100%" />
@@ -49,7 +51,7 @@ export default function QuizLoader() {
         </div>
       </div>
       <p className="mt-6 text-center text-[12px] text-[#6b7088] font-sans">
-        L’IA prépare un quiz sur mesure. Merci de patienter quelques secondes.
+        {t('quiz.generatingWait')}
       </p>
     </motion.div>
   );

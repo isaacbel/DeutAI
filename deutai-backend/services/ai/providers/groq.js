@@ -26,6 +26,8 @@ async function analyzeText(text) {
       { role: 'user', content: ANALYZE_USER_MSG(text) },
     ],
     temperature: 0,
+    // response_format removed — causes truncated/wrapped output on this model.
+    // The system prompt already enforces strict JSON-only output.
   });
 
   return {
@@ -40,8 +42,10 @@ async function analyzeText(text) {
 async function extractTextFromImage(base64Image) {
   const client = getClient();
 
+  // llama-3.2-90b-vision-preview was decommissioned.
+  // Replacement: meta-llama/llama-4-scout-17b-16e-instruct
   const response = await client.chat.completions.create({
-    model: 'llama-3.2-11b-vision-preview',
+    model: 'meta-llama/llama-4-scout-17b-16e-instruct',
     messages: [
       {
         role: 'user',

@@ -1,25 +1,27 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { Fingerprint, Radar, BrainCircuit } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
-const SCAN_MESSAGES = [
-  { msg: 'INITIATING SYSTEM...', icon: Radar },
-  { msg: 'ANALYSING SYNTAX...', icon: BrainCircuit },
-  { msg: 'DETECTING ANOMALIES...', icon: Fingerprint },
-  { msg: 'CLASSIFICATION KLEPPIN...', icon: BrainCircuit },
+const SCAN_MESSAGE_KEYS = [
+  { key: 'scan.msgInit',           icon: Radar },
+  { key: 'scan.msgSyntax',         icon: BrainCircuit },
+  { key: 'scan.msgAnomalies',      icon: Fingerprint },
+  { key: 'scan.msgClassification', icon: BrainCircuit },
 ];
 
 export default function ScanAnimation({ text }) {
+  const { t } = useLanguage();
   const [msgIndex, setMsgIndex] = useState(0);
   const [hexCode, setHexCode] = useState('0x0000');
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setMsgIndex(prev => (prev + 1) % SCAN_MESSAGES.length);
+      setMsgIndex(prev => (prev + 1) % SCAN_MESSAGE_KEYS.length);
     }, 600);
-    
+
     const hexInterval = setInterval(() => {
-      setHexCode('0x' + Math.floor(Math.random()*16777215).toString(16).toUpperCase().padStart(6, '0'));
+      setHexCode('0x' + Math.floor(Math.random() * 16777215).toString(16).toUpperCase().padStart(6, '0'));
     }, 100);
 
     return () => {
@@ -28,7 +30,7 @@ export default function ScanAnimation({ text }) {
     };
   }, []);
 
-  const ActiveIcon = SCAN_MESSAGES[msgIndex].icon;
+  const ActiveIcon = SCAN_MESSAGE_KEYS[msgIndex].icon;
 
   return (
     <div
@@ -44,7 +46,7 @@ export default function ScanAnimation({ text }) {
       <div className="absolute top-0 left-4 w-px h-full bg-gradient-to-b from-transparent via-gold/20 to-transparent" />
       <div className="absolute top-0 right-4 w-px h-full bg-gradient-to-b from-transparent via-gold/20 to-transparent" />
       <div className="absolute top-4 left-0 w-full h-px bg-gradient-to-r from-transparent via-gold/10 to-transparent" />
-      
+
       {/* Corner markers */}
       <div className="absolute top-2 left-2 w-2 h-2 border-t border-l border-gold/50" />
       <div className="absolute top-2 right-2 w-2 h-2 border-t border-r border-gold/50" />
@@ -61,7 +63,7 @@ export default function ScanAnimation({ text }) {
           <ActiveIcon size={32} className="text-gold animate-pulse" />
           <div className="absolute inset-0 bg-gold blur-lg opacity-30 animate-pulse" />
         </div>
-        
+
         {/* Text preview */}
         <p
           className="text-xs text-text-muted leading-relaxed text-center max-w-[80%] mx-auto"
@@ -98,7 +100,7 @@ export default function ScanAnimation({ text }) {
           }}
         >
           <span className="w-1.5 h-1.5 bg-gold rounded-full animate-ping" />
-          {SCAN_MESSAGES[msgIndex].msg}
+          {t(SCAN_MESSAGE_KEYS[msgIndex].key)}
         </span>
       </div>
     </div>

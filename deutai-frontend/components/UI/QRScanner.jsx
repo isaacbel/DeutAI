@@ -1,7 +1,9 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function QRScanner({ onDetected, onError }) {
+  const { t } = useLanguage();
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const animRef = useRef(null);
@@ -35,7 +37,7 @@ export default function QRScanner({ onDetected, onError }) {
         requestAnimationFrame(tick);
       }
     } catch {
-      const msg = 'Accès caméra refusé. Autorisez l\'accès à la caméra et réessayez.';
+      const msg = t('scanner.cameraDenied');
       setPermissionError(msg);
       onError?.(msg);
     }
@@ -95,7 +97,7 @@ export default function QRScanner({ onDetected, onError }) {
       >
         <p className="text-sm text-error mb-4">⚠ {permissionError}</p>
         <button onClick={startScanner} className="btn-gold px-6 py-2 text-sm">
-          ↺ Réessayer
+          ↺ {t('scanner.retry')}
         </button>
       </div>
     );
@@ -149,7 +151,7 @@ export default function QRScanner({ onDetected, onError }) {
 
       {!started && (
         <p className="text-xs font-mono text-text-muted text-center" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-          Initialisation de la caméra...
+          {t('scanner.initCamera')}
         </p>
       )}
     </div>

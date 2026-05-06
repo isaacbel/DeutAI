@@ -1,7 +1,9 @@
 'use client';
 import FlashcardItem from './FlashcardItem';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function FlashcardList({ flashcards, onDelete }) {
+  const { t } = useLanguage();
   if (!flashcards || flashcards.length === 0) {
     return (
       <div style={{
@@ -33,15 +35,7 @@ export default function FlashcardList({ flashcards, onDelete }) {
             fontSize: '11px', color: '#383840',
             letterSpacing: '3px', textTransform: 'uppercase', margin: 0,
           }}>
-            Aucune flashcard
-          </p>
-          <p style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: '14px', color: '#2c2c34',
-            lineHeight: '1.7', margin: 0, fontStyle: 'italic',
-            maxWidth: '260px',
-          }}>
-            Analysez des phrases pour générer automatiquement vos cartes mémoire.
+            {t('flashcards.noCards')}
           </p>
         </div>
       </div>

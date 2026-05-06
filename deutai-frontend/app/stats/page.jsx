@@ -7,15 +7,16 @@ import ErrorTypeChart from '@/components/Stats/ErrorTypeChart';
 import EvolutionChart from '@/components/Stats/EvolutionChart';
 import { useAuthStandalone } from '@/lib/auth';
 import { getStats } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
-const PERIOD_OPTIONS = [
-  { key: '30d', label: '30 jours' },
-  { key: '3m',  label: '3 mois'  },
-  { key: '6m',  label: '6 mois'  },
-  { key: '1y',  label: '1 an'    },
-];
+function PeriodSelector({ period, onChange, t }) {
+  const PERIOD_OPTIONS = [
+    { key: '30d', label: t('stats.period30d') },
+    { key: '3m',  label: t('stats.period3m')  },
+    { key: '6m',  label: t('stats.period6m')  },
+    { key: '1y',  label: t('stats.period1y')  },
+  ];
 
-function PeriodSelector({ period, onChange }) {
   return (
     <div
       className="flex flex-wrap items-center gap-2 p-3 rounded-xl mb-4"
@@ -60,11 +61,19 @@ function Skeleton({ h = 'h-72' }) {
 }
 
 export default function StatsPage() {
+  const { t } = useLanguage();
   const { loading: authLoading } = useAuthStandalone();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [period, setPeriod] = useState('30d');
+
+  const PERIOD_OPTIONS = [
+    { key: '30d', label: t('stats.period30d') },
+    { key: '3m',  label: t('stats.period3m')  },
+    { key: '6m',  label: t('stats.period6m')  },
+    { key: '1y',  label: t('stats.period1y')  },
+  ];
 
   useEffect(() => {
     if (!authLoading) loadStats(period);
@@ -75,10 +84,10 @@ export default function StatsPage() {
     setLoading(true);
     try {
       const res = await getStats(p);
-      if (!res.ok) { setError('Impossible de charger les statistiques.'); return; }
+      if (!res.ok) { setError(t('stats.errorLoadStats')); return; }
       setStats(await res.json());
     } catch {
-      setError('Erreur réseau. Vérifiez votre connexion.');
+      setError(t('stats.errorNetwork'));
     } finally {
       setLoading(false);
     }
@@ -119,7 +128,7 @@ export default function StatsPage() {
                   className="text-[9px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
                   style={{ fontFamily: 'JetBrains Mono, monospace', background: '#171306', border: '1px solid #453a16', color: '#d6b354' }}
                 >
-                  Dashboard
+                  {t('stats.dashboard')}
                 </span>
                 <span
                   className="text-[9px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
@@ -132,10 +141,10 @@ export default function StatsPage() {
                 className="font-mono text-[17px] font-bold tracking-[.18em] text-[#f0f0f8]"
                 style={{ fontFamily: 'JetBrains Mono, monospace' }}
               >
-                STATISTIQUES
+                {t('stats.title')}
               </h1>
               <p className="text-[9px] uppercase tracking-[.22em] text-[#5a5a70] mt-1">
-                Performance et erreurs de vos analyses
+                {t('stats.subtitle')}
               </p>
             </div>
             <BarChart3 size={26} className="hidden sm:block text-[#D4AF37] opacity-80" />
@@ -145,7 +154,7 @@ export default function StatsPage() {
         {/* ── Content ── */}
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6 flex flex-col gap-4 relative z-10">
 
-          <PeriodSelector period={period} onChange={p => { setPeriod(p); loadStats(p); }} />
+          <PeriodSelector period={period} onChange={p => { setPeriod(p); loadStats(p); }} t={t} />
 
           {/* Error state */}
           {error && (
@@ -160,7 +169,7 @@ export default function StatsPage() {
                 style={{ fontFamily: 'JetBrains Mono, monospace', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#c0c0d0' }}
               >
                 <RefreshCw size={13} />
-                Réessayer
+                {t('stats.retry')}
               </button>
             </div>
           )}
@@ -184,18 +193,18 @@ export default function StatsPage() {
             >
               <Sparkles size={34} className="text-[#D4AF37] opacity-60" />
               <p className="font-mono text-[13px] text-[#c8c8d8]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                Aucune analyse effectuée pour l'instant
+                {t('stats.noAnalysis')}
               </p>
-              <p className="text-[12px] text-[#5a5a70]">Analysez une phrase pour générer votre dashboard.</p>
+              <p className="text-[12px] text-[#5a5a70]">{t('stats.startAnalysisPrompt')}</p>
             </div>
           ) : (
             <>
               <StatsSummary stats={stats} />
 
-              {/* Charts — responsive stacked on mobile, side-by-side on xl */}
+              {/* Charts */}
               <div className="grid grid-cols-1 gap-4 xl:grid-cols-5">
 
-                {/* Error type chart — wider */}
+                {/* Error type chart */}
                 <div
                   className="xl:col-span-3 rounded-xl overflow-hidden"
                   style={{ background: '#0d0d12', border: '1px solid rgba(255,255,255,0.07)' }}
@@ -203,15 +212,15 @@ export default function StatsPage() {
                   <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <div>
                       <p className="font-mono text-[13px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                        Erreurs par type
+                        {t('stats.errorsByType')}
                       </p>
-                      <p className="text-[10px] text-[#5a5a70] mt-0.5 tracking-wide">Méthode Kleppin · répartition complète</p>
+                      <p className="text-[10px] text-[#5a5a70] mt-0.5 tracking-wide">{t('stats.errorsByTypeMethod')}</p>
                     </div>
                     <span
                       className="text-[9px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
                       style={{ fontFamily: 'JetBrains Mono, monospace', background: '#131318', border: '1px solid rgba(255,255,255,0.1)', color: '#7a7a90' }}
                     >
-                      Types
+                      {t('stats.typesLabel')}
                     </span>
                   </div>
                   <div className="p-5">
@@ -219,7 +228,7 @@ export default function StatsPage() {
                   </div>
                 </div>
 
-                {/* Evolution chart — narrower */}
+                {/* Evolution chart */}
                 <div
                   className="xl:col-span-2 rounded-xl overflow-hidden"
                   style={{ background: '#0d0d12', border: '1px solid rgba(255,255,255,0.07)' }}
@@ -227,10 +236,10 @@ export default function StatsPage() {
                   <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <div>
                       <p className="font-mono text-[13px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                        Activité d&apos;analyse
+                        {t('stats.analysisActivity')}
                       </p>
                       <p className="text-[10px] text-[#5a5a70] mt-0.5 tracking-wide">
-                        Volume quotidien · {PERIOD_OPTIONS.find(o => o.key === period)?.label}
+                        {t('stats.dailyVolume', { period: PERIOD_OPTIONS.find(o => o.key === period)?.label })}
                       </p>
                     </div>
                     <TrendingUp size={17} className="text-[#D4AF37] opacity-70 flex-shrink-0" />

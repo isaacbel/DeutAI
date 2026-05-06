@@ -1,10 +1,12 @@
 'use client';
 import { useRef } from 'react';
 import { PenLine } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 const MAX_CHARS = 1000;
 
 export default function TextInput({ value, onChange, disabled }) {
+  const { t } = useLanguage();
   const ref = useRef(null);
   const count = value.length;
   const isOver = count > MAX_CHARS;
@@ -30,7 +32,7 @@ export default function TextInput({ value, onChange, disabled }) {
           value={value}
           onChange={e => onChange(e.target.value)}
           disabled={disabled}
-          placeholder="Saisir une phrase en allemand..."
+          placeholder={t('analyze.textareaPlaceholder')}
           rows={5}
           className="w-full px-5 py-4 text-[15px] resize-none rounded-xl outline-none transition-all duration-200"
           style={{
@@ -67,7 +69,7 @@ export default function TextInput({ value, onChange, disabled }) {
             userSelect: 'none',
           }}
         >
-          {isOver ? `Limite dépassée (${count - MAX_CHARS} en trop)` : '—'}
+          {isOver ? t('analyze.limitExceeded', { count: count - MAX_CHARS }) : '—'}
         </span>
         <span
           className="text-[11px] font-mono tabular-nums tracking-wider px-2 py-0.5 rounded transition-all"

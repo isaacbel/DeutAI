@@ -1,7 +1,9 @@
 'use client';
 import { Cpu, Loader2, ScanLine } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function ScanButton({ onClick, disabled, loading }) {
+  const { t } = useLanguage();
   const isActive = !disabled && !loading;
 
   return (
@@ -34,7 +36,7 @@ export default function ScanButton({ onClick, disabled, loading }) {
       onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
       onMouseDown={e => { if (isActive) e.currentTarget.style.transform = 'scale(0.99)'; }}
       onMouseUp={e => { e.currentTarget.style.transform = 'scale(1)'; }}
-      aria-label={loading ? 'Analyse en cours' : 'Lancer l\'analyse'}
+      aria-label={loading ? t('analyze.scanInProgress') : t('analyze.startAnalyze')}
     >
       {/* Shimmer on active */}
       {isActive && (
@@ -51,12 +53,12 @@ export default function ScanButton({ onClick, disabled, loading }) {
         {loading ? (
           <>
             <Loader2 size={17} className="animate-spin text-[#D4AF37]" />
-            <span className="animate-pulse tracking-[4px]">SCAN EN COURS...</span>
+            <span className="animate-pulse tracking-[4px]">{t('analyze.scanning')}</span>
           </>
         ) : (
           <>
             <ScanLine size={18} />
-            <span>ANALYSER — SCAN 404</span>
+            <span>{t('analyze.scanCta')}</span>
             <Cpu size={14} style={{ opacity: 0.55 }} />
           </>
         )}

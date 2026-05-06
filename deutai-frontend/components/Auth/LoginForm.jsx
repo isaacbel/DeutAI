@@ -3,9 +3,11 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { login } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function LoginForm() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -20,7 +22,7 @@ export default function LoginForm() {
       const res = await login(email, password);
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.message || 'Identifiants incorrects.');
+        setError(data.message || t('auth.errorInvalidCredentials'));
         return;
       }
       if (data.access_token) {
@@ -28,10 +30,10 @@ export default function LoginForm() {
         if (data.refresh_token) localStorage.setItem('refresh_token', data.refresh_token);
         router.replace('/analyze');
       } else {
-        setError('Réponse inattendue du serveur.');
+        setError(t('auth.errorUnexpectedResponse'));
       }
     } catch {
-      setError('Impossible de contacter le serveur. Vérifiez votre connexion.');
+      setError(t('auth.errorCannotReachServer'));
     } finally {
       setLoading(false);
     }
@@ -53,13 +55,13 @@ export default function LoginForm() {
           className="text-[11px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
-          ADRESSE EMAIL
+          {t('auth.email')}
         </label>
         <input
           type="email"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          placeholder="vous@exemple.com"
+          placeholder="you@example.com"
           required
           disabled={loading}
           className="input-dark px-4 py-3 text-sm"
@@ -72,7 +74,7 @@ export default function LoginForm() {
           className="text-[11px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
-          MOT DE PASSE
+          {t('auth.password')}
         </label>
         <input
           type="password"
@@ -98,10 +100,10 @@ export default function LoginForm() {
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
             </svg>
-            CONNEXION...
+            {t('auth.loginLoading')}
           </span>
         ) : (
-          '→ SE CONNECTER'
+          t('auth.loginBtn')
         )}
       </button>
 
@@ -111,12 +113,12 @@ export default function LoginForm() {
           className="text-xs font-mono text-text-muted hover:text-gold transition-colors"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
-          Mot de passe oublié ?
+          {t('auth.forgotPassword')}
         </Link>
         <p className="text-xs text-text-muted" style={{ fontFamily: 'Inter, sans-serif' }}>
-          Pas encore de compte ?{' '}
+          {t('auth.noAccount')}{' '}
           <Link href="/register" className="text-gold hover:underline">
-            S'inscrire
+            {t('auth.signUp')}
           </Link>
         </p>
       </div>

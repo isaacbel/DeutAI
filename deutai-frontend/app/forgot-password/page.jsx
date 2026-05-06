@@ -2,11 +2,13 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { forgotPassword } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function ForgotPasswordPage() {
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState(''); // '' | 'success' | 'error'
+  const [status, setStatus] = useState('');
   const [message, setMessage] = useState('');
 
   async function handleSubmit(e) {
@@ -19,15 +21,15 @@ export default function ForgotPasswordPage() {
       const res = await forgotPassword(email);
       if (res.ok) {
         setStatus('success');
-        setMessage('Si un compte est associé à cette adresse, un email de réinitialisation a été envoyé.');
+        setMessage(t('auth.forgotSuccessMessage'));
       } else {
         const data = await res.json().catch(() => ({}));
         setStatus('error');
-        setMessage(data.message || 'Une erreur est survenue.');
+        setMessage(data.message || t('auth.forgotErrorMessage'));
       }
     } catch {
       setStatus('error');
-      setMessage('Impossible de contacter le serveur.');
+      setMessage(t('auth.errorCannotReachServer'));
     } finally {
       setLoading(false);
     }
@@ -45,7 +47,7 @@ export default function ForgotPasswordPage() {
             DeutAI
           </h1>
           <p className="system-subtitle mt-2" style={{ fontSize: '10px' }}>
-            RÉCUPÉRATION SYSTÈME
+            {t('auth.recoverySystem')}
           </p>
         </div>
 
@@ -72,7 +74,7 @@ export default function ForgotPasswordPage() {
             )}
 
             <p className="text-sm text-text-primary mb-2" style={{ fontFamily: 'Inter, sans-serif' }}>
-              Entrez votre adresse email pour recevoir un lien de réinitialisation de mot de passe.
+              {t('auth.resetHelp')}
             </p>
 
             <div className="flex flex-col gap-1.5">
@@ -80,13 +82,13 @@ export default function ForgotPasswordPage() {
                 className="text-[11px] font-mono text-text-muted tracking-widest"
                 style={{ fontFamily: 'JetBrains Mono, monospace' }}
               >
-                ADRESSE EMAIL
+                {t('auth.email')}
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="vous@exemple.com"
+                placeholder="you@example.com"
                 required
                 disabled={loading || status === 'success'}
                 className="input-dark px-4 py-3 text-sm"
@@ -100,11 +102,11 @@ export default function ForgotPasswordPage() {
               className="btn-gold w-full py-4"
               style={{ letterSpacing: '2px' }}
             >
-              {loading ? 'ENVOI...' : '→ ENVOYER LE LIEN'}
+              {loading ? t('auth.sending') : t('auth.sendLink')}
             </button>
 
             <Link href="/login" className="text-xs text-center text-text-muted hover:text-gold transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
-              ← Retour à la connexion
+              {t('auth.backToLogin')}
             </Link>
           </form>
         </div>

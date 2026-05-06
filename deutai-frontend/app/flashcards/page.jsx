@@ -4,31 +4,32 @@ import AppShell from '@/components/Layout/AppShell';
 import FlashcardList from '@/components/Flashcards/FlashcardList';
 import { useAuthStandalone } from '@/lib/auth';
 import { getFlashcards, deleteFlashcard } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
-const ERROR_TYPE_LABELS = {
-  conjugaison: 'Conjugaison',
-  temps: 'Temps verbal',
-  auxiliaire: 'Auxiliaire',
-  déclinaison: 'Déclinaison',
-  genre: 'Genre',
-  nombre: 'Nombre',
-  accord: 'Accord',
-  ordre: 'Ordre des mots',
-  position_verbe: 'Position verbe',
-  subordonnée: 'Subordonnée',
-  préposition: 'Préposition',
-  cas_prépositionnel: 'Cas prép.',
-  choix_mot: 'Choix du mot',
-  faux_ami: 'Faux ami',
-  collocation: 'Collocation',
-  registre: 'Registre',
-  orthographe: 'Orthographe',
-  majuscule: 'Majuscule',
-  ponctuation: 'Ponctuation',
-  verbe_séparable: 'Verbe séparable',
-  infinitif_zu: 'Infinitif + zu',
-  modalverbe: 'Verbe modal',
-  autre: 'Autre',
+const ERROR_TYPE_LABEL_KEYS = {
+  conjugaison:        'errorCard.errorTypes.conjugaison',
+  temps:              'errorCard.errorTypes.temps',
+  auxiliaire:         'errorCard.errorTypes.auxiliaire',
+  déclinaison:        'errorCard.errorTypes.déclinaison',
+  genre:              'errorCard.errorTypes.genre',
+  nombre:             'errorCard.errorTypes.nombre',
+  accord:             'errorCard.errorTypes.accord',
+  ordre:              'errorCard.errorTypes.ordre',
+  position_verbe:     'errorCard.errorTypes.position_verbe',
+  subordonnée:        'errorCard.errorTypes.subordonnée',
+  préposition:        'errorCard.errorTypes.préposition',
+  cas_prépositionnel: 'errorCard.errorTypes.cas_prépositionnel',
+  choix_mot:          'errorCard.errorTypes.choix_mot',
+  faux_ami:           'errorCard.errorTypes.faux_ami',
+  collocation:        'errorCard.errorTypes.collocation',
+  registre:           'errorCard.errorTypes.registre',
+  orthographe:        'errorCard.errorTypes.orthographe',
+  majuscule:          'errorCard.errorTypes.majuscule',
+  ponctuation:        'errorCard.errorTypes.ponctuation',
+  verbe_séparable:    'errorCard.errorTypes.verbe_séparable',
+  infinitif_zu:       'errorCard.errorTypes.infinitif_zu',
+  modalverbe:         'errorCard.errorTypes.modalverbe',
+  autre:              'errorCard.errorTypes.autre',
 };
 
 const PAGE_STYLES = `
@@ -108,7 +109,6 @@ const PAGE_STYLES = `
     transition: all 0.3s ease;
   }
 
-  /* Scrollable content area */
   .page-scroll {
     position: relative;
     z-index: 1;
@@ -117,24 +117,13 @@ const PAGE_STYLES = `
     overflow-x: hidden;
     padding: 24px 28px 64px;
     animation: fade-in 0.4s ease both;
-
-    /* Custom scrollbar */
     scrollbar-width: thin;
     scrollbar-color: #222228 transparent;
   }
-  .page-scroll::-webkit-scrollbar {
-    width: 6px;
-  }
-  .page-scroll::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  .page-scroll::-webkit-scrollbar-thumb {
-    background: #222228;
-    border-radius: 3px;
-  }
-  .page-scroll::-webkit-scrollbar-thumb:hover {
-    background: #2e2e38;
-  }
+  .page-scroll::-webkit-scrollbar { width: 6px; }
+  .page-scroll::-webkit-scrollbar-track { background: transparent; }
+  .page-scroll::-webkit-scrollbar-thumb { background: #222228; border-radius: 3px; }
+  .page-scroll::-webkit-scrollbar-thumb:hover { background: #2e2e38; }
 
   .page-inner {
     max-width: 1180px;
@@ -166,7 +155,7 @@ const PAGE_STYLES = `
   .retry-btn:hover { opacity: 1; }
   .hint-label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; color: #80859c;
+    font-size: 10px;
     letter-spacing: 2.5px; text-transform: uppercase;
     margin-bottom: 16px;
     color: #80859c;
@@ -184,6 +173,7 @@ const PAGE_STYLES = `
 `;
 
 export default function FlashcardsPage() {
+  const { t } = useLanguage();
   const { loading: authLoading } = useAuthStandalone();
   const [flashcards, setFlashcards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -199,11 +189,11 @@ export default function FlashcardsPage() {
     setLoading(true);
     try {
       const res = await getFlashcards();
-      if (!res.ok) { setError('Impossible de charger les flashcards.'); return; }
+      if (!res.ok) { setError(t('flashcards.errorLoadFlashcards')); return; }
       const data = await res.json();
       setFlashcards(data.flashcards || data || []);
     } catch {
-      setError('Erreur réseau. Vérifiez votre connexion.');
+      setError(t('flashcards.errorNetwork'));
     } finally {
       setLoading(false);
     }
@@ -215,20 +205,20 @@ export default function FlashcardsPage() {
       if (res.ok) {
         setFlashcards(prev => prev.filter(f => f.id !== id));
       } else {
-        setError('Impossible de supprimer cette flashcard.');
+        setError(t('flashcards.errorDeleteFlashcard'));
       }
     } catch {
-      setError('Erreur réseau.');
+      setError(t('flashcards.errorNetwork'));
     }
   }
 
   if (authLoading) return null;
 
   const typeOptions = [
-    { value: 'all', label: 'Tous' },
+    { value: 'all', label: t('flashcards.all') },
     ...Array.from(new Set(flashcards.map((c) => c.error_type).filter(Boolean))).map((type) => ({
       value: type,
-      label: ERROR_TYPE_LABELS[type] || type,
+      label: t(ERROR_TYPE_LABEL_KEYS[type]) || type,
     })),
   ];
 
@@ -246,15 +236,15 @@ export default function FlashcardsPage() {
         {/* Sticky header */}
         <header className="page-header">
           <div className="header-left">
-            <h1 className="header-title">Flashcards</h1>
-            <p className="header-sub">Mémoire des erreurs</p>
+            <h1 className="header-title">{t('flashcards.title')}</h1>
+            <p className="header-sub">{t('flashcards.subtitle')}</p>
           </div>
 
           {!loading && (
             <div className="count-badge">
               {filteredFlashcards.length}
               {selectedType !== 'all' ? ` / ${flashcards.length}` : ''}&thinsp;
-              carte{filteredFlashcards.length !== 1 ? 's' : ''}
+              {t('flashcards.cards')}
             </div>
           )}
         </header>
@@ -266,7 +256,7 @@ export default function FlashcardsPage() {
             {error && (
               <div className="error-banner">
                 <span className="error-msg">⚠ {error}</span>
-                <button className="retry-btn" onClick={loadFlashcards}>↺ Réessayer</button>
+                <button className="retry-btn" onClick={loadFlashcards}>{t('flashcards.retry')}</button>
               </div>
             )}
 
@@ -306,7 +296,7 @@ export default function FlashcardsPage() {
                   </div>
                 )}
                 {filteredFlashcards.length > 0 && (
-                  <p className="hint-label">Cliquez pour retourner la carte</p>
+                  <p className="hint-label">{t('flashcards.clickToFlip')}</p>
                 )}
                 <FlashcardList flashcards={filteredFlashcards} onDelete={handleDelete} />
               </>

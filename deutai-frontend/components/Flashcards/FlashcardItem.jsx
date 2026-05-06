@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 const ERROR_TYPE_META = {
   conjugaison: { label: 'Conjugaison', hue: '#E05252' },
@@ -27,9 +28,9 @@ const ERROR_TYPE_META = {
   autre: { label: 'Autre', hue: '#777777' },
 };
 
-function formatDate(dateStr) {
+function formatDate(dateStr, lang) {
   if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString('fr-FR', {
+  return new Date(dateStr).toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'de-DE', {
     day: '2-digit', month: 'short', year: '2-digit',
   });
 }
@@ -121,12 +122,16 @@ const CARD_STYLES = `
 `;
 
 export default function FlashcardItem({ flashcard, onDelete }) {
+  const { t, lang } = useLanguage();
   const [flipped, setFlipped] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [explanationLanguage, setExplanationLanguage] = useState('de');
 
-  const meta = ERROR_TYPE_META[flashcard.error_type] || { label: flashcard.error_type ?? 'Erreur', hue: '#777' };
+  const typeKey = `errorCard.errorTypes.${flashcard.error_type}`;
+  const typeLabel = t(typeKey) || (flashcard.error_type ?? t('errorCard.noError'));
+  const hue = (ERROR_TYPE_META[flashcard.error_type] || { hue: '#777' }).hue;
+  const meta = { label: typeLabel, hue };
   const { correction, rule, explanation, suggestions } = parseBack(flashcard.back);
   const bilingualExplanation = parseBilingualExplanation(explanation);
   const visibleExplanation = bilingualExplanation
@@ -195,13 +200,13 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               </span>
               {flashcard.unit_title && (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '10px' }}>
-                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '8px', letterSpacing: '2px', color: '#383840', textTransform: 'uppercase' }}>Unité</span>
+                  <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '8px', letterSpacing: '2px', color: '#383840', textTransform: 'uppercase' }}>Unit</span>
                   <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color: '#50505c' }}>{flashcard.unit_title}</span>
                 </div>
               )}
             </div>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color: '#8e94ac', letterSpacing: '1px' }}>
-              {formatDate(flashcard.created_at)}
+              {formatDate(flashcard.created_at, lang)}
             </span>
           </div>
 
@@ -276,7 +281,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                 minWidth: '44px',
                 textAlign: 'center',
               }}
-              title={confirmDelete ? 'Confirmer la suppression' : 'Supprimer'}
+              title={confirmDelete ? t('history.confirmDelete') : 'DEL'}
             >
               {deleting ? '...' : confirmDelete ? 'CONF' : 'DEL'}
             </button>
@@ -289,7 +294,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               textOrientation: 'mixed',
               transform: 'rotate(180deg)',
             }}>
-              retourner la carte ↺
+              {t('flashcards.clickToFlip')} ↺
             </span>
           </div>
         </div>
@@ -327,7 +332,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               letterSpacing: '2.5px', textTransform: 'uppercase',
               color: '#bca54b', fontWeight: 700,
             }}>
-              Correction
+              {t('errorCard.correction')}
             </span>
             {bilingualExplanation && (
               <div
@@ -401,7 +406,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   letterSpacing: '2px', color: '#484820',
                   paddingTop: '3px', flexShrink: 0,
                   textTransform: 'uppercase', minWidth: '36px',
-                }}>Règle</span>
+                }}>Rule</span>
                 <p style={{
                   fontFamily: "'Playfair Display', Georgia, serif",
                   fontSize: '14px', color: '#726a38',
@@ -474,7 +479,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               textOrientation: 'mixed',
               transform: 'rotate(180deg)',
             }}>
-              retourner la carte ↺
+              {t('flashcards.clickToFlip')} ↺
             </span>
           </div>
         </div>

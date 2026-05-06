@@ -1,6 +1,9 @@
 'use client';
 
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
+
 export default function ProgressBar({ current, total }) {
+  const { t } = useLanguage();
   const pct = total > 0 ? Math.round((current / total) * 100) : 0;
   return (
     <div className="w-full">
@@ -9,7 +12,7 @@ export default function ProgressBar({ current, total }) {
           className="font-mono text-[10px] tracking-[0.2em] uppercase"
           style={{ color: '#8a90a8' }}
         >
-          Progression
+          {t('quiz.progress')}
         </span>
         <span className="font-mono text-[11px] tabular-nums" style={{ color: '#c9a227' }}>
           {current}/{total}

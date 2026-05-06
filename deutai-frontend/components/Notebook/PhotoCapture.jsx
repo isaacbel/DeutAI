@@ -1,12 +1,23 @@
 'use client';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function PhotoCapture({ onCapture, loading }) {
+  const { t, lang } = useLanguage();
   const fileRef = useRef(null);
   const videoRef = useRef(null);
   const [cameraActive, setCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState('');
   const streamRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach(tk => tk.stop());
+        streamRef.current = null;
+      }
+    };
+  }, []);
 
   async function startCamera() {
     setCameraError('');
@@ -26,13 +37,13 @@ export default function PhotoCapture({ onCapture, loading }) {
         setCameraActive(true);
       }
     } catch {
-      setCameraError('Accès caméra refusé. Utilisez l\'import d\'image à la place.');
+      setCameraError(t('scanner.cameraDenied'));
     }
   }
 
   function stopCamera() {
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach(t => t.stop());
+      streamRef.current.getTracks().forEach(tk => tk.stop());
       streamRef.current = null;
     }
     if (videoRef.current) {
@@ -43,6 +54,7 @@ export default function PhotoCapture({ onCapture, loading }) {
   }
 
   function capturePhoto() {
+    if (!videoRef.current) return;
     const canvas = document.createElement('canvas');
     canvas.width = videoRef.current.videoWidth;
     canvas.height = videoRef.current.videoHeight;
@@ -55,16 +67,32 @@ export default function PhotoCapture({ onCapture, loading }) {
   function handleFileChange(e) {
     const file = e.target.files[0];
     if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      setCameraError(t('notebook.errorFileNotImage'));
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setCameraError(t('notebook.errorFileTooLarge'));
+      return;
+    }
+
     const reader = new FileReader();
     reader.onload = ev => {
       const base64 = ev.target.result.split(',')[1];
       onCapture(base64);
     };
+    reader.onerror = () => {
+      setCameraError(t('notebook.errorFileRead'));
+    };
     reader.readAsDataURL(file);
+    e.target.value = '';
   }
 
+  const isRtl = lang === 'ar';
+
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Camera view */}
       {cameraActive && (
         <div className="relative rounded-xl overflow-hidden" style={{ border: '1px solid #2a2a2a' }}>
@@ -84,13 +112,13 @@ export default function PhotoCapture({ onCapture, loading }) {
               onClick={capturePhoto}
               className="btn-gold px-6 py-3 text-sm"
             >
-              📸 Capturer
+              📸 {t('notebook.capture')}
             </button>
             <button
               onClick={stopCamera}
               className="btn-outline px-4 py-3 text-sm"
             >
-              ✕ Annuler
+              ✕ {t('notebook.cancel')}
             </button>
           </div>
         </div>
@@ -108,8 +136,8 @@ export default function PhotoCapture({ onCapture, loading }) {
           >
             <span className="text-4xl opacity-40">📷</span>
             <p className="text-sm text-text-muted text-center" style={{ fontFamily: 'Inter, sans-serif' }}>
-              Prenez une photo de votre texte manuscrit<br />
-              <span className="text-xs">ou importez une image</span>
+              {t('notebook.placeholderMain')}<br />
+              <span className="text-xs">{t('notebook.placeholderSub')}</span>
             </p>
           </div>
 
@@ -126,14 +154,14 @@ export default function PhotoCapture({ onCapture, loading }) {
               disabled={loading}
               className="btn-gold w-full py-3 text-sm"
             >
-              📷 Prendre une photo
+              {t('notebook.takePhoto')}
             </button>
             <button
               onClick={() => fileRef.current?.click()}
               disabled={loading}
               className="btn-outline w-full py-3 text-sm"
             >
-              ⬆ Importer une image
+              {t('notebook.importImage')}
             </button>
             <input
               ref={fileRef}

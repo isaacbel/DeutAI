@@ -1,7 +1,10 @@
 'use client';
 import { Sparkles } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function CorrectionCard({ correction, correctedSentence, errors = [], originalSentence = '' }) {
+  const { t, lang } = useLanguage();
+  const isRtl = lang === 'ar';
   const fullCorrectedSentence = correctedSentence || correction;
   const beforeSentence = originalSentence || '';
 
@@ -95,12 +98,13 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
           className="text-[13px] uppercase font-semibold"
           style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.28em', color: '#E3C66F' }}
         >
-          Correction
+          {t('errorCard.correction')}
         </span>
         {errors.length > 0 && (
           <span
             style={{
-              marginLeft: 'auto',
+              marginLeft: isRtl ? undefined : 'auto',
+              marginRight: isRtl ? 'auto' : undefined,
               fontFamily: 'Inter, sans-serif',
               fontSize: '11px',
               letterSpacing: '0.16em',
@@ -112,7 +116,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
               background: 'rgba(212,175,55,0.14)',
             }}
           >
-            {errors.length} fix{errors.length > 1 ? 'es' : ''}
+            {t('errorCard.fixCount', { count: errors.length })}
           </span>
         )}
       </div>
@@ -135,7 +139,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
                 marginBottom: '10px',
               }}
             >
-              Before
+              {t('errorCard.before')}
             </p>
             <div
               style={{
@@ -163,7 +167,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
                 marginBottom: '10px',
               }}
             >
-              After
+              {t('errorCard.after')}
             </p>
             <div
               style={{
@@ -176,6 +180,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
             >
               <p
                 className="text-lg md:text-2xl"
+                lang="de"
                 style={{
                   ...paragraphStyle,
                   color: '#F6E5AF',
@@ -226,7 +231,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
               >
                 {err.errorText}
               </span>
-              <span style={{ color: 'rgba(212,175,55,0.55)', fontSize: '12px' }}>→</span>
+              <span style={{ color: 'rgba(212,175,55,0.55)', fontSize: '12px' }}>{isRtl ? '←' : '→'}</span>
               <span
                 style={{
                   fontSize: '13px',

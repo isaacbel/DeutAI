@@ -1,7 +1,9 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { PieChart as PieChartIcon } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 const ERROR_LABELS = {
   conjugaison: 'Conjugaison',
@@ -55,14 +57,14 @@ const ERROR_TYPE_COLORS = {
   autre: '#888888',
 };
 
-function buildRows(data) {
+function buildRows(data, t) {
   const entries = Object.entries(data || {})
     .filter(([, v]) => Number(v) > 0)
     .map(([typeKey, count]) => {
       const n = Number(count);
       return {
         typeKey,
-        name: ERROR_LABELS[typeKey] || typeKey.replace(/_/g, ' '),
+        name: t(`errorCard.errorTypes.${typeKey}`) || typeKey.replace(/_/g, ' '),
         count: n,
         color: ERROR_TYPE_COLORS[typeKey] || '#9a9aaf',
       };
@@ -76,7 +78,7 @@ function buildRows(data) {
   }));
 }
 
-function buildPieSlices(rows, maxSlices = 8) {
+function buildPieSlices(rows, othersLabel, maxSlices = 8) {
   if (rows.length === 0) return [];
   if (rows.length <= maxSlices) {
     return rows.map((r) => ({ name: r.name, value: r.count, color: r.color }));
@@ -85,7 +87,7 @@ function buildPieSlices(rows, maxSlices = 8) {
   const rest = rows.slice(maxSlices).reduce((s, r) => s + r.count, 0);
   return [
     ...top.map((r) => ({ name: r.name, value: r.count, color: r.color })),
-    { name: 'Autres', value: rest, color: '#5c5c6b' },
+    { name: othersLabel, value: rest, color: '#5c5c6b', isOther: true },
   ];
 }
 
@@ -100,25 +102,35 @@ function PieTooltip({ active, payload }) {
       className="rounded-lg border border-white/10 bg-[#12121a]/95 px-3 py-2 text-xs shadow-xl backdrop-blur-sm"
       style={{ fontFamily: 'JetBrains Mono, monospace' }}
     >
-      <p className="font-medium text-[#e8e8ef]">{p.name}</p>
+      <p className="font-medium text-[#e8e8ef]">{p.payload.isOther ? p.payload.tName : p.name}</p>
       <p className="mt-0.5 text-[#d4af37]">
-        {val} erreur{val !== 1 ? 's' : ''} · {pct}%
+        {val} {val !== 1 ? p.payload.tErrorsPlural : p.payload.tErrorSingular} · {pct}%
       </p>
     </div>
   );
 }
 
 export default function ErrorTypeChart({ data }) {
-  const rows = buildRows(data);
+  const { t } = useLanguage();
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
+
+  const rows = buildRows(data, t);
   const totalErrors = rows.reduce((s, r) => s + r.count, 0);
-  const pieData = buildPieSlices(rows).map((d) => ({ ...d, total: totalErrors }));
+  const pieData = buildPieSlices(rows, t('stats.others')).map((d) => ({ 
+    ...d, 
+    total: totalErrors,
+    tName: t('stats.others'),
+    tErrorSingular: t('stats.errorSingular'),
+    tErrorsPlural: t('stats.errorsPlural')
+  }));
 
   if (rows.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center gap-2 py-14 text-center">
         <PieChartIcon className="h-10 w-10 text-[#2a2a36]" strokeWidth={1.25} />
         <p className="text-sm text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-          Aucune erreur typée sur cette période
+          {t('stats.noErrorTypes')}
         </p>
       </div>
     );
@@ -132,7 +144,7 @@ export default function ErrorTypeChart({ data }) {
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
           <p className="text-[10px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            Total erreurs
+            {t('stats.totalErrorsLabel')}
           </p>
           <p className="mt-1 font-mono text-xl font-semibold tabular-nums text-[#f0e6d2]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {totalErrors}
@@ -140,7 +152,7 @@ export default function ErrorTypeChart({ data }) {
         </div>
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
           <p className="text-[10px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            Types actifs
+            {t('stats.activeTypesLabel')}
           </p>
           <p className="mt-1 font-mono text-xl font-semibold tabular-nums text-[#c8b896]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {rows.length}
@@ -148,7 +160,7 @@ export default function ErrorTypeChart({ data }) {
         </div>
         <div className="col-span-2 rounded-xl border border-[#453a16]/40 bg-[#d4af37]/[0.06] px-3 py-2.5 sm:col-span-1">
           <p className="text-[10px] uppercase tracking-wider text-[#8a7820]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            Plus fréquent
+            {t('stats.mostFrequentLabel')}
           </p>
           <p className="mt-1 truncate text-sm font-medium text-[#e5c266]" title={top.name}>
             {top.name}
@@ -166,7 +178,7 @@ export default function ErrorTypeChart({ data }) {
             className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[#5c5c6b]"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
-            Classement
+            {t('stats.ranking')}
           </p>
           <ul className="max-h-[min(420px,55vh)] space-y-3 overflow-y-auto pr-1 [scrollbar-width:thin] [scrollbar-color:#2a2a38_transparent] lg:max-h-[380px]">
             {rows.map((row, i) => (
@@ -218,11 +230,12 @@ export default function ErrorTypeChart({ data }) {
             className="mb-2 w-full text-[10px] uppercase tracking-[0.2em] text-[#5c5c6b] lg:text-center"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
-            Répartition
+            {t('stats.distribution')}
           </p>
-          <div className="relative w-full max-w-[280px] h-[240px]">
-            <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
-              <PieChart>
+          <div className="relative mx-auto w-full max-w-[280px]" style={{ height: '240px', minHeight: '240px' }}>
+            {isMounted && (
+              <ResponsiveContainer width="100%" height={240} debounce={50}>
+                <PieChart>
                 <Pie
                   data={pieData}
                   dataKey="value"
@@ -240,7 +253,8 @@ export default function ErrorTypeChart({ data }) {
                 </Pie>
                 <Tooltip content={<PieTooltip />} />
               </PieChart>
-            </ResponsiveContainer>
+              </ResponsiveContainer>
+            )}
             <div
               className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center"
               style={{ marginTop: -8 }}
@@ -249,7 +263,7 @@ export default function ErrorTypeChart({ data }) {
                 {totalErrors}
               </span>
               <span className="text-[10px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-                erreurs
+                {t('stats.errorsSuffix')}
               </span>
             </div>
           </div>

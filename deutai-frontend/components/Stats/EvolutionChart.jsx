@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import {
   AreaChart,
   Area,
@@ -9,6 +10,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 function periodToDays(period) {
   switch (period) {
@@ -88,6 +90,10 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 export default function EvolutionChart({ data, period = '30d' }) {
+  const { t } = useLanguage();
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
+
   const chartData = buildTimeline(data, period);
   const { total, activeDays, peak, peakLabel, avg } = summarizeTimeline(chartData);
   const dense = chartData.length > 120;
@@ -96,9 +102,9 @@ export default function EvolutionChart({ data, period = '30d' }) {
     return (
       <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
         <p className="text-sm text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-          Aucune activité sur cette période
+          {t('stats.noActivityPeriod')}
         </p>
-        <p className="text-xs text-[#4a4a58]">Les analyses apparaîtront jour par jour ici.</p>
+        <p className="text-xs text-[#4a4a58]">{t('stats.activityWillAppear')}</p>
       </div>
     );
   }
@@ -108,7 +114,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <div className="rounded-lg border border-white/6 bg-white/2 px-2.5 py-2">
           <p className="text-[9px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            Analyses
+            {t('stats.labelAnalyses')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-semibold tabular-nums text-[#f0e6d2]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {total}
@@ -116,7 +122,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
         </div>
         <div className="rounded-lg border border-white/6 bg-white/2 px-2.5 py-2">
           <p className="text-[9px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            Jours actifs
+            {t('stats.labelActiveDays')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-semibold tabular-nums text-[#c8b896]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {activeDays}
@@ -124,7 +130,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
         </div>
         <div className="rounded-lg border border-white/6 bg-white/2 px-2.5 py-2">
           <p className="text-[9px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            Pic
+            {t('stats.labelPeak')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-semibold tabular-nums text-[#d4af37]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {peak}
@@ -135,7 +141,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
         </div>
         <div className="rounded-lg border border-white/6 bg-white/2 px-2.5 py-2">
           <p className="text-[9px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            Moy. / jour
+            {t('stats.labelAvgPerDay')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-semibold tabular-nums text-[#9a9aaf]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {avg}
@@ -143,9 +149,14 @@ export default function EvolutionChart({ data, period = '30d' }) {
         </div>
       </div>
 
-      <div className="h-[220px] w-full min-w-0 sm:h-[260px]">
-        <ResponsiveContainer width="100%" height="100%" minWidth={1} minHeight={1}>
-          <AreaChart data={chartData} margin={{ left: 4, right: 8, top: 12, bottom: 4 }}>
+      {/* Explicit pixel height: Recharts measures parent; % height alone often resolves to -1 in flex/grid. */}
+      <div
+        className="w-full min-w-0"
+        style={{ height: '260px', minHeight: '220px' }}
+      >
+        {isMounted && (
+          <ResponsiveContainer width="100%" height={260} debounce={50}>
+            <AreaChart data={chartData} margin={{ left: 4, right: 8, top: 12, bottom: 4 }}>
             <defs>
               <linearGradient id="evolutionFill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0%" stopColor="#d4af37" stopOpacity={0.35} />
@@ -178,12 +189,13 @@ export default function EvolutionChart({ data, period = '30d' }) {
               activeDot={{ r: 5, fill: '#fff', stroke: '#d4af37', strokeWidth: 2 }}
               dot={dense ? false : { fill: '#d4af37', r: 2, strokeWidth: 0 }}
             />
-          </AreaChart>
-        </ResponsiveContainer>
+            </AreaChart>
+          </ResponsiveContainer>
+        )}
       </div>
 
       <p className="text-center text-[10px] text-[#4a4a58]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-        Courbe = nombre d&apos;analyses par jour · jours sans activité à 0
+        {t('stats.chartCaption')}
       </p>
     </div>
   );

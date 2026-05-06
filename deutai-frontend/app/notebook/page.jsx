@@ -4,14 +4,24 @@ import Link from 'next/link';
 import AppShell from '@/components/Layout/AppShell';
 import PhotoCapture from '@/components/Notebook/PhotoCapture';
 import OcrConfirmation from '@/components/Notebook/OcrConfirmation';
-import NotebookResults from '@/components/Notebook/NotebookResults';
+import ResultCards from '@/components/Analyzer/ResultCards';
 import ScanAnimation from '@/components/Analyzer/ScanAnimation';
 import { useAuthStandalone } from '@/lib/auth';
 import { notebookOcr, notebookAnalyze } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 const STEP = { CAPTURE: 'capture', OCR: 'ocr', SCANNING: 'scanning', RESULT: 'result' };
 
+// FIX: Helper to add a timeout to any fetch promise
+function withTimeout(promise, ms = 30000) {
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error('REQUEST_TIMEOUT')), ms)
+  );
+  return Promise.race([promise, timeout]);
+}
+
 export default function NotebookPage() {
+  const { t, lang } = useLanguage();
   const { loading: authLoading } = useAuthStandalone();
   const [step, setStep] = useState(STEP.CAPTURE);
   const [ocrText, setOcrText] = useState('');
@@ -25,18 +35,23 @@ export default function NotebookPage() {
     setError('');
     setOcrLoading(true);
     try {
-      const res = await notebookOcr(base64);
+      // FIX: was passing bare base64 string; backend expects { image: base64 }
+      const res = await withTimeout(notebookOcr({ image: base64 }));
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message || 'Erreur lors de l\'extraction du texte.');
+        setError(data.message || data.details?.[0] || t('notebook.extractError'));
         return;
       }
       const data = await res.json();
       setOcrText(data.extractedText || '');
       setOcrConfidence(data.confidence || 'medium');
       setStep(STEP.OCR);
-    } catch {
-      setError('Impossible de contacter le serveur. Vérifiez votre connexion.');
+    } catch (err) {
+      if (err?.message === 'REQUEST_TIMEOUT') {
+        setError(t('notebook.timeoutError'));
+      } else {
+        setError(t('notebook.serverError'));
+      }
     } finally {
       setOcrLoading(false);
     }
@@ -49,10 +64,11 @@ export default function NotebookPage() {
     setAnalyzeLoading(true);
     const startTime = Date.now();
     try {
-      const res = await notebookAnalyze(ocrText);
+      // FIX: was sending ocrText as body; backend expects { confirmedText }
+      const res = await withTimeout(notebookAnalyze({ confirmedText: ocrText }));
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message || 'Erreur lors de l\'analyse.');
+        setError(data.message || data.details?.[0] || t('notebook.analyzeError'));
         setStep(STEP.OCR);
         return;
       }
@@ -61,8 +77,12 @@ export default function NotebookPage() {
       if (elapsed < 1500) await new Promise(r => setTimeout(r, 1500 - elapsed));
       setResult({ ...data, input: ocrText });
       setStep(STEP.RESULT);
-    } catch {
-      setError('Impossible de contacter le serveur.');
+    } catch (err) {
+      if (err?.message === 'REQUEST_TIMEOUT') {
+        setError(t('notebook.timeoutError'));
+      } else {
+        setError(t('notebook.serverError'));
+      }
       setStep(STEP.OCR);
     } finally {
       setAnalyzeLoading(false);
@@ -80,14 +100,17 @@ export default function NotebookPage() {
   if (authLoading) return null;
 
   const stepLabels = [
-    { key: STEP.CAPTURE, label: '01 — Photo' },
-    { key: STEP.OCR, label: '02 — Confirmation' },
-    { key: STEP.RESULT, label: '03 — Résultats' },
+    { key: STEP.CAPTURE, label: t('notebook.step1') },
+    { key: STEP.OCR, label: t('notebook.step2') },
+    { key: STEP.RESULT, label: t('notebook.step3') },
   ];
+
+  // FIX: compute active/done outside JSX for clarity
+  const currentStepIndex = stepLabels.findIndex(s => s.key === step);
 
   return (
     <AppShell>
-      <div className="min-h-screen bg-black relative">
+      <div className="min-h-screen bg-black relative" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
         <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
 
         {/* Header */}
@@ -100,9 +123,9 @@ export default function NotebookPage() {
           </Link>
           <div>
             <h1 className="text-sm font-bold text-gold font-mono" style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '2px' }}>
-              SMART NOTEBOOK
+              {t('notebook.title')}
             </h1>
-            <p className="system-subtitle" style={{ fontSize: '8px', letterSpacing: '2px' }}>ANALYSE DE TEXTE MANUSCRIT</p>
+            <p className="system-subtitle" style={{ fontSize: '8px', letterSpacing: '2px' }}>{t('notebook.subtitle')}</p>
           </div>
         </header>
 
@@ -110,7 +133,9 @@ export default function NotebookPage() {
         <div className="flex px-4 pt-4 gap-2">
           {stepLabels.map((s, i) => {
             const isActive = step === s.key || (step === STEP.SCANNING && s.key === STEP.OCR);
-            const isDone = stepLabels.findIndex(x => x.key === step) > i || step === STEP.RESULT;
+            // FIX: SCANNING step sits between OCR and RESULT — treat it as step > OCR for progress bar
+            const effectiveIndex = step === STEP.SCANNING ? 2 : currentStepIndex;
+            const isDone = effectiveIndex > i;
             return (
               <div key={s.key} className="flex-1 text-center">
                 <div
@@ -139,14 +164,14 @@ export default function NotebookPage() {
             </div>
           )}
 
-          {step === STEP.CAPTURE && (
+          {/* FIX: Show PhotoCapture only when not OCR-loading to prevent UI overlap */}
+          {step === STEP.CAPTURE && !ocrLoading && (
             <PhotoCapture onCapture={handleCapture} loading={ocrLoading} />
           )}
 
-          {ocrLoading && step === STEP.CAPTURE && (
-            <div className="mt-4">
-              <ScanAnimation text="Extraction du texte en cours..." />
-            </div>
+          {/* FIX: Show scan animation in its own block, replacing PhotoCapture */}
+          {step === STEP.CAPTURE && ocrLoading && (
+            <ScanAnimation text={t('notebook.extracting')} />
           )}
 
           {step === STEP.OCR && (
@@ -165,7 +190,42 @@ export default function NotebookPage() {
           )}
 
           {step === STEP.RESULT && result && (
-            <NotebookResults result={result} onReset={handleReset} />
+            <div className="flex flex-col gap-5">
+              <div className="mb-2">
+                <div className="flex items-center gap-2 mb-2.5">
+                  <span className="w-[3px] h-[11px] bg-[#4a4a60] rounded-full" />
+                  <label
+                    className="text-[10px] font-mono text-[#6a6a80] tracking-[.18em] font-semibold uppercase"
+                    style={{ fontFamily: 'JetBrains Mono, monospace' }}
+                  >
+                    {t('analyze.sentenceToAnalyze')}
+                  </label>
+                </div>
+                <div className="px-4 py-3 text-sm rounded-xl" style={{ fontFamily: 'Inter, sans-serif', background: 'rgba(20,20,20,0.5)', border: '1px solid rgba(255,255,255,0.05)', color: '#a0a0b0' }}>
+                  {result.input}
+                </div>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-2">
+                <button
+                  onClick={handleReset}
+                  className="px-4 py-[14px] rounded-xl text-[12px] font-mono transition-all whitespace-nowrap sm:w-auto w-full text-center"
+                  style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    border: '1px solid rgba(255,255,255,0.1)',
+                    background: 'rgba(255,255,255,0.03)',
+                    color: '#8a8aaa',
+                    letterSpacing: '.06em',
+                  }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.15)'; e.currentTarget.style.color='#c0c0d0'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; e.currentTarget.style.color='#8a8aaa'; }}
+                >
+                  {t('analyze.newAnalyze')}
+                </button>
+              </div>
+
+              <ResultCards result={result} />
+            </div>
           )}
         </div>
       </div>

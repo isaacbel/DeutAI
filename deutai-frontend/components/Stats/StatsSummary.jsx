@@ -1,28 +1,31 @@
 'use client';
 import { Activity, AlertTriangle, Gauge } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function StatsSummary({ stats }) {
+  const { t, lang } = useLanguage();
+  const locale = lang === 'ar' ? 'ar-EG' : 'de-DE';
   const { totalAnalyses = 0, totalErrors = 0, errorRate = 0 } = stats || {};
 
   const items = [
     {
-      label: 'Analyses',
-      value: totalAnalyses.toLocaleString('fr-FR'),
+      label: t('stats.labelAnalyses'),
+      value: totalAnalyses.toLocaleString(locale),
       icon: Activity,
       color: '#7dd3fc',
       bg: 'rgba(125,211,252,0.07)',
       border: 'rgba(125,211,252,0.15)',
     },
     {
-      label: 'Erreurs',
-      value: totalErrors.toLocaleString('fr-FR'),
+      label: t('stats.labelErrors'),
+      value: totalErrors.toLocaleString(locale),
       icon: AlertTriangle,
       color: '#fda4af',
       bg: 'rgba(253,164,175,0.07)',
       border: 'rgba(253,164,175,0.15)',
     },
     {
-      label: "Taux d'erreur",
+      label: t('stats.labelErrorRate'),
       value: `${Math.round(errorRate)}%`,
       icon: Gauge,
       color: errorRate > 70 ? '#f87171' : '#fcd34d',

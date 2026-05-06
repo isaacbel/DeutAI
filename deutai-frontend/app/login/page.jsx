@@ -2,9 +2,12 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import LoginForm from '@/components/Auth/LoginForm';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
+import LanguageSwitcher from '@/components/UI/LanguageSwitcher';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t, lang } = useLanguage();
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -14,7 +17,10 @@ export default function LoginPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen bg-black flex flex-col justify-center px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen bg-black flex flex-col justify-center px-4 py-12 relative overflow-hidden" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
+      <div className={`absolute top-4 z-20 ${lang === 'ar' ? 'left-4' : 'right-4'}`}>
+        <LanguageSwitcher isMobile={true} />
+      </div>
       {/* Background patterns */}
       <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
       <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black pointer-events-none" />
@@ -29,7 +35,7 @@ export default function LoginPage() {
             DeutAI
           </h1>
           <p className="system-subtitle mt-2" style={{ fontSize: '10px' }}>
-            CONNEXION SYSTÈME 404
+            {t('auth.loginSystem')}
           </p>
         </div>
 

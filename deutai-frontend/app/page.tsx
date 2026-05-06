@@ -3,56 +3,76 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import LanguageSwitcher from '@/components/UI/LanguageSwitcher';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
-const FEATURES = [
-
+const FEATURES_DE = [
   {
     icon: '⚡',
-    title: 'Analyse instantanée',
-    desc: 'Détection de toutes les erreurs grammaticales en temps réel grâce à une chaîne de fournisseurs IA (Groq, Gemini, OpenAI).',
+    title: 'Sofortanalyse',
+    desc: 'Erkennung aller Grammatikfehler in Echtzeit durch eine Kette von KI-Anbietern (Groq, Gemini, OpenAI).',
     color: '#C9A227',
   },
   {
     icon: '🔬',
-    title: '27 types d\'erreurs',
-    desc: 'Taxonomie complète : conjugaison, déclinaison, ordre des mots, verbes séparables, infinitif + zu et bien plus.',
+    title: '27 Fehlertypen',
+    desc: 'Vollständige Taxonomie: Konjugation, Deklination, Wortstellung, trennbare Verben, Infinitiv + zu und vieles mehr.',
     color: '#55C4E0',
   },
   {
     icon: '🃏',
-    title: 'Flashcards automatiques',
-    desc: 'Chaque erreur génère automatiquement une carte mémoire avec correction, règle et variantes naturelles.',
+    title: 'Automatische Lernkarten',
+    desc: 'Jeder Fehler erzeugt automatisch eine Lernkarte mit Korrektur, Regel und natürlichen Varianten.',
     color: '#4AB870',
   },
   {
     icon: '📊',
-    title: 'Statistiques personnelles',
-    desc: 'Suivez votre progression sur 30 jours et identifiez vos erreurs les plus fréquentes pour progresser efficacement.',
+    title: 'Persönliche Statistiken',
+    desc: 'Verfolgen Sie Ihren Fortschritt über 30 Tage und identifizieren Sie Ihre häufigsten Fehler.',
     color: '#B95DE0',
   },
   {
     icon: '📷',
-    title: 'Analyse d\'images',
-    desc: 'Photographiez votre texte manuscrit : l\'IA extrait et analyse le contenu directement depuis l\'image.',
+    title: 'Bildanalyse',
+    desc: 'Fotografieren Sie Ihren handgeschriebenen Text – die KI extrahiert und analysiert den Inhalt direkt.',
     color: '#E09955',
   },
   {
     icon: '📚',
-    title: 'Exercices ciblés',
-    desc: 'Deux exercices pédagogiques générés pour chaque analyse, adaptés au niveau A2–B2.',
+    title: 'Gezielte Übungen',
+    desc: 'Zwei pädagogische Übungen werden für jede Analyse generiert, angepasst an Niveau A2–B2.',
     color: '#E05252',
   },
 ];
 
-const HOW_IT_WORKS = [
-  { step: '01', title: 'Saisissez ou photographiez', desc: 'Entrez une phrase allemande ou prenez en photo votre cahier.' },
-  { step: '02', title: 'L\'IA analyse', desc: 'Notre orchestre de modèles détecte chaque erreur avec sa règle, explication et niveau de sévérité.' },
-  { step: '03', title: 'Mémorisez', desc: 'Des flashcards sont créées automatiquement pour ancrer chaque correction dans votre mémoire à long terme.' },
+const HOW_IT_WORKS_DE = [
+  { step: '01', title: 'Eingeben oder fotografieren', desc: 'Geben Sie einen deutschen Satz ein oder fotografieren Sie Ihr Notizheft.' },
+  { step: '02', title: 'KI analysiert', desc: 'Unser Ensemble von Modellen erkennt jeden Fehler mit Regel, Erklärung und Schweregrad.' },
+  { step: '03', title: 'Einprägen', desc: 'Lernkarten werden automatisch erstellt, um jede Korrektur im Langzeitgedächtnis zu verankern.' },
+];
+
+const FEATURES_AR = [
+  { icon: '⚡', title: 'تحليل فوري', desc: 'اكتشاف الأخطاء النحوية مباشرة عبر سلسلة مزودي الذكاء الاصطناعي.', color: '#C9A227' },
+  { icon: '🔬', title: '27 نوعا من الأخطاء', desc: 'تصنيف شامل: التصريف، الإعراب، ترتيب الكلمات، والأفعال المنفصلة وغيرها.', color: '#55C4E0' },
+  { icon: '🃏', title: 'بطاقات مراجعة تلقائية', desc: 'كل خطأ ينتج بطاقة مراجعة مع التصحيح والقاعدة وصياغات طبيعية.', color: '#4AB870' },
+  { icon: '📊', title: 'إحصاءات شخصية', desc: 'تابع تقدمك خلال 30 يوما وحدد أخطاءك الأكثر تكرارا.', color: '#B95DE0' },
+  { icon: '📷', title: 'تحليل الصور', desc: 'صوّر نصك المكتوب بخط اليد ليتم استخراجه وتحليله تلقائيا.', color: '#E09955' },
+  { icon: '📚', title: 'تمارين موجهة', desc: 'يتم إنشاء تمرينين تعليميين لكل تحليل بما يناسب مستوى A2-B2.', color: '#E05252' },
+];
+
+const HOW_IT_WORKS_AR = [
+  { step: '01', title: 'اكتب أو صوّر النص', desc: 'أدخل جملة بالألمانية أو التقط صورة لدفترك.' },
+  { step: '02', title: 'الذكاء الاصطناعي يحلل', desc: 'تكتشف النماذج كل خطأ مع القاعدة والشرح ومستوى الخطورة.' },
+  { step: '03', title: 'ثبّت المعلومة', desc: 'تُنشأ بطاقات مراجعة تلقائيا لترسيخ كل تصحيح في الذاكرة طويلة المدى.' },
 ];
 
 export default function RootPage() {
   const router = useRouter();
+  const { t, lang } = useLanguage();
   const [checkingAuth, setCheckingAuth] = useState(true);
+
+  const localizedFeatures = lang === 'ar' ? FEATURES_AR : FEATURES_DE;
+  const localizedHowItWorks = lang === 'ar' ? HOW_IT_WORKS_AR : HOW_IT_WORKS_DE;
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -75,11 +95,10 @@ export default function RootPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#080809] text-[#E0E0E0] overflow-x-hidden">
+    <div className="min-h-screen bg-[#080809] text-[#E0E0E0] overflow-x-hidden" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
 
-        /* grid texture */
         .lp-grid {
           position: fixed; inset: 0; pointer-events: none; z-index: 0;
           background-image:
@@ -88,14 +107,12 @@ export default function RootPage() {
           background-size: 52px 52px;
         }
 
-        /* glow blob */
         .lp-blob {
           position: absolute; border-radius: 50%;
           background: radial-gradient(circle, #C9A22718 0%, transparent 70%);
           filter: blur(80px); pointer-events: none;
         }
 
-        /* feature card */
         .lp-feat-card {
           background: #111113;
           border: 1px solid #1e1e26;
@@ -110,7 +127,6 @@ export default function RootPage() {
           box-shadow: 0 12px 40px rgba(0,0,0,0.5);
         }
 
-        /* step card */
         .lp-step {
           display: flex; gap: 20px; align-items: flex-start;
           padding: 24px;
@@ -125,7 +141,6 @@ export default function RootPage() {
           background: linear-gradient(to bottom, #C9A22780, transparent);
         }
 
-        /* CTA primary */
         .lp-cta-primary {
           display: inline-flex; align-items: center; justify-content: center;
           padding: 14px 36px;
@@ -146,7 +161,6 @@ export default function RootPage() {
         }
         .lp-cta-primary:active { transform: scale(0.97); }
 
-        /* CTA secondary */
         .lp-cta-secondary {
           display: inline-flex; align-items: center; justify-content: center;
           padding: 13px 36px;
@@ -166,7 +180,6 @@ export default function RootPage() {
           transform: translateY(-2px);
         }
 
-        /* nav */
         .lp-nav {
           position: fixed; top: 0; left: 0; right: 0; z-index: 50;
           height: 60px;
@@ -176,8 +189,9 @@ export default function RootPage() {
           display: flex; align-items: center; justify-content: space-between;
           padding: 0 24px;
         }
+        .lp-nav-right { display: flex; gap: 12px; align-items: center; margin-inline-start: auto; }
+        .lp-nav-left { display: flex; align-items: center; gap: 10px; }
 
-        /* stat card */
         .lp-stat {
           display: flex; flex-direction: column; align-items: center; gap: 6px;
           padding: 28px 24px;
@@ -187,7 +201,6 @@ export default function RootPage() {
           flex: 1; min-width: 140px;
         }
 
-        /* section headings */
         .lp-section-label {
           font-family: 'JetBrains Mono', monospace;
           font-size: 10px; letter-spacing: 4px;
@@ -223,19 +236,20 @@ export default function RootPage() {
 
       {/* ── Nav ── */}
       <nav className="lp-nav">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Image src="/logo-transparent.png" alt="DeutAI" width={28} height={28} style={{ objectFit: 'contain' }} />
+        <div className="lp-nav-left">
+          <Image src="/deutai-pen-logo.png" alt="DeutAI" width={28} height={28} style={{ objectFit: 'contain' }} />
           <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', fontWeight: 600, color: '#C9A227', letterSpacing: '3px' }}>
             DEUTAI
           </span>
         </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
+        <div className="lp-nav-right">
+          <LanguageSwitcher isMobile={true} />
           <Link href="/login" className="lp-cta-secondary" style={{ padding: '8px 20px', fontSize: '12px' }}>
-            Connexion
+            {t('nav.login')}
           </Link>
           <Link href="/register" className="lp-cta-primary" style={{ padding: '8px 20px', fontSize: '12px' }}>
-            Commencer
-          </Link> 
+            {t('nav.start')}
+          </Link>
         </div>
       </nav>
 
@@ -246,43 +260,38 @@ export default function RootPage() {
         justifyContent: 'center', paddingTop: '80px', paddingBottom: '60px',
         overflow: 'hidden',
       }}>
-        {/* blob */}
         <div className="lp-blob" style={{ width: '700px', height: '700px', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
 
-        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', maxWidth: '720px', padding: '0 24px' }}>
-          {/* logo */}
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
           <div className="hero-1" style={{ marginBottom: '36px', filter: 'drop-shadow(0 0 60px rgba(201,162,39,0.3))' }}>
-            <Image src="/logo-transparent.png" alt="DeutAI" width={190} height={190} style={{ objectFit: 'contain' }} priority />
+            <Image src="/deutai-pen-logo.png" alt="DeutAI" width={190} height={190} style={{ objectFit: 'contain' }} priority />
           </div>
 
-          {/* headline */}
           <h1 className="hero-3" style={{
             fontFamily: "'Playfair Display', Georgia, serif",
             fontSize: 'clamp(36px, 8vw, 72px)',
             fontWeight: 700, lineHeight: 1.1,
             color: '#e8e8f0', margin: '0 0 20px',
           }}>
-            Corrigez votre<br />
-            <em style={{ color: '#C9A227', fontStyle: 'italic' }}>Allemand</em> sans effort
+            {t('landing.heroTitle1')}<br />
+            <em style={{ color: '#C9A227', fontStyle: 'italic' }}>{t('landing.heroTitle2')}</em>
           </h1>
 
-          {/* sub */}
           <p className="hero-3" style={{
             fontFamily: 'Inter, sans-serif',
             fontSize: 'clamp(15px, 2vw, 17px)',
             color: '#6a6a7a', lineHeight: 1.75,
             margin: '0 0 44px', maxWidth: '520px',
           }}>
-            L'intelligence artificielle détecte <strong style={{ color: '#a0a0b0', fontWeight: 500 }}>toutes vos erreurs grammaticales</strong>, génère des corrections détaillées et crée vos flashcards de mémorisation — automatiquement.
+            {t('landing.heroSub')}
           </p>
 
-          {/* CTAs */}
           <div className="hero-4" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', justifyContent: 'center' }}>
             <Link href="/register" className="lp-cta-primary">
-              Commencer gratuitement →
+              {t('landing.startFree')}
             </Link>
             <Link href="/login" className="lp-cta-secondary">
-              Se connecter
+              {t('landing.signIn')}
             </Link>
           </div>
         </div>
@@ -293,12 +302,10 @@ export default function RootPage() {
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
           animation: 'hero-rise 1s ease 1s both',
         }}>
-          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '9px', color: '#303038', letterSpacing: '3px' }}>DÉFILER</span>
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '9px', color: '#303038', letterSpacing: '3px' }}>{t('landing.scroll')}</span>
           <div style={{ width: '1px', height: '32px', background: 'linear-gradient(to bottom, #303038, transparent)' }} />
         </div>
       </section>
-
-
 
       {/* ── FEATURES ── */}
       <section style={{ position: 'relative', zIndex: 1, padding: '0 24px 80px', maxWidth: '1040px', margin: '0 auto' }}>
@@ -308,17 +315,17 @@ export default function RootPage() {
             fontSize: '11px', letterSpacing: '5px',
             textTransform: 'uppercase', color: '#C9A22799',
             marginBottom: '16px',
-          }}>Fonctionnalités</p>
+          }}>{t('landing.features')}</p>
           <h2 style={{
             fontFamily: "'Playfair Display', Georgia, serif",
             fontSize: 'clamp(36px, 6vw, 56px)',
             fontWeight: 600, color: '#e8e8f0',
             lineHeight: 1.2, margin: 0,
-          }}>Tout ce dont vous avez<br /><em style={{ color: '#C9A227', fontStyle: 'italic' }}>besoin pour progresser</em></h2>
+          }}>{t('landing.featuresTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic' }}>{t('landing.featuresTitle2')}</em></h2>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
-          {FEATURES.map((f, i) => (
+          {localizedFeatures.map((f, i) => (
             <div
               key={i}
               className="lp-feat-card"
@@ -326,13 +333,11 @@ export default function RootPage() {
               onMouseEnter={e => (e.currentTarget.style.borderColor = f.color + '40')}
               onMouseLeave={e => (e.currentTarget.style.borderColor = '#1e1e26')}
             >
-              {/* top accent */}
               <div style={{
                 position: 'absolute', top: 0, left: 20, right: 20, height: '2px',
                 background: `linear-gradient(90deg, transparent, ${f.color}60, transparent)`,
                 borderRadius: '0 0 2px 2px',
               }} />
-
               <div style={{ fontSize: '30px', lineHeight: 1, marginBottom: '4px' }}>{f.icon}</div>
               <h3 style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
@@ -363,17 +368,17 @@ export default function RootPage() {
             fontSize: '11px', letterSpacing: '5px',
             textTransform: 'uppercase', color: '#C9A22799',
             marginBottom: '16px',
-          }}>Processus</p>
+          }}>{t('landing.process')}</p>
           <h2 style={{
             fontFamily: "'Playfair Display', Georgia, serif",
             fontSize: 'clamp(36px, 6vw, 56px)',
             fontWeight: 600, color: '#e8e8f0',
             lineHeight: 1.2, margin: 0,
-          }}>Comment ça<br /><em style={{ color: '#C9A227', fontStyle: 'italic' }}>fonctionne ?</em></h2>
+          }}>{t('landing.processTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic' }}>{t('landing.processTitle2')}</em></h2>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          {HOW_IT_WORKS.map((h, i) => (
+          {localizedHowItWorks.map((h, i) => (
             <div key={i} className="lp-step">
               <div style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
@@ -417,39 +422,37 @@ export default function RootPage() {
           border: '1px solid #1e1e26',
           position: 'relative', overflow: 'hidden',
         }}>
-          {/* glow */}
           <div style={{
             position: 'absolute', inset: 0, pointerEvents: 'none',
             background: 'radial-gradient(ellipse at 50% 0%, rgba(201,162,39,0.08) 0%, transparent 65%)',
           }} />
-          {/* top stripe */}
           <div style={{
             position: 'absolute', top: 0, left: 40, right: 40, height: '2px',
             background: 'linear-gradient(90deg, transparent, #C9A227, transparent)',
           }} />
 
-          <p className="lp-section-label">Prêt à progresser ?</p>
+          <p className="lp-section-label">{t('landing.ready')}</p>
           <h2 style={{
             fontFamily: "'Playfair Display', Georgia, serif",
             fontSize: 'clamp(26px, 5vw, 38px)',
             fontWeight: 600, color: '#e8e8f0',
             lineHeight: 1.3, margin: '0 0 16px',
           }}>
-            Commencez à corriger<br />votre <em style={{ color: '#C9A227' }}>Allemand dès maintenant</em>
+            {t('landing.ctaTitle1')}<br /><em style={{ color: '#C9A227' }}>{t('landing.ctaTitle2')}</em>
           </h2>
           <p style={{
             fontFamily: 'Inter, sans-serif', fontSize: '14px',
             color: '#484858', lineHeight: 1.7, margin: '0 0 36px',
           }}>
-            Gratuit, sans carte bancaire. Rejoignez les apprenants qui font confiance au Système 404.
+            {t('landing.ctaSub')}
           </p>
 
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/register" className="lp-cta-primary">
-              Créer un compte gratuit
+              {t('landing.createFreeAccount')}
             </Link>
             <Link href="/login" className="lp-cta-secondary">
-              J'ai déjà un compte
+              {t('landing.haveAccount')}
             </Link>
           </div>
         </div>
@@ -464,18 +467,18 @@ export default function RootPage() {
         maxWidth: '1040px', margin: '0 auto',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Image src="/logo-transparent.png" alt="DeutAI" width={32} height={32} style={{ objectFit: 'contain', opacity: 0.7 }} />
+          <Image src="/deutai-pen-logo.png" alt="DeutAI" width={32} height={32} style={{ objectFit: 'contain', opacity: 0.7 }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
             <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '18px', fontWeight: 600, color: '#C9A227', letterSpacing: '1px' }}>
               DeutAI
             </span>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color: '#48485a', letterSpacing: '3px' }}>
-              DEUTAI · SYSTÈME 404
+              {t('app.deutaiSystem404')}
             </span>
           </div>
         </div>
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '11px', color: '#3a3a4a', letterSpacing: '3px' }}>
-          PROPULSÉ PAR IA · 2026
+          {t('app.poweredByAi')}
         </span>
       </footer>
     </div>

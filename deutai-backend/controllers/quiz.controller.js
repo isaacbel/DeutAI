@@ -11,25 +11,30 @@ const ALLOWED_CATEGORIES = new Set([
 
 const DIFFICULTY_POINTS = { easy: 1, medium: 2, hard: 3 };
 
-function buildSystemPrompt() {
+function buildSystemPrompt(lang) {
+  const isAr = lang === 'ar';
+  const isDe = lang === 'de';
+  const uiLanguage = isAr ? 'arabe' : isDe ? 'allemand' : 'français';
+
   return `Tu es un expert en didactique de l'allemand (langue cible : allemand). Tu génères des questions de quiz au format JSON strict.
 
 RÈGLES ABSOLUES :
 - Réponds UNIQUEMENT avec un tableau JSON valide. Aucun texte avant ou après. Aucun markdown. Aucun \`\`\`.
+- L'interface de l'utilisateur est en ${uiLanguage}. L'énoncé de la question ("question") et l'explication ("explanation") DOIVENT être en ${uiLanguage} ! Le contenu à tester (les options ou la réponse attendue) reste en allemand si pertinent.
 - Chaque élément du tableau est un objet avec exactement ces clés :
   - "id" : chaîne unique (ex: "q1", "q2", …)
   - "type" : l'un de "multiple_choice" | "true_false" | "fill_blank" | "translation"
-  - "question" : énoncé en français ou bilingue court ; l'allemand demandé doit être correct pédagogiquement
+  - "question" : énoncé en ${uiLanguage} ou bilingue court ; l'allemand demandé doit être correct pédagogiquement
   - "options" : tableau de 4 chaînes UNIQUEMENT si type === "multiple_choice", sinon omets la clé ou mets null
-  - "correctAnswer" : chaîne — la bonne réponse exacte attendue
-  - "explanation" : brève explication en français (1–3 phrases)
+  - "correctAnswer" : chaîne — la bonne réponse exacte attendue. (Pour true_false, utilise exactement "true" ou "false").
+  - "explanation" : brève explication en ${uiLanguage} (1–3 phrases)
   - "points" : nombre entier (sera validé côté serveur selon la difficulté)
 
 TYPES DE QUESTIONS :
 - multiple_choice : exactement 4 options, une seule correcte. Les options peuvent être en allemand.
-- true_false : correctAnswer doit être exactement "Vrai" ou "Faux" (l'énoncé est une affirmation sur l'allemand)
+- true_false : correctAnswer doit être exactement "true" ou "false" (l'énoncé est une affirmation sur l'allemand).
 - fill_blank : question avec un trou (___) ou consigne claire ; correctAnswer est la forme allemande attendue (un mot ou courte phrase)
-- translation : consigne pour traduire une phrase ou un segment vers l'allemand (ou depuis l'allemand selon le cas pédagogique) ; correctAnswer est la traduction modèle attendue
+- translation : consigne pour traduire une phrase ou un segment vers l'allemand (ou depuis l'allemand) ; correctAnswer est la traduction modèle attendue
 
 RÉPARTITION SELON LA CATÉGORIE (approximatif, mélange intelligent) :
 - vocabulaire : surtout multiple_choice, quelques true_false
@@ -44,7 +49,7 @@ NIVEAU DE DIFFICULTÉ :
 - medium : B1, nuances modérées
 - hard : B2+, pièges fréquents, structures complexes
 
-Les explications doivent être pédagogiques et en français.`;
+Les explications doivent être pédagogiques et en ${uiLanguage}.`;
 }
 
 function buildUserPrompt(category, difficulty, count, pointsPerQuestion) {
@@ -108,7 +113,7 @@ exports.generateQuiz = async (req, res) => {
       return res.status(503).json({ error: 'CONFIG', message: 'Clé API OpenRouter non configurée dans le backend.' });
     }
 
-    const { category: rawCategory = '', difficulty: rawDifficulty = 'medium', count: rawCount = 10 } = req.body;
+    const { category: rawCategory = '', difficulty: rawDifficulty = 'medium', count: rawCount = 10, lang = 'fr' } = req.body;
     const category = String(rawCategory).toLowerCase().trim();
     const difficulty = String(rawDifficulty).toLowerCase().trim();
     const count = Math.min(20, Math.max(1, parseInt(rawCount, 10) || 10));
@@ -130,7 +135,7 @@ exports.generateQuiz = async (req, res) => {
     const completion = await openai.chat.completions.create({
       model: 'openai/gpt-4o-mini',
       messages: [
-        { role: 'system', content: buildSystemPrompt() },
+        { role: 'system', content: buildSystemPrompt(lang) },
         { role: 'user', content: buildUserPrompt(category, difficulty, count, pointsPerQuestion) },
       ],
       temperature: 0.2,

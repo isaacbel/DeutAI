@@ -3,8 +3,10 @@
 import { useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 function AdminLoginForm() {
+  const { t } = useLanguage();
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -24,14 +26,14 @@ function AdminLoginForm() {
       });
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.message || 'Accès refusé.');
+        setError(data.message || t('admin.accessDenied'));
         setLoading(false);
         return;
       }
       router.push(next);
       router.refresh();
     } catch {
-      setError('Erreur réseau.');
+      setError(t('admin.networkError'));
     } finally {
       setLoading(false);
     }
@@ -51,15 +53,15 @@ function AdminLoginForm() {
         }}
       >
         <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-2" style={{ color: '#c9a227' }}>
-          Administration
+          {t('admin.title')}
         </p>
         <h1 className="font-sans text-xl font-semibold mb-6" style={{ color: '#f1d98d' }}>
-          Connexion
+          {t('admin.login')}
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block font-mono text-[10px] tracking-wider uppercase mb-2" style={{ color: '#6b7088' }}>
-              Mot de passe
+              {t('admin.password')}
             </label>
             <input
               type="password"
@@ -90,11 +92,11 @@ function AdminLoginForm() {
               border: 'none',
             }}
           >
-            {loading ? '…' : 'Entrer'}
+            {loading ? '…' : t('admin.enter')}
           </button>
         </form>
         <Link href="/" className="mt-6 block text-center font-mono text-[10px] uppercase" style={{ color: '#6b7088' }}>
-          ← Accueil
+          {t('admin.home')}
         </Link>
       </div>
     </div>

@@ -1,42 +1,17 @@
 'use client';
+import { useState, useEffect } from 'react';
 import { ShieldAlert, CheckCircle2, Tag, AlertTriangle, AlertCircle, Info } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
-const ERROR_TYPE_LABELS = {
-  // Grammar & Morphology
-  conjugaison:        'CONJUGAISON',
-  temps:              'TEMPS VERBAL',
-  auxiliaire:         'AUXILIAIRE',
-  déclinaison:        'DÉCLINAISON',
-  genre:              'GENRE',
-  nombre:             'NOMBRE',
-  accord:             'ACCORD',
-  // Syntax
-  ordre:              'ORDRE DES MOTS',
-  position_verbe:     'POSITION VERBE',
-  subordonnée:        'SUBORDONNÉE',
-  // Prepositions
-  préposition:        'PRÉPOSITION',
-  cas_prépositionnel: 'CAS PRÉP.',
-  // Vocabulary
-  choix_mot:          'CHOIX DU MOT',
-  faux_ami:           'FAUX AMI',
-  collocation:        'COLLOCATION',
-  registre:           'REGISTRE',
-  // Writing
-  orthographe:        'ORTHOGRAPHE',
-  majuscule:          'MAJUSCULE',
-  ponctuation:        'PONCTUATION',
-  // German-specific
-  verbe_séparable:    'VERBE SÉPARABLE',
-  infinitif_zu:       'INFINITIF + ZU',
-  modalverbe:         'VERBE MODAL',
-  // Other
-  autre:              'AUTRE',
-  aucun:              'AUCUNE ERREUR',
-};
+// Error type keys — labels now come from t() at render time
+const ERROR_TYPE_KEYS = [
+  'conjugaison', 'temps', 'auxiliaire', 'déclinaison', 'genre', 'nombre', 'accord',
+  'ordre', 'position_verbe', 'subordonnée', 'préposition', 'cas_prépositionnel',
+  'choix_mot', 'faux_ami', 'collocation', 'registre', 'orthographe', 'majuscule',
+  'ponctuation', 'verbe_séparable', 'infinitif_zu', 'modalverbe', 'autre', 'aucun',
+];
 
 const ERROR_TYPE_COLORS = {
-  // Grammar (red family)
   conjugaison:        '#e05252',
   temps:              '#e06060',
   auxiliaire:         '#CC4444',
@@ -44,44 +19,37 @@ const ERROR_TYPE_COLORS = {
   genre:              '#d64f8f',
   nombre:             '#c94477',
   accord:             '#d94d9a',
-  // Syntax (purple family)
   ordre:              '#b95de0',
   position_verbe:     '#9f4dd0',
   subordonnée:        '#8a40c0',
-  // Prepositions (teal family)
   préposition:        '#55c4e0',
   cas_prépositionnel: '#3db0cc',
-  // Vocabulary (orange family)
   choix_mot:          '#e09955',
   faux_ami:           '#e08844',
   collocation:        '#d07840',
   registre:           '#c07038',
-  // Writing (blue family)
   orthographe:        '#5588e0',
   majuscule:          '#4477cc',
   ponctuation:        '#3366bb',
-  // German-specific (green family)
   verbe_séparable:    '#4ab870',
   infinitif_zu:       '#3da060',
   modalverbe:         '#339050',
-  // Other
   autre:              '#888888',
   aucun:              '#4A9A4A',
 };
 
-const SEVERITY_CONFIG = {
-  high:   { icon: AlertTriangle, color: '#e05252', label: 'CRITIQUE' },
-  medium: { icon: AlertCircle,   color: '#e09955', label: 'IMPORTANT' },
-  low:    { icon: Info,          color: '#5588e0', label: 'MINEUR' },
-};
-
-function SingleErrorCard({ error, index, originalSentence }) {
+function SingleErrorCard({ error, index, originalSentence, t }) {
   const typeColor = ERROR_TYPE_COLORS[error.errorType] || '#CC5555';
-  const typeLabel = ERROR_TYPE_LABELS[error.errorType] || (error.errorType?.toUpperCase() ?? 'ERREUR');
-  const severity = SEVERITY_CONFIG[error.severity] || SEVERITY_CONFIG.medium;
+  const typeLabel = t(`errorCard.errorTypes.${error.errorType}`) || (error.errorType?.toUpperCase() ?? t('errorCard.noError'));
+
+  const severityConfig = {
+    high:   { icon: AlertTriangle, color: '#e05252', label: t('errorCard.critical') },
+    medium: { icon: AlertCircle,   color: '#e09955', label: t('errorCard.important') },
+    low:    { icon: Info,          color: '#5588e0', label: t('errorCard.minor') },
+  };
+  const severity = severityConfig[error.severity] || severityConfig.medium;
   const SeverityIcon = severity.icon;
 
-  // Highlight the error in the original sentence
   const renderHighlightedSentence = () => {
     if (!originalSentence || !error.errorText) {
       return <span style={{ color: '#999' }}>{originalSentence || error.errorText}</span>;
@@ -128,7 +96,6 @@ function SingleErrorCard({ error, index, originalSentence }) {
       {/* Header row */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', paddingLeft: '6px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {/* Error number */}
           <div style={{
             width: '20px', height: '20px', borderRadius: '50%',
             background: `${typeColor}20`, border: `1px solid ${typeColor}40`,
@@ -138,7 +105,6 @@ function SingleErrorCard({ error, index, originalSentence }) {
           }}>
             {index + 1}
           </div>
-          {/* Type badge */}
           <div style={{
             display: 'flex', alignItems: 'center', gap: '4px',
             fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
@@ -204,11 +170,11 @@ function SingleErrorCard({ error, index, originalSentence }) {
 }
 
 export default function ErrorCard({ result }) {
+  const { t } = useLanguage();
   const { hasErrors, hasError, errors = [], originalSentence, input } = result;
   const hasAnyError = hasErrors ?? hasError ?? false;
   const sentence = originalSentence || input || '';
 
-  /* ── Phrase correcte ── */
   if (!hasAnyError || errors.length === 0) {
     return (
       <div
@@ -225,22 +191,21 @@ export default function ErrorCard({ result }) {
             className="text-[11px] font-mono tracking-[0.2em] text-[#4A9A4A] font-bold"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
-            AUCUNE ERREUR DÉTECTÉE
+            {t('errorCard.noError').toUpperCase()}
           </span>
         </div>
         <p className="text-sm text-text-muted leading-relaxed pl-0.5" style={{ fontFamily: 'Inter, sans-serif' }}>
-          La phrase est grammaticalement correcte.
+          {t('errorCard.noErrorMessage')}
         </p>
         {sentence && (
           <p className="text-sm mt-3 pl-0.5" style={{ fontFamily: 'Inter, sans-serif', color: '#4A9A4A', fontStyle: 'italic' }}>
-            "{sentence}"
+            &ldquo;{sentence}&rdquo;
           </p>
         )}
       </div>
     );
   }
 
-  /* ── Erreurs détectées ── */
   return (
     <div className="flex flex-col gap-3">
       {/* Header summary */}
@@ -258,7 +223,7 @@ export default function ErrorCard({ result }) {
               className="text-[11px] font-mono tracking-[0.2em] text-error font-bold"
               style={{ fontFamily: 'JetBrains Mono, monospace' }}
             >
-              {errors.length} ERREUR{errors.length > 1 ? 'S' : ''} DÉTECTÉE{errors.length > 1 ? 'S' : ''}
+              {t(errors.length > 1 ? 'errorCard.errorsDetected_other' : 'errorCard.errorsDetected_one', { count: errors.length }).toUpperCase()}
             </span>
           </div>
           {/* Error count bubbles by severity */}
@@ -266,7 +231,12 @@ export default function ErrorCard({ result }) {
             {['high', 'medium', 'low'].map(sev => {
               const count = errors.filter(e => e.severity === sev).length;
               if (!count) return null;
-              const cfg = SEVERITY_CONFIG[sev];
+              const severityConfig = {
+                high:   { color: '#e05252', label: t('errorCard.critical') },
+                medium: { color: '#e09955', label: t('errorCard.important') },
+                low:    { color: '#5588e0', label: t('errorCard.minor') },
+              };
+              const cfg = severityConfig[sev];
               return (
                 <span key={sev} style={{
                   fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
@@ -289,6 +259,7 @@ export default function ErrorCard({ result }) {
           index={i}
           error={error}
           originalSentence={sentence}
+          t={t}
         />
       ))}
     </div>

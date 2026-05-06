@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 function normalizeText(s) {
   return String(s || '')
@@ -31,6 +32,7 @@ const TYPE_LABELS = {
 };
 
 export default function QuestionCard({ question, onAdvance, questionNumber, totalQuestions }) {
+  const { t } = useLanguage();
   const [choice, setChoice] = useState('');
   const [textValue, setTextValue] = useState('');
   const [submitted, setSubmitted] = useState(false);
@@ -97,10 +99,10 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
               color: '#c9a227',
             }}
           >
-            {TYPE_LABELS[question.type] || question.type}
+            {t(`quiz.type_${question.type}`) || question.type}
           </span>
           <span className="font-mono text-[10px] text-[#5c6078] tracking-wider">
-            +{question.points} pt{question.points > 1 ? 's' : ''}
+            +{question.points} {t('quiz.pts')}
           </span>
         </div>
       </div>
@@ -137,13 +139,13 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
 
       {!submitted && question.type === 'true_false' && (
         <div className="flex gap-3">
-          {['Vrai', 'Faux'].map((v) => {
-            const active = choice === v;
+          {[ { id: 'true', label: t('quiz.true') }, { id: 'false', label: t('quiz.false') } ].map((v) => {
+            const active = choice === v.id;
             return (
               <button
-                key={v}
+                key={v.id}
                 type="button"
-                onClick={() => setChoice(v)}
+                onClick={() => setChoice(v.id)}
                 className="flex-1 rounded-xl py-3 font-mono text-[12px] tracking-[0.12em] uppercase"
                 style={{
                   background: active ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
@@ -151,7 +153,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
                   color: active ? '#f1d98d' : '#8a90a8',
                 }}
               >
-                {v}
+                {v.label}
               </button>
             );
           })}
@@ -163,7 +165,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
           value={textValue}
           onChange={(e) => setTextValue(e.target.value)}
           rows={question.type === 'translation' ? 4 : 2}
-          placeholder="Votre réponse en allemand…"
+          placeholder={t('quiz.yourAnswerGerman')}
           className="w-full rounded-xl px-4 py-3 font-sans text-[14px] outline-none resize-none"
           style={{
             background: 'rgba(0,0,0,0.35)',
@@ -190,7 +192,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
             boxShadow: '0 4px 20px rgba(201,162,39,0.35)',
           }}
         >
-          Valider
+          {t('quiz.validate')}
         </button>
       )}
 
@@ -213,12 +215,12 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
               )}
               <div>
                 <p className="font-mono text-[11px] tracking-[0.14em] uppercase mb-1" style={{ color: correct ? '#6ee7b7' : '#fca5a5' }}>
-                  {correct ? 'Bonne réponse' : 'Mauvaise réponse'}
+                  {correct ? t('quiz.correctAnswerMsg') : t('quiz.wrongAnswerMsg')}
                 </p>
                 {!correct && (
                   <p className="text-[13px] font-sans mb-2" style={{ color: '#e8e8f0' }}>
-                    <span className="text-[#8a90a8]">Attendu : </span>
-                    <span className="text-[#f1d98d]">{question.correctAnswer}</span>
+                    <span className="text-[#8a90a8]">{t('quiz.expected')}</span>
+                    <span className="text-[#f1d98d]">{question.type === 'true_false' ? (question.correctAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : question.correctAnswer}</span>
                   </p>
                 )}
                 <p className="text-[13px] font-sans leading-relaxed" style={{ color: '#b8bdd4' }}>
@@ -237,7 +239,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
                 color: '#c9a227',
               }}
             >
-              {questionNumber >= totalQuestions ? 'Voir les résultats' : 'Question suivante'}
+              {questionNumber >= totalQuestions ? t('quiz.seeResults') : t('quiz.nextQuestion')}
               <ArrowRight size={16} />
             </button>
           </motion.div>

@@ -1,9 +1,9 @@
 'use client';
 import { useState } from 'react';
 import { BookOpen, GraduationCap, Eye, EyeOff, ChevronDown, ChevronUp } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 const ERROR_TYPE_COLORS = {
-  // Grammar (red family)
   conjugaison:        '#e05252',
   temps:              '#e06060',
   auxiliaire:         '#CC4444',
@@ -11,27 +11,21 @@ const ERROR_TYPE_COLORS = {
   genre:              '#d64f8f',
   nombre:             '#c94477',
   accord:             '#d94d9a',
-  // Syntax (purple family)
   ordre:              '#b95de0',
   position_verbe:     '#9f4dd0',
   subordonnée:        '#8a40c0',
-  // Prepositions (teal family)
   préposition:        '#55c4e0',
   cas_prépositionnel: '#3db0cc',
-  // Vocabulary (orange family)
   choix_mot:          '#e09955',
   faux_ami:           '#e08844',
   collocation:        '#d07840',
   registre:           '#c07038',
-  // Writing (blue family)
   orthographe:        '#5588e0',
   majuscule:          '#4477cc',
   ponctuation:        '#3366bb',
-  // German-specific (green family)
   verbe_séparable:    '#4ab870',
   infinitif_zu:       '#3da060',
   modalverbe:         '#339050',
-  // Other
   autre:              '#888888',
 };
 
@@ -74,7 +68,7 @@ function renderBilingualExplanation(text, language) {
   );
 }
 
-function ExerciseItem({ exercise, index }) {
+function ExerciseItem({ exercise, index, t }) {
   const [revealed, setRevealed] = useState(false);
 
   return (
@@ -128,7 +122,7 @@ function ExerciseItem({ exercise, index }) {
               <button
                 onClick={() => setRevealed(false)}
                 className="ml-auto text-gold/50 hover:text-gold transition-colors shrink-0"
-                title="Masquer"
+                title={t('errorCard.hideAnswer')}
               >
                 <EyeOff size={13} />
               </button>
@@ -140,7 +134,7 @@ function ExerciseItem({ exercise, index }) {
               style={{ fontFamily: 'JetBrains Mono, monospace' }}
             >
               <Eye size={12} />
-              RÉVÉLER LA RÉPONSE
+              {t('errorCard.revealAnswer')}
             </button>
           )}
         </div>
@@ -189,13 +183,11 @@ function ErrorRuleBlock({ error, index, explanationLanguage }) {
 
       {open && (
         <div style={{ padding: '0 14px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {/* Rule */}
           {error.rule && (
             <p className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: '#aaa', lineHeight: '1.75', margin: 0 }}>
               📖 {highlightKeywords(error.rule)}
             </p>
           )}
-          {/* Explanation */}
           {error.explanation && error.explanation !== error.rule && (
             <p className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: '#777', lineHeight: '1.75', margin: 0, fontStyle: 'italic' }}>
               💡 {renderBilingualExplanation(error.explanation, explanationLanguage)}
@@ -208,8 +200,9 @@ function ErrorRuleBlock({ error, index, explanationLanguage }) {
 }
 
 export default function RuleCard({ rule, exercises, errors = [], globalExplanation }) {
+  const { t, lang } = useLanguage();
   const [exercisesOpen, setExercisesOpen] = useState(true);
-  const [explanationLanguage, setExplanationLanguage] = useState('de');
+  const [explanationLanguage, setExplanationLanguage] = useState(lang);
   const hasExercises = exercises && exercises.length > 0;
   const hasMultiErrors = errors.length > 0;
   const hasBilingualExplanations = Boolean(
@@ -243,7 +236,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
           className="text-[11px] font-mono tracking-[0.2em] font-bold"
           style={{ fontFamily: 'JetBrains Mono, monospace', color: '#4A9A4A' }}
         >
-          RÈGLES GRAMMATICALES
+          {t('errorCard.grammarRules')}
         </span>
         {hasBilingualExplanations && (
           <div
@@ -283,7 +276,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
         </p>
       )}
 
-      {/* Per-error rules (new format) */}
+      {/* Per-error rules */}
       {hasMultiErrors ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: hasExercises ? '16px' : 0 }}>
           {errors.map((err, i) => (
@@ -291,7 +284,6 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
           ))}
         </div>
       ) : rule ? (
-        /* Legacy single rule */
         <p
           className="text-sm leading-relaxed text-text-muted pl-0.5 mb-4"
           style={{ fontFamily: 'Inter, sans-serif', lineHeight: '1.75' }}
@@ -313,7 +305,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
                 className="text-[10px] font-mono tracking-[0.2em] text-[#555] group-hover:text-gold/70 transition-colors"
                 style={{ fontFamily: 'JetBrains Mono, monospace' }}
               >
-                EXERCICES CIBLÉS
+                {t('errorCard.targetedExercises')}
               </span>
               <span
                 className="text-[9px] font-mono px-1.5 py-0.5 rounded"
@@ -337,7 +329,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
           {exercisesOpen && (
             <div className="mt-1">
               {exercises.map((ex, i) => (
-                <ExerciseItem key={i} exercise={ex} index={i} />
+                <ExerciseItem key={i} exercise={ex} index={i} t={t} />
               ))}
             </div>
           )}

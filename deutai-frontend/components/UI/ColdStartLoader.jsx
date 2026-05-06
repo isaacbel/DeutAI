@@ -1,14 +1,22 @@
 'use client';
 import { useState, useEffect } from 'react';
-
-const MESSAGES = [
-  { text: 'Initialisation du Système 404...', pct: 10 },
-  { text: 'Connexion aux bases grammaticales...', pct: 40 },
-  { text: 'Chargement des modules d\'analyse...', pct: 70 },
-  { text: 'Système prêt. Analyse disponible.', pct: 100 },
-];
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function ColdStartLoader() {
+  const { lang } = useLanguage();
+  const MESSAGES = lang === 'ar'
+    ? [
+      { text: 'جارٍ تهيئة النظام 404...', pct: 10 },
+      { text: 'الاتصال بقواعد النحو...', pct: 40 },
+      { text: 'تحميل وحدات التحليل...', pct: 70 },
+      { text: 'النظام جاهز. التحليل متاح.', pct: 100 },
+    ]
+    : [
+      { text: 'System 404 wird initialisiert...', pct: 10 },
+      { text: 'Verbindung zu Grammatikdatenbanken...', pct: 40 },
+      { text: 'Lade Analyse-Module...', pct: 70 },
+      { text: 'System bereit. Analyse verfuegbar.', pct: 100 },
+    ];
   const [msgIndex, setMsgIndex] = useState(0);
 
   useEffect(() => {

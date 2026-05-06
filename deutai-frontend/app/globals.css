@@ -32,6 +32,85 @@ html, body {
   -webkit-font-smoothing: antialiased;
 }
 
+html[dir="rtl"] body {
+  font-family: var(--font-cairo), 'Cairo', 'Inter', 'Segoe UI', sans-serif;
+}
+
+[lang="ar"], [dir="rtl"] {
+  font-family: var(--font-cairo), 'Cairo', sans-serif;
+}
+
+html[dir="rtl"] {
+  direction: rtl;
+  overflow-x: hidden;
+}
+
+html[dir="rtl"] section,
+html[dir="rtl"] div,
+html[dir="rtl"] nav,
+html[dir="rtl"] header,
+html[dir="rtl"] footer,
+html[dir="rtl"] article,
+html[dir="rtl"] aside,
+html[dir="rtl"] main {
+  direction: rtl;
+}
+
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] h5,
+html[dir="rtl"] h6,
+html[dir="rtl"] p,
+html[dir="rtl"] label,
+html[dir="rtl"] button,
+html[dir="rtl"] li,
+html[dir="rtl"] span {
+  text-align: right;
+}
+
+html[dir="rtl"] .flex-row {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .icon-directional {
+  transform: scaleX(-1);
+}
+
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] input::placeholder,
+html[dir="rtl"] textarea::placeholder,
+html[dir="rtl"] select::placeholder {
+  text-align: right;
+}
+
+html[dir="rtl"] .lp-nav {
+  direction: ltr;
+}
+
+html[dir="rtl"] .rtl-flip-padding {
+  padding-left: 0 !important;
+  padding-right: 3rem !important;
+}
+
+html[dir="rtl"] .rtl-flip-margin {
+  margin-left: 0 !important;
+  margin-right: auto !important;
+}
+
+html[dir="rtl"] .rtl-border-accent-left {
+  left: auto !important;
+  right: 0 !important;
+  border-radius: 9999px 0 0 9999px !important;
+}
+
 h1, h2, h3, h4 {
   color: #F7F8FF;
   line-height: 1.3;

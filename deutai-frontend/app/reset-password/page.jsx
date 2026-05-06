@@ -3,8 +3,10 @@ import { useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { resetPassword } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 function ResetPasswordForm() {
+  const { t } = useLanguage();
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
@@ -19,17 +21,17 @@ function ResetPasswordForm() {
     e.preventDefault();
     if (!token) {
       setStatus('error');
-      setMessage('Lien de réinitialisation invalide ou expiré.');
+      setMessage(t('resetPassword.invalidLink'));
       return;
     }
     if (password !== confirm) {
       setStatus('error');
-      setMessage('Les mots de passe ne correspondent pas.');
+      setMessage(t('resetPassword.passwordsMismatch'));
       return;
     }
     if (password.length < 8) {
       setStatus('error');
-      setMessage('Le mot de passe doit contenir au moins 8 caractères.');
+      setMessage(t('resetPassword.passwordLength'));
       return;
     }
     
@@ -41,16 +43,16 @@ function ResetPasswordForm() {
       const res = await resetPassword(token, password);
       if (res.ok) {
         setStatus('success');
-        setMessage('Votre mot de passe a été mis à jour avec succès.');
+        setMessage(t('resetPassword.successUpdate'));
         setTimeout(() => router.replace('/login'), 3000);
       } else {
         const data = await res.json().catch(() => ({}));
         setStatus('error');
-        setMessage(data.message || 'Le lien a expiré ou est invalide.');
+        setMessage(data.message || t('resetPassword.linkExpired'));
       }
     } catch {
       setStatus('error');
-      setMessage('Impossible de contacter le serveur.');
+      setMessage(t('resetPassword.serverError'));
     } finally {
       setLoading(false);
     }
@@ -64,10 +66,10 @@ function ResetPasswordForm() {
           style={{ background: '#1A0A0A', border: '1px solid #3A1A1A' }}
         >
           <span className="text-2xl">⚠</span>
-          <span>Lien de réinitialisation manquant ou invalide.</span>
+          <span>{t('resetPassword.missingLink')}</span>
         </div>
         <Link href="/forgot-password" className="btn-outline w-full py-3">
-          Demander un nouveau lien
+          {t('resetPassword.requestNew')}
         </Link>
       </div>
     );
@@ -82,7 +84,7 @@ function ResetPasswordForm() {
         >
           <span className="text-xl">✓</span>
           <span>{message}</span>
-          <span className="text-xs opacity-80 mt-1">Redirection vers la connexion...</span>
+          <span className="text-xs opacity-80 mt-1">{t('resetPassword.redirecting')}</span>
         </div>
       )}
 
@@ -103,7 +105,7 @@ function ResetPasswordForm() {
               className="text-[11px] font-mono text-text-muted tracking-widest"
               style={{ fontFamily: 'JetBrains Mono, monospace' }}
             >
-              NOUVEAU MOT DE PASSE
+              {t('resetPassword.newPassword')}
             </label>
             <input
               type="password"
@@ -122,7 +124,7 @@ function ResetPasswordForm() {
               className="text-[11px] font-mono text-text-muted tracking-widest"
               style={{ fontFamily: 'JetBrains Mono, monospace' }}
             >
-              CONFIRMER LE MOT DE PASSE
+              {t('resetPassword.confirmPassword')}
             </label>
             <input
               type="password"
@@ -145,13 +147,13 @@ function ResetPasswordForm() {
             className="btn-gold w-full py-4 mt-2"
             style={{ letterSpacing: '2px' }}
           >
-            {loading ? 'MISE À JOUR...' : '→ VALIDER LE NOUVEAU MOT DE PASSE'}
+            {loading ? t('resetPassword.updating') : t('resetPassword.submit')}
           </button>
         </>
       )}
 
       <Link href="/login" className="text-xs text-center text-text-muted hover:text-gold transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
-        ← Retour à la connexion
+        {t('resetPassword.backToLogin')}
       </Link>
     </form>
   );
@@ -170,7 +172,7 @@ export default function ResetPasswordPage() {
             DeutAI
           </h1>
           <p className="system-subtitle mt-2" style={{ fontSize: '10px' }}>
-            RÉINITIALISATION DE SÉCURITÉ
+            {t('resetPassword.title')}
           </p>
         </div>
 

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { RotateCcw, SlidersHorizontal, Star } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 function starsFromRatio(ratio) {
   if (ratio >= 0.9) return 3;
@@ -17,6 +18,7 @@ export default function ResultsScreen({
   onChangeDifficulty,
   categoryTitle,
 }) {
+  const { t } = useLanguage();
   const ratio = maxScore > 0 ? score / maxScore : 0;
   const stars = starsFromRatio(ratio);
 
@@ -36,13 +38,13 @@ export default function ResultsScreen({
         className="font-mono text-[10px] tracking-[0.22em] uppercase text-center mb-2"
         style={{ color: '#8a90a8' }}
       >
-        Résultats — {categoryTitle}
+        {t('quiz.resultsTitle')}{categoryTitle}
       </p>
       <h2
         className="text-center font-sans text-[22px] sm:text-[26px] font-semibold mb-2"
         style={{ color: '#f1d98d' }}
       >
-        {score} / {maxScore} points
+        {score} / {maxScore} {t('quiz.points')}
       </h2>
 
       <div className="flex justify-center gap-2 mb-8">
@@ -58,7 +60,7 @@ export default function ResultsScreen({
       {wrongItems.length > 0 && (
         <div className="mb-8">
           <p className="font-mono text-[10px] tracking-[0.18em] uppercase mb-3" style={{ color: '#c9a227' }}>
-            Réponses à revoir
+            {t('quiz.answersToReview')}
           </p>
           <ul className="space-y-3 max-h-[280px] overflow-y-auto pr-1">
             {wrongItems.map((w, i) => (
@@ -72,10 +74,10 @@ export default function ResultsScreen({
                 }}
               >
                 <p className="text-[#8a90a8] text-[11px] font-mono mb-1 uppercase tracking-wider">
-                  Votre réponse : <span className="text-red-300">{w.userAnswer || '—'}</span>
+                  {t('quiz.yourAnswer')} <span className="text-red-300">{w.question.type === 'true_false' ? (w.userAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : (w.userAnswer || '—')}</span>
                 </p>
                 <p className="text-[#e8e8f0] mb-1">{w.question.question}</p>
-                <p className="text-[#f1d98d] text-[12px]">Correct : {w.question.correctAnswer}</p>
+                <p className="text-[#f1d98d] text-[12px]">{t('quiz.correctAnswer')} {w.question.type === 'true_false' ? (w.question.correctAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : w.question.correctAnswer}</p>
               </li>
             ))}
           </ul>
@@ -84,7 +86,7 @@ export default function ResultsScreen({
 
       {wrongItems.length === 0 && (
         <p className="text-center text-[14px] font-sans mb-8" style={{ color: '#6ee7b7' }}>
-          Parfait ! Aucune erreur.
+          {t('quiz.perfectScore')}
         </p>
       )}
 
@@ -100,7 +102,7 @@ export default function ResultsScreen({
           }}
         >
           <RotateCcw size={16} />
-          Recommencer
+          {t('quiz.restart')}
         </button>
         <button
           type="button"
@@ -113,7 +115,7 @@ export default function ResultsScreen({
           }}
         >
           <SlidersHorizontal size={16} />
-          Changer de difficulté
+          {t('quiz.changeDifficulty')}
         </button>
       </div>
     </motion.div>

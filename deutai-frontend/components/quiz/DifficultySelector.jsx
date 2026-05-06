@@ -1,14 +1,17 @@
 'use client';
 
 import { motion } from 'framer-motion';
-
-const LEVELS = [
-  { id: 'easy', label: 'Facile', hint: 'A1–A2' },
-  { id: 'medium', label: 'Moyen', hint: 'B1' },
-  { id: 'hard', label: 'Difficile', hint: 'B2+' },
-];
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function DifficultySelector({ value, onChange }) {
+  const { t } = useLanguage();
+
+  const LEVELS = [
+    { id: 'easy', label: t('quiz.diffEasy'), hint: t('quiz.diffHintEasy') },
+    { id: 'medium', label: t('quiz.diffMedium'), hint: t('quiz.diffHintMedium') },
+    { id: 'hard', label: t('quiz.diffHard'), hint: t('quiz.diffHintHard') },
+  ];
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
       {LEVELS.map((lvl) => {

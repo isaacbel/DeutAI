@@ -10,12 +10,14 @@ import ScanAnimation from '@/components/Analyzer/ScanAnimation';
 import ResultCards from '@/components/Analyzer/ResultCards';
 import { useAuthStandalone } from '@/lib/auth';
 import { analyzeText } from '@/lib/api';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 const MIN_SCAN_DURATION = 300;
 const MAX_ANALYZE_CHARS = 1000;
 const DRAFT_KEY = 'deutai:analyze-session-v1';
 
 function AnalyzeContent() {
+  const { t, lang } = useLanguage();
   const { loading: authLoading } = useAuthStandalone();
   const searchParams = useSearchParams();
   const unitId = searchParams.get('unit');
@@ -76,7 +78,7 @@ function AnalyzeContent() {
       if (res.status === 429) {
         const retry = parseInt(res.headers.get('retry-after') || '60', 10);
         setRetryAfter(retry);
-        setError(`Trop de requêtes. Réessayez dans ${retry}s.`);
+        setError(t('analyze.errorTooManyRequests', { seconds: retry }));
         return;
       }
       if (!res.ok) {
@@ -84,8 +86,8 @@ function AnalyzeContent() {
         const data = await res.json().catch(() => ({}));
         setError(
           res.status === 503 || res.status === 502
-            ? 'Service IA indisponible. Réessayez dans quelques instants.'
-            : data.message || "Erreur lors de l'analyse."
+            ? t('analyze.errorServiceUnavailable')
+            : data.message || t('analyze.errorAnalysisFailed')
         );
         return;
       }
@@ -94,7 +96,7 @@ function AnalyzeContent() {
       if (elapsed < MIN_SCAN_DURATION) await new Promise(r => setTimeout(r, MIN_SCAN_DURATION - elapsed));
       setResult({ ...data, input: text });
     } catch {
-      setError('Impossible de contacter le serveur. Vérifiez votre connexion.');
+      setError(t('analyze.errorCannotReachServer'));
     } finally {
       setScanning(false);
     }
@@ -113,7 +115,7 @@ function AnalyzeContent() {
   if (authLoading) return null;
 
   return (
-    <div className="min-h-screen bg-[#08080a] relative">
+    <div className="min-h-screen bg-[#08080a] relative" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
       {/* Background accents */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -132,7 +134,7 @@ function AnalyzeContent() {
           minHeight: '60px',
         }}
       >
-        <div className="pl-12 sm:pl-14">
+        <div className={lang === 'ar' ? 'pr-12 sm:pr-14' : 'pl-12 sm:pl-14'}>
           <h1
             className="text-[18px] font-bold font-mono tracking-[.16em] flex items-center gap-2"
             style={{ color: '#D4AF37', fontFamily: 'JetBrains Mono, monospace' }}
@@ -143,10 +145,10 @@ function AnalyzeContent() {
             />
             DeutAI
           </h1>
-          <p className="text-[9px] text-[#4a4a58] tracking-[.26em] uppercase mt-0.5">Système 404</p>
+          <p className="text-[9px] text-[#4a4a58] tracking-[.26em] uppercase mt-0.5">{t('app.system404')}</p>
         </div>
 
-        <div className="flex items-center gap-2 pr-12 sm:pr-0">
+        <div className={`flex items-center gap-2 ${lang === 'ar' ? 'pl-12 sm:pl-0' : 'pr-12 sm:pr-0'}`}>
           {[
             { href: '/notebook', icon: Camera, label: 'Notebook' },
             { href: '/scan',     icon: QrCode,  label: 'QR' },
@@ -177,15 +179,15 @@ function AnalyzeContent() {
           className="mx-4 mt-4 px-4 py-2.5 rounded-xl flex items-center gap-2.5 relative overflow-hidden"
           style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.22)' }}
         >
-          <span className="absolute left-0 top-0 bottom-0 w-1 bg-[#D4AF37]/50 rounded-l-xl" />
+          <span className={`absolute top-0 bottom-0 w-1 bg-[#D4AF37]/50 ${lang === 'ar' ? 'right-0 rounded-r-xl' : 'left-0 rounded-l-xl'}`} />
           <Crosshair size={13} className="text-[#D4AF37] flex-shrink-0" />
           <span className="text-[12px] font-mono text-[#D4AF37]/95 tracking-wide flex-1" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
-            Unité active : {unitId}
+            {t('analyze.activeUnit', { unit: unitId })}
           </span>
           <Link
             href="/analyze"
             className="text-[#7a7a90] hover:text-[#e05252] transition-colors p-1 hover:bg-[rgba(204,85,85,0.1)] rounded-md text-sm"
-            aria-label="Retirer l'unité"
+            aria-label={t('analyze.removeUnit')}
           >
             ✕
           </Link>
@@ -202,7 +204,7 @@ function AnalyzeContent() {
             style={{ background: 'rgba(204,85,85,0.07)', border: '1px solid rgba(204,85,85,0.2)', color: '#e05252' }}
           >
             <WifiOff size={16} className="flex-shrink-0" />
-            <span className="font-medium">Mode hors ligne — L'analyse est indisponible</span>
+            <span className="font-medium">{t('analyze.offline')}</span>
           </div>
         )}
 
@@ -214,7 +216,7 @@ function AnalyzeContent() {
               className="text-[10px] font-mono text-[#6a6a80] tracking-[.18em] font-semibold uppercase"
               style={{ fontFamily: 'JetBrains Mono, monospace' }}
             >
-              Phrase à analyser
+              {t('analyze.sentenceToAnalyze')}
             </label>
           </div>
 
@@ -245,7 +247,7 @@ function AnalyzeContent() {
                 </span>
               )}
             </div>
-            {(error.includes('indisponible') || error.includes('serveur')) && (
+            {(error.includes('unavailable') || error.includes('server') || error.includes('متاح') || error.includes('Dienst') || error.includes('erreichbar')) && (
               <button
                 onClick={handleAnalyze}
                 className="flex items-center gap-1.5 self-start text-[12px] font-mono px-2 py-1 -ml-1 rounded transition-all"
@@ -254,7 +256,7 @@ function AnalyzeContent() {
                 onMouseLeave={e => { e.currentTarget.style.background='transparent'; }}
               >
                 <RefreshCw size={13} />
-                Réessayer
+                {t('analyze.retry')}
               </button>
             )}
           </div>
@@ -279,7 +281,7 @@ function AnalyzeContent() {
               onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.15)'; e.currentTarget.style.color='#c0c0d0'; }}
               onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; e.currentTarget.style.color='#8a8aaa'; }}
             >
-              Nouvelle analyse
+              {t('analyze.newAnalyze')}
             </button>
           )}
         </div>
@@ -294,7 +296,7 @@ function AnalyzeContent() {
             <p className="text-[11px] font-mono text-[#6a6a80] tracking-[.2em] flex items-center gap-1.5"
                style={{ fontFamily: 'JetBrains Mono, monospace' }}>
               <ChevronRight size={13} />
-              EN ATTENTE DE DONNÉES
+              {t('analyze.waiting')}
             </p>
           </div>
         )}

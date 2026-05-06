@@ -6,10 +6,13 @@ import Sidebar from './Sidebar';
 import OfflineBanner from '@/components/UI/OfflineBanner';
 import ColdStartLoader from '@/components/UI/ColdStartLoader';
 import { ping } from '@/lib/api';
+import LanguageSwitcher from '@/components/UI/LanguageSwitcher';
+import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 const SIDEBAR_STORAGE_KEY = 'deutai:sidebar-open';
 
 export default function AppShell({ children }) {
+  const { t, lang } = useLanguage();
   const [offline, setOffline]           = useState(false);
   const [coldStartDone, setColdStartDone] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -51,7 +54,7 @@ export default function AppShell({ children }) {
 
   return (
     /* Sidebar always overlays — no content push */
-    <div className="min-h-screen bg-[#08080a] w-full overflow-x-hidden relative">
+    <div className="min-h-screen bg-[#08080a] w-full overflow-x-hidden relative" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
 
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setSidebarOpen} />
 
@@ -67,14 +70,14 @@ export default function AppShell({ children }) {
               exit={{ opacity: 0, scale: 0.7 }}
               transition={{ type: 'spring', stiffness: 360, damping: 26 }}
               onClick={() => setSidebarOpen(true)}
-              className="md:hidden fixed top-4 right-4 z-50 w-10 h-10 rounded-xl flex items-center justify-center"
+              className={`md:hidden fixed top-4 ${lang === 'ar' ? 'left-4' : 'right-4'} z-50 w-10 h-10 rounded-xl flex items-center justify-center`}
               style={{
                 background: 'rgba(14,14,22,0.92)',
                 border: '1px solid rgba(255,255,255,0.1)',
                 color: '#c6ccdf',
                 boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
               }}
-              aria-label="Ouvrir le menu"
+              aria-label={t('nav.openMenu')}
             >
               <Menu size={17} strokeWidth={2} />
             </motion.button>
@@ -91,13 +94,13 @@ export default function AppShell({ children }) {
               exit={{ opacity: 0, scale: 0.6, y: 10 }}
               transition={{ type: 'spring', stiffness: 380, damping: 26 }}
               onClick={() => setSidebarOpen(true)}
-              className="hidden md:flex fixed z-50 bottom-6 left-5 w-12 h-12 rounded-full items-center justify-center cursor-pointer select-none"
+              className={`hidden md:flex fixed z-50 bottom-6 ${lang === 'ar' ? 'right-5' : 'left-5'} w-12 h-12 rounded-full items-center justify-center cursor-pointer select-none`}
               style={{
                 background: 'linear-gradient(135deg,#C9A227,#f1d98d)',
                 boxShadow: '0 4px 22px rgba(201,162,39,0.5), 0 0 0 1px rgba(201,162,39,0.2)',
                 color: '#000',
               }}
-              aria-label="Ouvrir le menu"
+              aria-label={t('nav.openMenu')}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.91 }}
             >
