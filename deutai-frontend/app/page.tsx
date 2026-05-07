@@ -243,7 +243,7 @@ export default function RootPage() {
       {/* ── Nav ── */}
       <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
         <div className="lp-nav-left">
-          <Image src="/AdobeExpressPhotos_9864d0d7f19b4e34ad48941dabad5e3e_CopyEdited.png" alt="DeutAI" width={42} height={42} style={{ objectFit: 'contain' }} />
+          <Image src="/AdobeExpressPhotos_9864d0d7f19b4e34ad48941dabad5e3e_CopyEdited.png" alt="DeutAI" width={45} height={45} style={{ objectFit: 'contain' }} />
           <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', fontWeight: 600, color: '#C9A227', letterSpacing: '3px' }}>
             DEUTAI
           </span>
