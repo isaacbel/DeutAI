@@ -221,16 +221,21 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             minWidth: 0,
           }}>
             {/* Erroneous phrase */}
-            <p style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: '24px', lineHeight: '1.7',
-              color: '#D7DBEE',
-              textDecoration: 'line-through',
-              textDecorationColor: meta.hue + 'AA',
-              textDecorationThickness: '1.5px',
-              margin: 0,
-              wordBreak: 'break-word',
-            }}>
+            <p
+              dir="ltr"
+              lang="de"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: '24px', lineHeight: '1.7',
+                color: '#D7DBEE',
+                textDecoration: 'line-through',
+                textDecorationColor: meta.hue + 'AA',
+                textDecorationThickness: '1.5px',
+                margin: 0,
+                wordBreak: 'break-word',
+                textAlign: lang === 'ar' ? 'left' : undefined,
+              }}
+            >
               {flashcard.front}
             </p>
 
@@ -241,12 +246,18 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   letterSpacing: '2px', color: '#8e94ac',
                   paddingTop: '3px', flexShrink: 0, textTransform: 'uppercase',
                 }}>Phrase</span>
-                <span style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: '15px', color: '#b8bed8',
-                  fontStyle: 'italic', lineHeight: '1.65',
-                  wordBreak: 'break-word',
-                }}>
+                <span
+                  dir="ltr"
+                  lang="de"
+                  style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: '15px', color: '#b8bed8',
+                    fontStyle: 'italic', lineHeight: '1.65',
+                    wordBreak: 'break-word',
+                    textAlign: lang === 'ar' ? 'left' : undefined,
+                    display: 'block',
+                  }}
+                >
                   « {flashcard.input_text} »
                 </span>
               </div>
@@ -387,13 +398,18 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             overflowY: 'auto',
           }}>
             {/* Corrected phrase */}
-            <p style={{
-              fontFamily: "'Playfair Display', Georgia, serif",
-              fontSize: '20px', lineHeight: '1.6',
-              color: '#C9A227', margin: 0,
-              fontStyle: 'italic',
-              wordBreak: 'break-word',
-            }}>
+            <p
+              dir="ltr"
+              lang="de"
+              style={{
+                fontFamily: "'Playfair Display', Georgia, serif",
+                fontSize: '20px', lineHeight: '1.6',
+                color: '#C9A227', margin: 0,
+                fontStyle: 'italic',
+                wordBreak: 'break-word',
+                textAlign: lang === 'ar' ? 'left' : undefined,
+              }}
+            >
               {correction}
             </p>
 
@@ -407,12 +423,17 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   paddingTop: '3px', flexShrink: 0,
                   textTransform: 'uppercase', minWidth: '36px',
                 }}>Rule</span>
-                <p style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
-                  fontSize: '14px', color: '#726a38',
-                  lineHeight: '1.7', margin: 0,
-                  wordBreak: 'break-word',
-                }}>
+                <p
+                  dir="ltr"
+                  lang="fr"
+                  style={{
+                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontSize: '14px', color: '#726a38',
+                    lineHeight: '1.7', margin: 0,
+                    wordBreak: 'break-word',
+                    textAlign: lang === 'ar' ? 'left' : undefined,
+                  }}
+                >
                   {rule}
                 </p>
               </div>
@@ -449,7 +470,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                 }}>Var.</span>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {suggestions.map((s, i) => (
-                    <span key={i} style={{
+                    <span key={i} dir="ltr" lang="de" style={{
                       fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
                       padding: '3px 9px', borderRadius: '6px',
                       background: 'rgba(201,162,39,0.07)',
