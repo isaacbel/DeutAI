@@ -15,24 +15,14 @@ export default function AdminQrGrid({ items }) {
 
   /** Single download — returns a Promise that resolves after the file is triggered */
   function downloadPng(dataUrl, slug) {
-    return fetch(dataUrl)
-      .then((r) => r.blob())
-      .then((blob) => {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `deutai-quiz-${slug}.png`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        // Give the browser 800 ms to start the download before we revoke + move on
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            URL.revokeObjectURL(url);
-            resolve();
-          }, 800);
-        });
-      });
+    const a = document.createElement('a');
+    a.href = dataUrl;
+    a.download = `deutai-quiz-${slug}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    // Return a short promise so downloadAll can sequence them without overlapping too fast
+    return new Promise((resolve) => setTimeout(resolve, 300));
   }
 
   /** Download all sequentially — awaits each file fully before starting the next */
