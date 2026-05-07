@@ -33,6 +33,8 @@ export default function TextInput({ value, onChange, disabled }) {
           onChange={e => onChange(e.target.value)}
           disabled={disabled}
           placeholder={t('analyze.textareaPlaceholder')}
+          dir="ltr"
+          lang="de"
           rows={5}
           className="w-full px-5 py-4 text-[15px] resize-none rounded-xl outline-none transition-all duration-200"
           style={{
@@ -42,6 +44,7 @@ export default function TextInput({ value, onChange, disabled }) {
             fontFamily: 'Inter, sans-serif',
             lineHeight: 1.75,
             caretColor: '#D4AF37',
+            textAlign: 'left',
           }}
           onFocus={e => {
             if (!isOver) e.target.style.borderColor = 'rgba(212,175,55,0.4)';

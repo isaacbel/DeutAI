@@ -38,7 +38,8 @@ const ERROR_TYPE_COLORS = {
   aucun:              '#4A9A4A',
 };
 
-function SingleErrorCard({ error, index, originalSentence, t }) {
+function SingleErrorCard({ error, index, originalSentence, t, lang }) {
+  const isRtl = lang === 'ar';
   const typeColor = ERROR_TYPE_COLORS[error.errorType] || '#CC5555';
   const typeLabel = t(`errorCard.errorTypes.${error.errorType}`) || (error.errorType?.toUpperCase() ?? t('errorCard.noError'));
 
@@ -138,14 +139,18 @@ function SingleErrorCard({ error, index, originalSentence, t }) {
         fontSize: '13px',
         lineHeight: '1.7',
         fontFamily: 'Inter, sans-serif',
-      }}>
+        textAlign: isRtl ? 'left' : undefined,
+      }}
+      dir="ltr"
+      lang="de"
+    >
         {renderHighlightedSentence()}
       </div>
 
       {/* Correction row */}
       <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline', marginBottom: '6px' }}>
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '9px', color: '#555', width: '36px', flexShrink: 0 }}>CORR:</span>
-        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#4ADE80', fontWeight: 700 }}>
+        <span dir="ltr" lang="de" style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#4ADE80', fontWeight: 700 }}>
           {error.correction}
         </span>
       </div>
@@ -170,7 +175,7 @@ function SingleErrorCard({ error, index, originalSentence, t }) {
 }
 
 export default function ErrorCard({ result }) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const { hasErrors, hasError, errors = [], originalSentence, input } = result;
   const hasAnyError = hasErrors ?? hasError ?? false;
   const sentence = originalSentence || input || '';
@@ -260,6 +265,7 @@ export default function ErrorCard({ result }) {
           error={error}
           originalSentence={sentence}
           t={t}
+          lang={lang}
         />
       ))}
     </div>

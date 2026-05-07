@@ -62,7 +62,7 @@ function renderBilingualExplanation(text, language) {
   }
 
   return (
-    <span style={{ display: 'block' }}>
+    <span dir="ltr" lang="de" style={{ display: 'block', textAlign: 'left' }}>
       <strong style={{ color: '#9aa3c8' }}>DE:</strong> {parsed.de}
     </span>
   );
@@ -172,7 +172,7 @@ function ErrorRuleBlock({ error, index, explanationLanguage }) {
         }}>
           {index + 1}
         </div>
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color, flex: 1 }}>
+        <span dir="ltr" lang="de" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color, flex: 1, textAlign: 'left' }}>
           {error.errorText} → {error.correction}
         </span>
         {open
@@ -184,7 +184,7 @@ function ErrorRuleBlock({ error, index, explanationLanguage }) {
       {open && (
         <div style={{ padding: '0 14px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {error.rule && (
-            <p className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: '#aaa', lineHeight: '1.75', margin: 0 }}>
+            <p dir="ltr" lang="fr" className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: '#aaa', lineHeight: '1.75', margin: 0, textAlign: 'left' }}>
               📖 {highlightKeywords(error.rule)}
             </p>
           )}

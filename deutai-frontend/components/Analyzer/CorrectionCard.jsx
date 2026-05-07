@@ -28,7 +28,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
 
     if (!tokens.length) {
       return (
-        <p className="text-lg md:text-2xl" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)' }}>
+        <p className="text-lg md:text-2xl" dir="ltr" lang="de" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)', textAlign: isRtl ? 'left' : undefined }}>
           {originalSentence}
         </p>
       );
@@ -38,7 +38,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
     const parts = originalSentence.split(pattern);
 
     return (
-      <p className="text-lg md:text-2xl" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)' }}>
+      <p className="text-lg md:text-2xl" dir="ltr" lang="de" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)', textAlign: isRtl ? 'left' : undefined }}>
         {parts.map((part, idx) => {
           const isError = errors.some((err) => err?.errorText?.toLowerCase() === part.toLowerCase());
           if (!isError) return <span key={idx}>{part}</span>;
@@ -186,10 +186,12 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
               <p
                 className="text-lg md:text-2xl"
                 lang="de"
+                dir="ltr"
                 style={{
                   ...paragraphStyle,
                   color: '#86EFAC',
                   textShadow: '0 0 22px rgba(74,222,128,0.15)',
+                  textAlign: isRtl ? 'left' : undefined,
                 }}
               >
                 {fullCorrectedSentence}
@@ -213,12 +215,15 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
           {errors.map((err, index) => (
             <div
               key={`${err.errorText || 'err'}-${index}`}
+              dir="ltr"
+              lang="de"
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '10px',
                 flexWrap: 'wrap',
                 fontFamily: 'Inter, sans-serif',
+                justifyContent: isRtl ? 'flex-end' : 'flex-start',
               }}
             >
               <span
@@ -236,7 +241,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
               >
                 {err.errorText}
               </span>
-              <span style={{ color: 'rgba(212,175,55,0.55)', fontSize: '12px' }}>{isRtl ? '←' : '→'}</span>
+              <span style={{ color: 'rgba(212,175,55,0.55)', fontSize: '12px' }}>→</span>
               <span
                 style={{
                   fontSize: '13px',
