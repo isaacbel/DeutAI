@@ -59,21 +59,20 @@ function parseBilingualExplanation(text) {
 const CARD_STYLES = `
   .fc-scene { perspective: 1400px; }
   .fc-inner {
-    position: relative;
+    display: grid;
     width: 100%;
     transform-style: preserve-3d;
     transition: transform 0.65s cubic-bezier(0.35, 0.1, 0.15, 1);
   }
   .fc-scene.is-flipped .fc-inner { transform: rotateY(180deg); }
   .fc-face {
+    grid-area: 1 / 1 / 1 / 1;
     backface-visibility: hidden;
     -webkit-backface-visibility: hidden;
     border-radius: 16px;
     overflow: hidden;
   }
   .fc-back-face {
-    position: absolute;
-    inset: 0;
     transform: rotateY(180deg);
   }
   .fc-del {
@@ -162,7 +161,6 @@ export default function FlashcardItem({ flashcard, onDelete }) {
 
         {/* ── FRONT ── */}
         <div className="fc-face fc-front-layout" style={{
-          position: 'absolute', inset: 0,
           background: '#111113',
           border: '1px solid #222228',
           display: 'flex',
