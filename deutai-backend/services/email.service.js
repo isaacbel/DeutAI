@@ -38,7 +38,7 @@ async function sendPasswordResetEmail(toEmail, resetToken) {
                 <td align="center" style="padding-bottom:24px;border-bottom:1px solid #2a2a2a;">
                   <span style="font-size:22px;font-weight:bold;color:#D4AF37;letter-spacing:2px;">DeutAI</span>
                   <br>
-                  <span style="font-size:10px;color:#444444;letter-spacing:4px;">SYSTÈME 404</span>
+                  <span style="font-size:10px;color:#444444;letter-spacing:4px;">SYSTÈME</span>
                 </td>
               </tr>
               <tr>
@@ -70,7 +70,7 @@ async function sendPasswordResetEmail(toEmail, resetToken) {
               <tr>
                 <td style="padding-top:24px;border-top:1px solid #2a2a2a;">
                   <p style="color:#444444;font-size:11px;text-align:center;margin:0;">
-                    DeutAI — Système 404 &nbsp;|&nbsp; Master 2 Didactique de l'Allemand
+                    DeutAI &nbsp;|&nbsp; Master 2 Didactique de l'Allemand
                   </p>
                 </td>
               </tr>

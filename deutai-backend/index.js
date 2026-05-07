@@ -39,7 +39,7 @@ async function startServer() {
   }
 
   app.listen(PORT, () => {
-    console.log(`[Server] DeutAI — Système 404 en écoute sur le port ${PORT}`);
+    console.log(`[Server] DeutAI en écoute sur le port ${PORT}`);
     console.log(`[Server] Environnement : ${process.env.NODE_ENV || 'development'}`);
   });
 }

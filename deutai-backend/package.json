@@ -1,7 +1,7 @@
 {
   "name": "deutai-backend",
   "version": "1.0.0",
-  "description": "DeutAI — Système 404 | Backend API",
+  "description": "DeutAI | Backend API",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

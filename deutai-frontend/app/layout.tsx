@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const cairo = Cairo({ subsets: ["arabic", "latin"], variable: "--font-cairo" });
 
 export const metadata: Metadata = {
-  title: "DeutAI — System 404",
+  title: "DeutAI",
   description: "AI-powered German grammar checker — Kleppin method. Correct sentences, generate flashcards and track your progress.",
   keywords: ["German", "grammar", "correction", "AI", "language learning", "Deutsch"],
 };

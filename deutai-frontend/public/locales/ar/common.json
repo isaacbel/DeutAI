@@ -1,7 +1,7 @@
 {
   "app": {
-    "system404": "النظام 404",
-    "deutaiSystem404": "DEUTAI · النظام 404",
+    "system404": "النظام",
+    "deutaiSystem404": "DEUTAI · النظام",
     "poweredByAi": "مدعوم بالذكاء الاصطناعي · 2026"
   },
   "switcher": {
@@ -45,8 +45,8 @@
     "haveAccount": "لدي حساب بالفعل"
   },
   "auth": {
-    "loginSystem": "تسجيل دخول النظام 404",
-    "registerSystem": "إنشاء ملف 404",
+    "loginSystem": "تسجيل دخول النظام",
+    "registerSystem": "إنشاء ملف",
     "recoverySystem": "استرجاع النظام",
     "resetSystem": "إعادة تعيين الأمان",
     "email": "البريد الإلكتروني",
@@ -87,7 +87,7 @@
     "limitExceeded": "تم تجاوز الحد ({{count}} زائد)",
     "startAnalyze": "بدء التحليل",
     "scanning": "جاري الفحص...",
-    "scanCta": "تحليل — فحص 404",
+    "scanCta": "تحليل — فحص",
     "scanInProgress": "التحليل جارٍ",
     "errorTooManyRequests": "طلبات كثيرة جداً. أعد المحاولة خلال {{seconds}} ثانية.",
     "errorServiceUnavailable": "الخدمة غير متاحة. حاول مجدداً بعد قليل.",

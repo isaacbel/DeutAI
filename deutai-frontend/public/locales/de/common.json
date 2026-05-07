@@ -1,7 +1,7 @@
 {
   "app": {
-    "system404": "System 404",
-    "deutaiSystem404": "DEUTAI · SYSTEM 404",
+    "system404": "System",
+    "deutaiSystem404": "DEUTAI · SYSTEM",
     "poweredByAi": "MIT KI UNTERSTUETZT · 2026"
   },
   "switcher": {
@@ -45,8 +45,8 @@
     "haveAccount": "Ich habe bereits ein Konto"
   },
   "auth": {
-    "loginSystem": "SYSTEM-ANMELDUNG 404",
-    "registerSystem": "PROFILERSTELLUNG 404",
+    "loginSystem": "SYSTEM-ANMELDUNG",
+    "registerSystem": "PROFILERSTELLUNG",
     "recoverySystem": "SYSTEM-WIEDERHERSTELLUNG",
     "resetSystem": "SICHERHEITS-ZURUECKSETZUNG",
     "email": "E-MAIL-ADRESSE",
@@ -87,7 +87,7 @@
     "limitExceeded": "Limit ueberschritten ({{count}} zu viel)",
     "startAnalyze": "Analyse starten",
     "scanning": "SCAN LAEUFT...",
-    "scanCta": "ANALYSE — SCAN 404",
+    "scanCta": "ANALYSE — SCAN",
     "scanInProgress": "Analyse laeuft",
     "errorTooManyRequests": "Zu viele Anfragen. Erneut versuchen in {{seconds}} Sekunden.",
     "errorServiceUnavailable": "KI-Dienst nicht verfuegbar. In Kuerze erneut versuchen.",

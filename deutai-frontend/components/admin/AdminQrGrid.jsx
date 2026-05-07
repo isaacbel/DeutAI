@@ -188,7 +188,7 @@ export default function AdminQrGrid({ items }) {
 
         {/* ── Footer hint ── */}
         <p className="mt-10 text-center font-mono text-[10px] tracking-wider uppercase" style={{ color: '#2a2a38' }}>
-          DeutAI · Système 404 · Administration
+          DeutAI · Administration
         </p>
       </div>
     </div>

@@ -1,8 +1,8 @@
 // Translation definitions for Arabic and German.
 export const translations = {
   app: {
-    system404: { ar: "النظام 404", de: "System 404" },
-    deutaiSystem404: { ar: "DEUTAI · النظام 404", de: "DEUTAI · SYSTEM 404" },
+    system404: { ar: "النظام", de: "System" },
+    deutaiSystem404: { ar: "DEUTAI · النظام", de: "DEUTAI · SYSTEM" },
     poweredByAi: { ar: "مدعوم بالذكاء الاصطناعي · 2026", de: "MIT KI UNTERSTUETZT · 2026" },
   },
   switcher: {
@@ -49,8 +49,8 @@ export const translations = {
     haveAccount: { ar: "لدي حساب بالفعل", de: "Ich habe bereits ein Konto" },
   },
   auth: {
-    loginSystem: { ar: "تسجيل دخول النظام 404", de: "SYSTEM-ANMELDUNG 404" },
-    registerSystem: { ar: "إنشاء ملف 404", de: "PROFILERSTELLUNG 404" },
+    loginSystem: { ar: "تسجيل دخول النظام", de: "SYSTEM-ANMELDUNG" },
+    registerSystem: { ar: "إنشاء ملف", de: "PROFILERSTELLUNG" },
     recoverySystem: { ar: "استرجاع النظام", de: "SYSTEM-WIEDERHERSTELLUNG" },
     resetSystem: { ar: "إعادة تعيين الأمان", de: "SICHERHEITS-ZURUECKSETZUNG" },
     email: { ar: "البريد الإلكتروني", de: "E-MAIL-ADRESSE" },
@@ -92,7 +92,7 @@ export const translations = {
     limitExceeded: { ar: "تم تجاوز الحد ({{count}} زائد)", de: "Limit ueberschritten ({{count}} zu viel)" },
     startAnalyze: { ar: "بدء التحليل", de: "Analyse starten" },
     scanning: { ar: "جاري الفحص...", de: "SCAN LAEUFT..." },
-    scanCta: { ar: "تحليل — فحص 404", de: "ANALYSE — SCAN 404" },
+    scanCta: { ar: "تحليل — فحص", de: "ANALYSE — SCAN" },
     scanInProgress: { ar: "التحليل جارٍ", de: "Analyse laeuft" },
     errorTooManyRequests: { ar: "طلبات كثيرة جداً. أعد المحاولة خلال {{seconds}} ثانية.", de: "Zu viele Anfragen. Erneut versuchen in {{seconds}} Sekunden." },
     errorServiceUnavailable: { ar: "الخدمة غير متاحة. حاول مجدداً بعد قليل.", de: "KI-Dienst nicht verfuegbar. In Kuerze erneut versuchen." },
