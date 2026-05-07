@@ -47,10 +47,10 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
             <span
               key={idx}
               style={{
-                color: '#F0A2A2',
+                color: '#FF8080',
                 textDecoration: 'line-through',
-                textDecorationColor: 'rgba(224,82,82,0.78)',
-                textDecorationThickness: '1px',
+                textDecorationColor: 'rgba(255,128,128,0.8)',
+                textDecorationThickness: '2px',
               }}
             >
               {part}
@@ -139,7 +139,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
                 fontSize: '12px',
                 letterSpacing: '0.26em',
                 textTransform: 'uppercase',
-                color: '#D08A8A',
+                color: '#FF6B6B',
                 marginBottom: '10px',
               }}
             >
@@ -148,8 +148,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
             <div
               style={{
                 borderRadius: '16px',
-                background: 'rgba(107,31,31,0.13)',
-                border: '1px solid rgba(208,84,84,0.2)',
+                background: 'rgba(255,107,107,0.12)',
+                border: '1px solid rgba(255,107,107,0.25)',
                 padding: '16px 18px',
                 height: '100%',
               }}
@@ -167,7 +167,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
                 fontSize: '12px',
                 letterSpacing: '0.26em',
                 textTransform: 'uppercase',
-                color: '#E3C66F',
+                color: '#4ADE80',
                 marginBottom: '10px',
               }}
             >
@@ -176,8 +176,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
             <div
               style={{
                 borderRadius: '16px',
-                background: 'rgba(212,175,55,0.09)',
-                border: '1px solid rgba(212,175,55,0.26)',
+                background: 'rgba(74,222,128,0.12)',
+                border: '1px solid rgba(74,222,128,0.25)',
                 padding: '16px 18px',
                 height: '100%',
               }}
@@ -188,8 +188,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
                 lang="de"
                 style={{
                   ...paragraphStyle,
-                  color: '#F6E5AF',
-                  textShadow: '0 0 22px rgba(212,175,55,0.12)',
+                  color: '#86EFAC',
+                  textShadow: '0 0 22px rgba(74,222,128,0.15)',
                 }}
               >
                 {fullCorrectedSentence}
@@ -224,12 +224,12 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
               <span
                 style={{
                   fontSize: '13px',
-                  color: '#D08A8A',
+                  color: '#FF6B6B',
                   textDecoration: 'line-through',
-                  textDecorationColor: 'rgba(224,82,82,0.78)',
-                  textDecorationThickness: '1px',
-                  background: 'rgba(107,31,31,0.13)',
-                  border: '1px solid rgba(208,84,84,0.2)',
+                  textDecorationColor: 'rgba(255,107,107,0.8)',
+                  textDecorationThickness: '2px',
+                  background: 'rgba(255,107,107,0.12)',
+                  border: '1px solid rgba(255,107,107,0.25)',
                   padding: '4px 8px',
                   borderRadius: '8px',
                 }}
@@ -240,9 +240,9 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
               <span
                 style={{
                   fontSize: '13px',
-                  color: '#E3C66F',
-                  background: 'rgba(212,175,55,0.09)',
-                  border: '1px solid rgba(212,175,55,0.26)',
+                  color: '#4ADE80',
+                  background: 'rgba(74,222,128,0.12)',
+                  border: '1px solid rgba(74,222,128,0.25)',
                   padding: '4px 8px',
                   borderRadius: '8px',
                   fontWeight: 600,
