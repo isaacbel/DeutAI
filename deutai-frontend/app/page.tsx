@@ -334,7 +334,7 @@ export default function RootPage() {
             fontSize: 'clamp(36px, 6vw, 56px)',
             fontWeight: 600, color: '#e8e8f0',
             lineHeight: 1.2, margin: 0,
-          }}>{t('landing.featuresTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic' }}>{t('landing.featuresTitle2')}</em></h2>
+          }}>{t('landing.featuresTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.featuresTitle2')}</em></h2>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
@@ -386,7 +386,7 @@ export default function RootPage() {
             fontSize: 'clamp(36px, 6vw, 56px)',
             fontWeight: 600, color: '#e8e8f0',
             lineHeight: 1.2, margin: 0,
-          }}>{t('landing.processTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic' }}>{t('landing.processTitle2')}</em></h2>
+          }}>{t('landing.processTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.processTitle2')}</em></h2>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
@@ -450,7 +450,7 @@ export default function RootPage() {
             fontWeight: 600, color: '#e8e8f0',
             lineHeight: 1.3, margin: '0 0 16px',
           }}>
-            {t('landing.ctaTitle1')}<br /><em style={{ color: '#C9A227' }}>{t('landing.ctaTitle2')}</em>
+            {t('landing.ctaTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.ctaTitle2')}</em>
           </h2>
           <p style={{
             fontFamily: 'Inter, sans-serif', fontSize: '14px',
