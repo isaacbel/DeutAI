@@ -4,7 +4,7 @@ import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function StatsSummary({ stats }) {
   const { t, lang } = useLanguage();
-  const locale = lang === 'ar' ? 'ar-EG' : 'de-DE';
+  const locale = lang === 'ar' ? 'ar-EG-u-nu-latn' : 'de-DE';
   const { totalAnalyses = 0, totalErrors = 0, errorRate = 0 } = stats || {};
 
   const items = [
