@@ -43,9 +43,9 @@ function SingleErrorCard({ error, index, originalSentence, t }) {
   const typeLabel = t(`errorCard.errorTypes.${error.errorType}`) || (error.errorType?.toUpperCase() ?? t('errorCard.noError'));
 
   const severityConfig = {
-    high:   { icon: AlertTriangle, color: '#e05252', label: t('errorCard.critical') },
-    medium: { icon: AlertCircle,   color: '#e09955', label: t('errorCard.important') },
-    low:    { icon: Info,          color: '#5588e0', label: t('errorCard.minor') },
+    high:   { icon: AlertTriangle, color: '#FF5050', label: t('errorCard.critical') },
+    medium: { icon: AlertCircle,   color: '#F5A623', label: t('errorCard.important') },
+    low:    { icon: Info,          color: '#60A5FA', label: t('errorCard.minor') },
   };
   const severity = severityConfig[error.severity] || severityConfig.medium;
   const SeverityIcon = severity.icon;
@@ -58,7 +58,7 @@ function SingleErrorCard({ error, index, originalSentence, t }) {
     if (idx === -1) return <span style={{ color: '#999' }}>{originalSentence}</span>;
     return (
       <>
-        <span style={{ color: '#666' }}>{originalSentence.slice(0, idx)}</span>
+        <span style={{ color: '#aaa' }}>{originalSentence.slice(0, idx)}</span>
         <span style={{
           color: typeColor,
           background: `${typeColor}15`,
@@ -70,7 +70,7 @@ function SingleErrorCard({ error, index, originalSentence, t }) {
         }}>
           {error.errorText}
         </span>
-        <span style={{ color: '#666' }}>{originalSentence.slice(idx + error.errorText.length)}</span>
+        <span style={{ color: '#aaa' }}>{originalSentence.slice(idx + error.errorText.length)}</span>
       </>
     );
   };
@@ -78,7 +78,7 @@ function SingleErrorCard({ error, index, originalSentence, t }) {
   return (
     <div
       style={{
-        background: 'rgba(26,10,10,0.9)',
+        background: 'rgba(30,10,10,0.95)',
         border: `1px solid ${typeColor}30`,
         borderRadius: '12px',
         padding: '16px',
@@ -145,7 +145,7 @@ function SingleErrorCard({ error, index, originalSentence, t }) {
       {/* Correction row */}
       <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline', marginBottom: '6px' }}>
         <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '9px', color: '#555', width: '36px', flexShrink: 0 }}>CORR:</span>
-        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#D4AF37', fontWeight: 600 }}>
+        <span style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#4ADE80', fontWeight: 700 }}>
           {error.correction}
         </span>
       </div>
@@ -157,8 +157,8 @@ function SingleErrorCard({ error, index, originalSentence, t }) {
             <span key={i} style={{
               fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
               padding: '2px 7px', borderRadius: '4px',
-              background: 'rgba(212,175,55,0.06)', border: '1px solid rgba(212,175,55,0.15)',
-              color: '#9a8030', letterSpacing: '0.5px',
+              background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.2)',
+              color: '#4ADE80', letterSpacing: '0.5px',
             }}>
               {s}
             </span>
@@ -211,17 +211,17 @@ export default function ErrorCard({ result }) {
       {/* Header summary */}
       <div
         className="rounded-xl p-4 relative overflow-hidden"
-        style={{ background: 'rgba(26,10,10,0.9)', border: '1px solid rgba(204,85,85,0.25)' }}
+        style={{ background: 'rgba(30,10,10,0.95)', border: '1px solid rgba(255,107,107,0.3)' }}
       >
-        <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl bg-error opacity-70" />
+        <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl opacity-80" style={{ background: '#FF5050' }} />
         <div className="flex items-center justify-between pl-2">
           <div className="flex items-center gap-3">
-            <div className="p-1.5 rounded-lg bg-error/10 border border-error/20">
-              <ShieldAlert size={16} className="text-error" />
+            <div className="p-1.5 rounded-lg" style={{ background: 'rgba(255,80,80,0.1)', border: '1px solid rgba(255,80,80,0.25)' }}>
+              <ShieldAlert size={16} style={{ color: '#FF5050' }} />
             </div>
             <span
-              className="text-[11px] font-mono tracking-[0.2em] text-error font-bold"
-              style={{ fontFamily: 'JetBrains Mono, monospace' }}
+              className="text-[11px] font-mono tracking-[0.2em] font-bold"
+              style={{ fontFamily: 'JetBrains Mono, monospace', color: '#FF5050' }}
             >
               {t(errors.length > 1 ? 'errorCard.errorsDetected_other' : 'errorCard.errorsDetected_one', { count: errors.length }).toUpperCase()}
             </span>
@@ -232,9 +232,9 @@ export default function ErrorCard({ result }) {
               const count = errors.filter(e => e.severity === sev).length;
               if (!count) return null;
               const severityConfig = {
-                high:   { color: '#e05252', label: t('errorCard.critical') },
-                medium: { color: '#e09955', label: t('errorCard.important') },
-                low:    { color: '#5588e0', label: t('errorCard.minor') },
+                high:   { color: '#FF5050', label: t('errorCard.critical') },
+                medium: { color: '#F5A623', label: t('errorCard.important') },
+                low:    { color: '#60A5FA', label: t('errorCard.minor') },
               };
               const cfg = severityConfig[sev];
               return (
