@@ -250,7 +250,7 @@ export default function RootPage() {
       {/* ── Nav ── */}
       <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
         <div className="lp-nav-left">
-          <Image src="/Gemini_Generated_Image_i31stqi31stqi31s.png" alt="DeutAI" width={28} height={28} style={{ objectFit: 'contain' }} />
+          <Image src="/deutai-logo-transparent.png" alt="DeutAI" width={28} height={28} style={{ objectFit: 'contain' }} />
           <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', fontWeight: 600, color: '#C9A227', letterSpacing: '3px' }}>
             DEUTAI
           </span>
@@ -277,7 +277,7 @@ export default function RootPage() {
 
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
           <div className="hero-1" style={{ marginBottom: '36px', filter: 'drop-shadow(0 0 60px rgba(201,162,39,0.3))' }}>
-            <Image src="/Gemini_Generated_Image_i31stqi31stqi31s.png" alt="DeutAI" width={190} height={190} style={{ objectFit: 'contain' }} priority />
+            <Image src="/deutai-logo-transparent.png" alt="DeutAI" width={190} height={190} style={{ objectFit: 'contain' }} priority />
           </div>
 
           <h1 className="hero-2" style={{
@@ -480,7 +480,7 @@ export default function RootPage() {
         maxWidth: '1040px', margin: '0 auto',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Image src="/Gemini_Generated_Image_i31stqi31stqi31s.png" alt="DeutAI" width={32} height={32} style={{ objectFit: 'contain' }} />
+          <Image src="/deutai-logo-transparent.png" alt="DeutAI" width={32} height={32} style={{ objectFit: 'contain' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
             <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '18px', fontWeight: 600, color: '#C9A227', letterSpacing: '1px' }}>
               DeutAI
