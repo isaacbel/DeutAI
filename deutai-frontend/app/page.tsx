@@ -106,13 +106,7 @@ export default function RootPage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
 
-        .lp-grid {
-          position: fixed; inset: 0; pointer-events: none; z-index: 0;
-          background-image:
-            linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
-          background-size: 52px 52px;
-        }
+
 
         .lp-blob {
           position: absolute; border-radius: 50%;
@@ -244,8 +238,7 @@ export default function RootPage() {
         }
       `}</style>
 
-      {/* ── Grid texture ── */}
-      <div className="lp-grid" />
+
 
       {/* ── Nav ── */}
       <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
