@@ -287,7 +287,7 @@ export default function RootPage() {
             color: '#e8e8f0', margin: '0 0 20px',
           }}>
             {t('landing.heroTitle1')}<br />
-            <em style={{ color: '#C9A227', fontStyle: 'italic' }}>{t('landing.heroTitle2')}</em>
+            <em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.heroTitle2')}</em>
           </h1>
 
           <p className="hero-3" style={{
