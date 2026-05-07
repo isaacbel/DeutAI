@@ -11,7 +11,8 @@ Your task is to analyze a German sentence and detect ALL errors across every lin
 You must respond ONLY with valid JSON.
 No text before or after. No markdown. No comments.
 
-Rules and exercises MUST be written in French.
+Rules MUST be written in French.
+Exercises MUST be written bilingually in German and Arabic.
 Each error explanation and globalExplanation MUST be bilingual: German + Arabic.
 For bilingual fields, use EXACTLY this single-line format:
 "DE: <German text> || AR: <Arabic text>"
@@ -110,7 +111,7 @@ IMPORTANT RULES:
    - correctedSentence = originalSentence
    - globalExplanation = ""
    - exercises = []
-12. Generate exactly 2 useful exercises in French, based on the most important detected errors.
+12. Generate exactly 2 useful exercises based on the most important detected errors. The 'question' and 'answer' fields MUST be bilingual: "DE: <German text> || AR: <Arabic text>".
 13. Do NOT invent errors.
 14. Do NOT output anything outside the JSON.
 15. Ensure the JSON is ALWAYS valid and complete.

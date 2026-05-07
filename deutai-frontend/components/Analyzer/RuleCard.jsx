@@ -68,7 +68,7 @@ function renderBilingualExplanation(text, language) {
   );
 }
 
-function ExerciseItem({ exercise, index, t }) {
+function ExerciseItem({ exercise, index, t, explanationLanguage }) {
   const [revealed, setRevealed] = useState(false);
 
   return (
@@ -102,9 +102,9 @@ function ExerciseItem({ exercise, index, t }) {
         </div>
 
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-text-primary leading-relaxed mb-3" style={{ fontFamily: 'Inter, sans-serif' }}>
-            {exercise.question}
-          </p>
+          <div className="text-sm text-text-primary leading-relaxed mb-3" style={{ fontFamily: 'Inter, sans-serif' }}>
+            {renderBilingualExplanation(exercise.question, explanationLanguage)}
+          </div>
 
           {revealed ? (
             <div
@@ -118,7 +118,7 @@ function ExerciseItem({ exercise, index, t }) {
               }}
             >
               <span className="text-[#4A9A4A] text-base">✓</span>
-              <span>{exercise.answer}</span>
+              <span>{renderBilingualExplanation(exercise.answer, explanationLanguage)}</span>
               <button
                 onClick={() => setRevealed(false)}
                 className="ml-auto text-gold/50 hover:text-gold transition-colors shrink-0"
@@ -329,7 +329,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
           {exercisesOpen && (
             <div className="mt-1">
               {exercises.map((ex, i) => (
-                <ExerciseItem key={i} exercise={ex} index={i} t={t} />
+                <ExerciseItem key={i} exercise={ex} index={i} t={t} explanationLanguage={explanationLanguage} />
               ))}
             </div>
           )}
