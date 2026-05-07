@@ -291,10 +291,11 @@ export default function RootPage() {
           </h1>
 
           <p className="hero-3" style={{
-            fontFamily: 'Inter, sans-serif',
-            fontSize: 'clamp(15px, 2vw, 17px)',
-            color: '#6a6a7a', lineHeight: 1.75,
-            margin: '0 0 44px', maxWidth: '520px',
+            fontFamily: 'var(--font-inter), sans-serif',
+            fontSize: 'clamp(16px, 2vw, 18px)',
+            color: '#8a8aa0', lineHeight: 1.8,
+            margin: '0 0 44px', maxWidth: '600px',
+            fontWeight: 400,
           }}>
             {t('landing.heroSub')}
           </p>
@@ -359,9 +360,9 @@ export default function RootPage() {
                 {f.title}
               </h3>
               <p style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
-                fontSize: '14px', fontStyle: 'italic',
-                color: '#555568', lineHeight: 1.8, margin: 0,
+                fontFamily: 'var(--font-inter), sans-serif',
+                fontSize: '14px',
+                color: '#8a8a9c', lineHeight: 1.7, margin: 0,
               }}>
                 {f.desc}
               </p>
@@ -409,8 +410,8 @@ export default function RootPage() {
                   {h.title}
                 </h3>
                 <p style={{
-                  fontFamily: 'Inter, sans-serif', fontSize: '14px',
-                  color: '#484858', lineHeight: 1.7, margin: 0,
+                  fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px',
+                  color: '#7a7a8c', lineHeight: 1.7, margin: 0,
                 }}>
                   {h.desc}
                 </p>
@@ -453,8 +454,8 @@ export default function RootPage() {
             {t('landing.ctaTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.ctaTitle2')}</em>
           </h2>
           <p style={{
-            fontFamily: 'Inter, sans-serif', fontSize: '14px',
-            color: '#484858', lineHeight: 1.7, margin: '0 0 36px',
+            fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px',
+            color: '#8a8aa0', lineHeight: 1.7, margin: '0 0 36px',
           }}>
             {t('landing.ctaSub')}
           </p>
