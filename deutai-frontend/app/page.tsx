@@ -210,7 +210,7 @@ export default function RootPage() {
 
         .lp-section-label {
           font-family: 'JetBrains Mono', monospace;
-          font-size: 10px; letter-spacing: 4px;
+          font-size: 13px; letter-spacing: 4px;
           text-transform: uppercase; color: #C9A22780;
           margin-bottom: 12px;
         }
@@ -257,10 +257,10 @@ export default function RootPage() {
         </div>
         <div className="lp-nav-right">
           <LanguageSwitcher isMobile={true} />
-          <Link href="/login" className="lp-cta-secondary" style={{ padding: '8px 20px', fontSize: '12px' }}>
+          <Link href="/login" className="lp-cta-secondary" style={{ padding: '8px 24px', fontSize: '14px' }}>
             {t('nav.login')}
           </Link>
-          <Link href="/register" className="lp-cta-primary" style={{ padding: '8px 20px', fontSize: '12px' }}>
+          <Link href="/register" className="lp-cta-primary" style={{ padding: '8px 24px', fontSize: '14px' }}>
             {t('nav.start')}
           </Link>
         </div>
@@ -316,7 +316,7 @@ export default function RootPage() {
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
           animation: 'hero-rise 1s ease 1s both',
         }}>
-          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '9px', color: '#303038', letterSpacing: '3px' }}>{t('landing.scroll')}</span>
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#303038', letterSpacing: '3px' }}>{t('landing.scroll')}</span>
           <div style={{ width: '1px', height: '32px', background: 'linear-gradient(to bottom, #303038, transparent)' }} />
         </div>
       </section>
@@ -326,7 +326,7 @@ export default function RootPage() {
         <div style={{ textAlign: 'center', marginBottom: '56px' }}>
           <p style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '11px', letterSpacing: '5px',
+            fontSize: '13px', letterSpacing: '5px',
             textTransform: 'uppercase', color: '#C9A22799',
             marginBottom: '16px',
           }}>{t('landing.features')}</p>
@@ -361,7 +361,7 @@ export default function RootPage() {
               </h3>
               <p style={{
                 fontFamily: 'var(--font-inter), sans-serif',
-                fontSize: '14px',
+                fontSize: '16px',
                 color: '#8a8a9c', lineHeight: 1.7, margin: 0,
               }}>
                 {f.desc}
@@ -378,7 +378,7 @@ export default function RootPage() {
         <div style={{ textAlign: 'center', marginBottom: '56px' }}>
           <p style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '11px', letterSpacing: '5px',
+            fontSize: '13px', letterSpacing: '5px',
             textTransform: 'uppercase', color: '#C9A22799',
             marginBottom: '16px',
           }}>{t('landing.process')}</p>
@@ -410,7 +410,7 @@ export default function RootPage() {
                   {h.title}
                 </h3>
                 <p style={{
-                  fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px',
+                  fontFamily: 'var(--font-inter), sans-serif', fontSize: '17px',
                   color: '#7a7a8c', lineHeight: 1.7, margin: 0,
                 }}>
                   {h.desc}
@@ -454,7 +454,7 @@ export default function RootPage() {
             {t('landing.ctaTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.ctaTitle2')}</em>
           </h2>
           <p style={{
-            fontFamily: 'var(--font-inter), sans-serif', fontSize: '15px',
+            fontFamily: 'var(--font-inter), sans-serif', fontSize: '18px',
             color: '#8a8aa0', lineHeight: 1.7, margin: '0 0 36px',
           }}>
             {t('landing.ctaSub')}
@@ -485,12 +485,12 @@ export default function RootPage() {
             <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '18px', fontWeight: 600, color: '#C9A227', letterSpacing: '1px' }}>
               DeutAI
             </span>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color: '#48485a', letterSpacing: '3px' }}>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#48485a', letterSpacing: '3px' }}>
               {t('app.deutaiSystem404')}
             </span>
           </div>
         </div>
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '11px', color: '#3a3a4a', letterSpacing: '3px' }}>
+        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', color: '#3a3a4a', letterSpacing: '3px' }}>
           {t('app.poweredByAi')}
         </span>
       </footer>
