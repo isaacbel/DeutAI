@@ -196,7 +196,7 @@ export default function RootPage() {
           display: flex; align-items: center; justify-content: space-between;
           padding: 0 24px;
         }
-        .lp-nav-right { display: flex; gap: 12px; align-items: center; margin-inline-start: auto; }
+        .lp-nav-right { display: flex; gap: 12px; align-items: center; }
         .lp-nav-left { display: flex; align-items: center; gap: 10px; }
 
         .lp-stat {
@@ -248,7 +248,7 @@ export default function RootPage() {
       <div className="lp-grid" />
 
       {/* ── Nav ── */}
-      <nav className="lp-nav">
+      <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
         <div className="lp-nav-left">
           <Image src="/deutai-pen-logo.png" alt="DeutAI" width={28} height={28} style={{ objectFit: 'contain' }} />
           <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', fontWeight: 600, color: '#C9A227', letterSpacing: '3px' }}>
