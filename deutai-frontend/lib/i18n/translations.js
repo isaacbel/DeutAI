@@ -1,8 +1,8 @@
 // Translation definitions for Arabic and German.
 export const translations = {
   app: {
-    system404: { ar: "النظام", de: "System" },
-    deutaiSystem404: { ar: "DEUTAI · النظام", de: "DEUTAI · SYSTEM" },
+    system404: { ar: "", de: "" },
+    deutaiSystem404: { ar: "DEUTAI", de: "DEUTAI" },
     poweredByAi: { ar: "مدعوم بالذكاء الاصطناعي · 2026", de: "MIT KI UNTERSTUETZT · 2026" },
   },
   switcher: {
@@ -49,9 +49,9 @@ export const translations = {
     haveAccount: { ar: "لدي حساب بالفعل", de: "Ich habe bereits ein Konto" },
   },
   auth: {
-    loginSystem: { ar: "تسجيل دخول النظام", de: "SYSTEM-ANMELDUNG" },
+    loginSystem: { ar: "تسجيل الدخول", de: "ANMELDUNG" },
     registerSystem: { ar: "إنشاء ملف", de: "PROFILERSTELLUNG" },
-    recoverySystem: { ar: "استرجاع النظام", de: "SYSTEM-WIEDERHERSTELLUNG" },
+    recoverySystem: { ar: "الاسترجاع", de: "WIEDERHERSTELLUNG" },
     resetSystem: { ar: "إعادة تعيين الأمان", de: "SICHERHEITS-ZURUECKSETZUNG" },
     email: { ar: "البريد الإلكتروني", de: "E-MAIL-ADRESSE" },
     password: { ar: "كلمة المرور", de: "PASSWORT" },
@@ -280,7 +280,7 @@ export const translations = {
     resolveError: { ar: "تعذر فك تشفير الرمز.", de: "QR-Code konnte nicht aufgelöst werden." },
     retry: { ar: "↺ إعادة المحاولة", de: "↺ Erneut versuchen" },
     back: { ar: "← العودة للمحلل", de: "← Zurück zum Analysator" },
-    msgInit: { ar: "جاري تهيئة النظام...", de: "System wird initialisiert..." },
+    msgInit: { ar: "جارٍ التهيئة...", de: "Wird initialisiert..." },
     msgSyntax: { ar: "تحليل البنية النحوية...", de: "Syntax wird analysiert..." },
     msgAnomalies: { ar: "اكتشاف الأخطاء...", de: "Anomalien werden erkannt..." },
     msgClassification: { ar: "تصنيف كليبان...", de: "Kleppin-Klassifikation..." },

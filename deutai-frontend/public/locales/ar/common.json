@@ -1,7 +1,7 @@
 {
   "app": {
-    "system404": "النظام",
-    "deutaiSystem404": "DEUTAI · النظام",
+    "system404": "",
+    "deutaiSystem404": "DEUTAI",
     "poweredByAi": "مدعوم بالذكاء الاصطناعي · 2026"
   },
   "switcher": {
@@ -45,9 +45,9 @@
     "haveAccount": "لدي حساب بالفعل"
   },
   "auth": {
-    "loginSystem": "تسجيل دخول النظام",
+    "loginSystem": "تسجيل الدخول",
     "registerSystem": "إنشاء ملف",
-    "recoverySystem": "استرجاع النظام",
+    "recoverySystem": "الاسترجاع",
     "resetSystem": "إعادة تعيين الأمان",
     "email": "البريد الإلكتروني",
     "password": "كلمة المرور",

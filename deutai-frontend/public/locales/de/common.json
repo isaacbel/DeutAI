@@ -1,7 +1,7 @@
 {
   "app": {
-    "system404": "System",
-    "deutaiSystem404": "DEUTAI · SYSTEM",
+    "system404": "",
+    "deutaiSystem404": "DEUTAI",
     "poweredByAi": "MIT KI UNTERSTUETZT · 2026"
   },
   "switcher": {
@@ -45,9 +45,9 @@
     "haveAccount": "Ich habe bereits ein Konto"
   },
   "auth": {
-    "loginSystem": "SYSTEM-ANMELDUNG",
+    "loginSystem": "ANMELDUNG",
     "registerSystem": "PROFILERSTELLUNG",
-    "recoverySystem": "SYSTEM-WIEDERHERSTELLUNG",
+    "recoverySystem": "WIEDERHERSTELLUNG",
     "resetSystem": "SICHERHEITS-ZURUECKSETZUNG",
     "email": "E-MAIL-ADRESSE",
     "password": "PASSWORT",
@@ -302,7 +302,7 @@
     "resolveError": "QR-Code konnte nicht aufgelöst werden.",
     "retry": "↺ Erneut versuchen",
     "back": "← Zurück zum Analysator",
-    "msgInit": "System wird initialisiert...",
+    "msgInit": "Wird initialisiert...",
     "msgSyntax": "Syntax wird analysiert...",
     "msgAnomalies": "Anomalien werden erkannt...",
     "msgClassification": "Kleppin-Klassifikation..."

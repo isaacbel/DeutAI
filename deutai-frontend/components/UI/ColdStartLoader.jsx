@@ -6,16 +6,16 @@ export default function ColdStartLoader() {
   const { lang } = useLanguage();
   const MESSAGES = lang === 'ar'
     ? [
-      { text: 'جارٍ تهيئة النظام...', pct: 10 },
+      { text: 'جارٍ التهيئة...', pct: 10 },
       { text: 'الاتصال بقواعد النحو...', pct: 40 },
       { text: 'تحميل وحدات التحليل...', pct: 70 },
-      { text: 'النظام جاهز. التحليل متاح.', pct: 100 },
+      { text: 'جاهز. التحليل متاح.', pct: 100 },
     ]
     : [
-      { text: 'System wird initialisiert...', pct: 10 },
+      { text: 'Wird initialisiert...', pct: 10 },
       { text: 'Verbindung zu Grammatikdatenbanken...', pct: 40 },
       { text: 'Lade Analyse-Module...', pct: 70 },
-      { text: 'System bereit. Analyse verfuegbar.', pct: 100 },
+      { text: 'Bereit. Analyse verfuegbar.', pct: 100 },
     ];
   const [msgIndex, setMsgIndex] = useState(0);
 
@@ -64,7 +64,7 @@ export default function ColdStartLoader() {
           >
             DeutAI
           </h1>
-          <p className="system-subtitle mt-1">SYSTÈME</p>
+          <p className="system-subtitle mt-1"></p>
         </div>
 
         {/* Progress bar */}
