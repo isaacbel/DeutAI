@@ -50,21 +50,25 @@ function buildResult(row) {
 }
 
 function fmtDate(d, lang) {
-  return new Date(d).toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'de-DE', {
+  // Fix: 'ar-EG' produces Eastern Arabic-Indic numerals (٩،٨…).
+  // The Unicode extension -u-nu-latn forces Western (Latin) digits (0-9).
+  const locale = lang === 'ar' ? 'ar-EG-u-nu-latn' : 'de-DE';
+  return new Date(d).toLocaleDateString(locale, {
     day: '2-digit', month: 'short', year: '2-digit',
     hour: '2-digit', minute: '2-digit',
   });
 }
 
-function fmtRelative(d, t) {
+function fmtRelative(d, t, lang) {
   const diff = Math.floor((Date.now() - new Date(d)) / 86400000);
   if (diff === 0) return t('history.today');
   if (diff === 1) return t('history.yesterday');
-  const short = new Date(d).toLocaleDateString(undefined, { day: '2-digit', month: 'short' });
-  return short;
+  // Fix: use locale-aware format with Latin numerals instead of browser default
+  const locale = lang === 'ar' ? 'ar-EG-u-nu-latn' : 'de-DE';
+  return new Date(d).toLocaleDateString(locale, { day: '2-digit', month: 'short' });
 }
 
-function SidebarItem({ item, isSelected, onSelect, onDelete, t }) {
+function SidebarItem({ item, isSelected, onSelect, onDelete, t, lang }) {
   const [hovered, setHovered] = useState(false);
   const [confirmDel, setConfirmDel] = useState(false);
 
@@ -118,7 +122,7 @@ function SidebarItem({ item, isSelected, onSelect, onDelete, t }) {
           fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
           color: isSelected ? '#c9a227b8' : '#8c91a9', letterSpacing: '0.5px',
         }}>
-          {fmtRelative(item.created_at, t)}
+          {fmtRelative(item.created_at, t, lang)}
         </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           {item.source === 'image' && (
@@ -313,9 +317,17 @@ export default function HistoryPage() {
       return;
     }
     setClearing(true);
-    await clearHistory();
-    setItems([]); setSelected(null);
-    setConfirmClear(false); setClearing(false);
+    try {
+      const res = await clearHistory();
+      // Bug fix: clearHistory returns 204 No Content — do NOT call res.json()
+      if (!res.ok) { setFetchError(t('history.errorClearFailed')); return; }
+      setItems([]); setSelected(null);
+      setConfirmClear(false);
+    } catch {
+      setFetchError(t('history.errorNetwork'));
+    } finally {
+      setClearing(false);
+    }
   }
 
   return (
@@ -468,6 +480,7 @@ export default function HistoryPage() {
                   onSelect={setSelected}
                   onDelete={handleDelete}
                   t={t}
+                  lang={lang}
                 />
               </div>
             ))}

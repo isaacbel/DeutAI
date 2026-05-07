@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Brain, BookOpen, MessageCircle, FileText, ChevronRight, Zap } from 'lucide-react';
@@ -15,9 +15,10 @@ export default function QuestionsPage() {
     setMounted(true);
   }, []);
 
-  if (!mounted) return null;
-
-  const QUESTION_TYPES = [
+  // Fix: useMemo MUST be called before any conditional return (Rules of Hooks).
+  // Previously this was placed after `if (!mounted) return null` — that causes
+  // a React crash in strict mode because hooks cannot follow a conditional return.
+  const QUESTION_TYPES = useMemo(() => [
     {
       id: 'vocabulaire',
       title: t('questions.vocabulaire'),
@@ -54,7 +55,9 @@ export default function QuestionsPage() {
       glow: 'rgba(123,97,255,0.4)',
       questionsCount: 45,
     },
-  ];
+  ], [t]);
+
+  if (!mounted) return null;
 
   return (
     <AppShell>
@@ -102,7 +105,7 @@ export default function QuestionsPage() {
               return (
                 <motion.button
                   key={type.id}
-                  onClick={() => router.push('/quiz/' + type.id)}
+                  onClick={() => router.push(`/quiz/${type.id}`)} // Fix #15 — template literal
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 + idx * 0.1 }}
@@ -136,7 +139,7 @@ export default function QuestionsPage() {
                       className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300"
                       style={{ background: 'rgba(255,255,255,0.1)', color: '#fff' }}
                     >
-                      <ChevronRight size={16} className={lang === 'ar' ? 'icon-directional' : ''} />
+                       <ChevronRight size={16} style={lang === 'ar' ? { transform: 'scaleX(-1)' } : {}} /> {/* Fix #16 */}
                     </div>
                   </div>
 

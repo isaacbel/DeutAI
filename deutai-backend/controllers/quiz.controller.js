@@ -11,6 +11,19 @@ const ALLOWED_CATEGORIES = new Set([
 
 const DIFFICULTY_POINTS = { easy: 1, medium: 2, hard: 3 };
 
+// Bug fix: instantiate the client once at module load (lazy singleton) rather
+// than creating a new HTTPS agent on every request, which leaks sockets.
+let _openaiClient = null;
+function getOpenRouterClient(apiKey) {
+  if (!_openaiClient) {
+    _openaiClient = new OpenAI({
+      baseURL: 'https://openrouter.ai/api/v1',
+      apiKey,
+    });
+  }
+  return _openaiClient;
+}
+
 function buildSystemPrompt(lang) {
   const isAr = lang === 'ar';
   const isDe = lang === 'de';
@@ -107,6 +120,7 @@ function normalizeQuestions(arr, pointsPerQuestion) {
 }
 
 exports.generateQuiz = async (req, res) => {
+  // NOTE: this route must be protected by auth middleware in quiz.routes.js
   try {
     const apiKey = process.env.OPENROUTER_API_KEY;
     if (!apiKey) {
@@ -126,11 +140,9 @@ exports.generateQuiz = async (req, res) => {
     }
 
     const pointsPerQuestion = DIFFICULTY_POINTS[difficulty];
-    
-    const openai = new OpenAI({
-      baseURL: 'https://openrouter.ai/api/v1',
-      apiKey,
-    });
+
+    // Bug fix: use singleton client instead of creating a new one per request
+    const openai = getOpenRouterClient(apiKey);
 
     const completion = await openai.chat.completions.create({
       model: 'openai/gpt-4o-mini',
@@ -148,11 +160,11 @@ exports.generateQuiz = async (req, res) => {
     }
 
     const parsed = extractJsonArray(textContent);
+
+    // Bug fix: under-generation is common with LLMs — warn and proceed
+    // rather than refusing the whole response.
     if (parsed.length < count) {
-      return res.status(502).json({
-        error: 'MODEL',
-        message: `Nombre de questions incorrect (${parsed.length}/${count}). Réessayez.`,
-      });
+      console.warn(`[quiz/generate] Model returned ${parsed.length}/${count} questions.`);
     }
     if (parsed.length > count) {
       parsed.splice(count);

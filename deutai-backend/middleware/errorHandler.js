@@ -1,5 +1,10 @@
 function errorHandler(err, req, res, next) {
-  console.error('[ErrorHandler]', err.message, err.stack);
+  // Fix #37 — only expose stack traces outside production
+  if (process.env.NODE_ENV !== 'production') {
+    console.error('[ErrorHandler]', err.message, err.stack);
+  } else {
+    console.error('[ErrorHandler]', err.message);
+  }
 
   if (err.code === 'AI_PARSE_ERROR' || err.code === 'CLAUDE_PARSE_ERROR') {
     return res.status(422).json({ error: 'AI_PARSE_ERROR' });

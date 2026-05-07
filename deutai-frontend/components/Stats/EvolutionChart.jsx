@@ -34,7 +34,7 @@ function normalizeDateKey(raw) {
 }
 
 /** Full daily timeline for the selected period (UTC day keys), merged with API counts */
-function buildTimeline(evolutionData, period) {
+function buildTimeline(evolutionData, period, lang) {
   const days = periodToDays(period);
   const map = new Map();
   (evolutionData || []).forEach((d) => {
@@ -51,7 +51,8 @@ function buildTimeline(evolutionData, period) {
     dt.setUTCDate(dt.getUTCDate() - i);
     const key = dt.toISOString().slice(0, 10);
     const count = map.get(key) ?? 0;
-    const short = dt.toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+    const locale = lang === 'ar' ? 'ar-EG-u-nu-latn' : 'de-DE';
+    const short = dt.toLocaleDateString(locale, { day: '2-digit', month: 'short' });
     out.push({ dateKey: key, label: short, count });
   }
   return out;
@@ -90,11 +91,11 @@ const CustomTooltip = ({ active, payload }) => {
 };
 
 export default function EvolutionChart({ data, period = '30d' }) {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => setIsMounted(true), []);
 
-  const chartData = buildTimeline(data, period);
+  const chartData = buildTimeline(data, period, lang);
   const { total, activeDays, peak, peakLabel, avg } = summarizeTimeline(chartData);
   const dense = chartData.length > 120;
 

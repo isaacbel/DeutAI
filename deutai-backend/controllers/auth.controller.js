@@ -115,15 +115,22 @@ async function login(req, res, next) {
 async function refresh(req, res, next) {
   const { refresh_token } = req.body;
 
-  if (!refresh_token) {
+  // Bug fix: validate type and presence before passing to jwt.verify
+  if (!refresh_token || typeof refresh_token !== 'string') {
     return res.status(400).json({
       error: 'VALIDATION_ERROR',
-      details: ['refresh_token est requis'],
+      details: ['refresh_token est requis et doit être une chaîne de caractères'],
     });
   }
 
   try {
     const decoded = jwt.verify(refresh_token, process.env.JWT_REFRESH_SECRET);
+
+    // Guard: decoded payload must carry userId
+    if (!decoded.userId) {
+      return res.status(401).json({ error: 'TOKEN_INVALID' });
+    }
+
     const accessToken = generateAccessToken({
       userId: decoded.userId,
       email: decoded.email,
@@ -193,8 +200,9 @@ async function resetPassword(req, res, next) {
   const { token, password } = value;
   const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
 
+  const client = await pool.connect();
   try {
-    const result = await pool.query(
+    const result = await client.query(
       `SELECT id, user_id FROM password_resets
        WHERE token_hash = $1
          AND used = false
@@ -209,20 +217,27 @@ async function resetPassword(req, res, next) {
     const { id: resetId, user_id: userId } = result.rows[0];
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
-    await pool.query(
+    // Bug fix: wrap both UPDATEs in a transaction so they are atomic.
+    // If the password update succeeds but used=true fails, the token
+    // stays reusable — this prevents that race condition.
+    await client.query('BEGIN');
+    await client.query(
       'UPDATE users SET password_hash = $1 WHERE id = $2',
       [passwordHash, userId]
     );
-
-    await pool.query(
+    await client.query(
       'UPDATE password_resets SET used = true WHERE id = $1',
       [resetId]
     );
+    await client.query('COMMIT');
 
     return res.status(200).json({ message: 'Mot de passe réinitialisé avec succès' });
   } catch (err) {
+    await client.query('ROLLBACK').catch(() => {});
     console.error('[AuthController] resetPassword :', err.message);
     next(err);
+  } finally {
+    client.release();
   }
 }
 

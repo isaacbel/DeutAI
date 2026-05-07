@@ -3,8 +3,9 @@ const pool = require('../config/db');
 // ── GET /history — list paginated analysis history ─────────────────────────
 async function getHistory(req, res, next) {
   const userId = req.user.userId;
-  const page  = Math.max(1, parseInt(req.query.page  || '1', 10));
-  const limit = Math.min(50, parseInt(req.query.limit || '20', 10));
+  // Bug fix: parseInt can return NaN; default explicitly
+  const page  = Math.max(1, parseInt(req.query.page,  10) || 1);
+  const limit = Math.min(50, Math.max(1, parseInt(req.query.limit, 10) || 20));
   const offset = (page - 1) * limit;
 
   try {
@@ -90,20 +91,18 @@ async function deleteHistoryItem(req, res, next) {
   }
 
   try {
-    const check = await pool.query(
-      'SELECT user_id FROM analyses WHERE id = $1',
-      [id]
+    // Bug fix: single DELETE WHERE id AND user_id avoids a TOCTOU race
+    // condition between the ownership check and the delete.
+    const result = await pool.query(
+      'DELETE FROM analyses WHERE id = $1 AND user_id = $2 RETURNING id',
+      [id, userId]
     );
 
-    if (check.rows.length === 0) {
+    if (result.rowCount === 0) {
+      // Could be 404 (not found) or 403 (wrong user). Return 404 to avoid
+      // leaking existence information to other users.
       return res.status(404).json({ error: 'NOT_FOUND' });
     }
-    if (check.rows[0].user_id !== userId) {
-      return res.status(403).json({ error: 'FORBIDDEN' });
-    }
-
-    // Cascade: flashcards linked to this analysis are deleted by FK ON DELETE CASCADE
-    await pool.query('DELETE FROM analyses WHERE id = $1', [id]);
 
     return res.status(200).json({ message: 'Analyse supprimée' });
   } catch (err) {
@@ -117,7 +116,9 @@ async function clearHistory(req, res, next) {
   const userId = req.user.userId;
   try {
     await pool.query('DELETE FROM analyses WHERE user_id = $1', [userId]);
-    return res.status(200).json({ message: 'Historique effacé' });
+    // Bug fix: 204 No Content is the correct REST response for a successful
+    // bulk delete that returns no body.
+    return res.status(204).send();
   } catch (err) {
     console.error('[HistoryController] clearHistory:', err.message);
     next(err);

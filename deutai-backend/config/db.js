@@ -8,13 +8,14 @@ function resolveSsl() {
   const needsSsl =
     process.env.NODE_ENV === 'production' ||
     /neon\.tech|supabase\.co|render\.com|sslmode=require|sslmode=verify/i.test(url);
-  return needsSsl ? { rejectUnauthorized: false } : false;
+  // Fix #40 — always verify the server certificate; set DATABASE_SSL=0 to opt out locally
+  return needsSsl ? { rejectUnauthorized: true } : false;
 }
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: resolveSsl(),
-  max: 10,
+  max: Number(process.env.PG_POOL_MAX) || 10, // Fix #41 — configurable via env
   idleTimeoutMillis: 30000,
   // Neon (and other serverless DBs) can need >5s on cold start / wake
   connectionTimeoutMillis: Number(process.env.PG_CONNECT_TIMEOUT_MS) || 20000,

@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet'); // Fix #33 — HTTP security headers
 
 const authRoutes     = require('./routes/auth.routes');
 const analyzeRoutes  = require('./routes/analyze.routes');
@@ -19,16 +20,19 @@ const app = express();
 app.use(
   cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-    methods: ['GET', 'POST','DELETE', 'OPTIONS'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // Fix #32 — include PUT/PATCH
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   })
 );
 
+// ─── Security headers ─────────────────────────────────────────────────────────
+app.use(helmet()); // Fix #33
+
 // ─── Body parsing ─────────────────────────────────────────────────────────────
 // Images base64 peuvent être volumineuses (~5MB) → limite augmentée
 app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+// Fix #34 — urlencoded removed: all routes use JSON bodies only
 
 // ─── Ping — cold start Render.com ─────────────────────────────────────────────
 app.get('/ping', (req, res) => {

@@ -3,8 +3,9 @@ const jwt = require('jsonwebtoken');
 function authMiddleware(req, res, next) {
   const authHeader = req.headers['authorization'];
 
+  // Fix #36 — TOKEN_MISSING when there is no header; TOKEN_INVALID reserved for a bad/tampered token
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'TOKEN_INVALID' });
+    return res.status(401).json({ error: 'TOKEN_MISSING' });
   }
 
   const token = authHeader.slice(7);

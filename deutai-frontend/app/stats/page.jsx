@@ -154,7 +154,9 @@ export default function StatsPage() {
         {/* ── Content ── */}
         <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6 flex flex-col gap-4 relative z-10">
 
-          <PeriodSelector period={period} onChange={p => { setPeriod(p); loadStats(p); }} t={t} />
+          {/* Bug fix: was calling setPeriod(p) AND loadStats(p), causing a double
+              fetch. useEffect already watches [period] and triggers loadStats. */}
+          <PeriodSelector period={period} onChange={setPeriod} t={t} />
 
           {/* Error state */}
           {error && (

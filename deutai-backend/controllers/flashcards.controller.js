@@ -22,7 +22,9 @@ async function getFlashcards(req, res, next) {
       [userId]
     );
 
-    return res.status(200).json(result.rows);
+    // Bug fix: wrap in an object so the frontend api call
+    // (await res.json()).flashcards works correctly.
+    return res.status(200).json({ flashcards: result.rows });
   } catch (err) {
     console.error('[FlashcardsController] getFlashcards :', err.message);
     next(err);
@@ -41,20 +43,18 @@ async function deleteFlashcard(req, res, next) {
   }
 
   try {
-    const check = await pool.query(
-      'SELECT user_id FROM flashcards WHERE id = $1',
-      [id]
+    // Bug fix: single DELETE WHERE id AND user_id avoids a TOCTOU race
+    // condition between the ownership check and the delete.
+    const result = await pool.query(
+      'DELETE FROM flashcards WHERE id = $1 AND user_id = $2 RETURNING id',
+      [id, userId]
     );
 
-    if (check.rows.length === 0) {
+    if (result.rowCount === 0) {
+      // Either not found or belongs to a different user — return 404 to
+      // avoid leaking existence information.
       return res.status(404).json({ error: 'NOT_FOUND' });
     }
-
-    if (check.rows[0].user_id !== userId) {
-      return res.status(403).json({ error: 'FORBIDDEN' });
-    }
-
-    await pool.query('DELETE FROM flashcards WHERE id = $1', [id]);
 
     return res.status(200).json({ message: 'Flashcard supprimée' });
   } catch (err) {

@@ -34,8 +34,10 @@ async function createFlashcards(userId, analysisId, analysisResult, unitId = nul
           [userId, analysisId, unitId || null, front, back]
         );
         ids.push(result.rows[0].id);
-      } catch (err) {
-        console.error('[FlashcardService] Échec création flashcard :', err.message);
+      } catch (insertErr) {
+        // Bug fix: renamed from `err` to `insertErr` to avoid shadowing the
+        // outer loop variable `err` (the current error object being processed).
+        console.error('[FlashcardService] Échec création flashcard :', insertErr.message);
       }
     }
     return ids;

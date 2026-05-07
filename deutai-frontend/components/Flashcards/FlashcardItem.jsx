@@ -30,7 +30,7 @@ const ERROR_TYPE_META = {
 
 function formatDate(dateStr, lang) {
   if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString(lang === 'ar' ? 'ar-EG' : 'de-DE', {
+  return new Date(dateStr).toLocaleDateString(lang === 'ar' ? 'ar-EG-u-nu-latn' : 'de-DE', {
     day: '2-digit', month: 'short', year: '2-digit',
   });
 }

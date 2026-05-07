@@ -14,7 +14,9 @@ const notebookAnalyzeSchema = Joi.object({
   unit_id: Joi.string().uuid().optional(),
 });
 
-// ─── Shared helper — identical to analyze.controller.js persistAnalysis ────────
+// ─── Shared helper — duplicates persistAnalysis in analyze.controller.js ──────
+// TODO: extract to services/analysis.service.js so both controllers share it.
+// Any bug fix here must also be applied to analyze.controller.js until then.
 
 async function persistNotebookAnalysis(userId, inputText, analysisResult, unit_id) {
   const primaryError = analysisResult.errors?.[0] || null;

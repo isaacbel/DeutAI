@@ -1,15 +1,25 @@
 const nodemailer = require('nodemailer');
 
-function createTransporter() {
-  return nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: parseInt(process.env.EMAIL_PORT, 10) || 587,
-    secure: parseInt(process.env.EMAIL_PORT, 10) === 465,
-    auth: {
-      user: process.env.EMAIL_USER,
-      pass: process.env.EMAIL_PASS,
-    },
-  });
+// Bug fix: creating a new transporter on every call re-initialises the SMTP
+// connection pool each time. Use a lazy singleton instead.
+let _transporter = null;
+
+function getTransporter() {
+  if (!_transporter) {
+    if (!process.env.EMAIL_HOST) {
+      throw new Error('EMAIL_HOST is not configured. Set it in your .env file.');
+    }
+    _transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: parseInt(process.env.EMAIL_PORT, 10) || 587,
+      secure: parseInt(process.env.EMAIL_PORT, 10) === 465,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+  }
+  return _transporter;
 }
 
 async function sendPasswordResetEmail(toEmail, resetToken) {
@@ -72,7 +82,7 @@ async function sendPasswordResetEmail(toEmail, resetToken) {
     </html>
   `;
 
-  const transporter = createTransporter();
+  const transporter = getTransporter();
 
   try {
     await transporter.sendMail({

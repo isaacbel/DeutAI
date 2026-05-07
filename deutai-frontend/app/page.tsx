@@ -77,10 +77,17 @@ export default function RootPage() {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      router.replace('/analyze');
-    } else {
-      setCheckingAuth(false);
+      // Fix #2 — validate expiry, not just presence, to avoid redirect loops
+      try {
+        const { exp } = JSON.parse(atob(token.split('.')[1]));
+        if (!exp || exp * 1000 > Date.now()) {
+          router.replace('/analyze');
+          return;
+        }
+      } catch { /* malformed token — fall through */ }
+      localStorage.removeItem('access_token');
     }
+    setCheckingAuth(false);
   }, [router]);
 
   if (checkingAuth) {
@@ -219,7 +226,13 @@ export default function RootPage() {
           from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0); }
         }
+        /* Fix #1 — spin-slow was referenced but never defined */
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to   { transform: rotate(360deg); }
+        }
         .hero-1 { animation: hero-rise 0.7s ease both; }
+        /* Fix #4 — hero-2 was dead; now used for h1. subtitle gets hero-3. */
         .hero-2 { animation: hero-rise 0.7s ease 0.15s both; }
         .hero-3 { animation: hero-rise 0.7s ease 0.30s both; }
         .hero-4 { animation: hero-rise 0.7s ease 0.45s both; }
@@ -267,7 +280,7 @@ export default function RootPage() {
             <Image src="/deutai-pen-logo.png" alt="DeutAI" width={190} height={190} style={{ objectFit: 'contain' }} priority />
           </div>
 
-          <h1 className="hero-3" style={{
+          <h1 className="hero-2" style={{
             fontFamily: "'Playfair Display', Georgia, serif",
             fontSize: 'clamp(36px, 8vw, 72px)',
             fontWeight: 700, lineHeight: 1.1,
@@ -325,11 +338,10 @@ export default function RootPage() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
-          {localizedFeatures.map((f, i) => (
+          {localizedFeatures.map((f) => (
             <div
-              key={i}
+              key={f.title}
               className="lp-feat-card"
-              style={{ '--hover-color': f.color } as React.CSSProperties}
               onMouseEnter={e => (e.currentTarget.style.borderColor = f.color + '40')}
               onMouseLeave={e => (e.currentTarget.style.borderColor = '#1e1e26')}
             >
@@ -378,8 +390,8 @@ export default function RootPage() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-          {localizedHowItWorks.map((h, i) => (
-            <div key={i} className="lp-step">
+          {localizedHowItWorks.map((h) => (
+            <div key={h.step} className="lp-step">
               <div style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
                 fontSize: '36px', fontWeight: 700,

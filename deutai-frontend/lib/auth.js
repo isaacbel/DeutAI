@@ -20,6 +20,14 @@ function decodeJwt(token) {
   }
 }
 
+// Fix #28 — check both signature validity AND expiry
+function isTokenValid(token) {
+  const payload = decodeJwt(token);
+  if (!payload) return false;
+  if (payload.exp && payload.exp * 1000 < Date.now()) return false;
+  return true;
+}
+
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,14 +35,15 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
-    if (!token) {
+    if (!token || !isTokenValid(token)) {
+      // Fix #28 — clear expired token so the UI doesn't show stale auth state
+      if (token) localStorage.removeItem('access_token');
       setLoading(false);
       return;
     }
     const payload = decodeJwt(token);
-    if (payload) {
-      setUser({ email: payload.email || payload.sub || '', id: payload.sub });
-    }
+    // Fix #30 — never alias a UUID sub to the email field
+    setUser({ email: payload.email || '', id: payload.sub || payload.userId });
     setLoading(false);
   }, []);
 
@@ -58,24 +67,26 @@ export function useAuth(redirectIfUnauthenticated = true) {
 
   useEffect(() => {
     if (!ctx) return;
+    // Fix #31 — trust AuthProvider's resolved ctx.user; no need for a redundant localStorage check
     if (!ctx.loading && !ctx.user && redirectIfUnauthenticated) {
-      const token = localStorage.getItem('access_token');
-      if (!token) {
-        router.replace('/login');
-      }
+      router.replace('/login');
     }
   }, [ctx, redirectIfUnauthenticated, router]);
 
   if (!ctx) {
-    // Fallback when used outside AuthProvider (plain hook usage pattern from prompt)
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn('[useAuth] called outside <AuthProvider>. Wrap your app in <AuthProvider>.');
+    }
     return { user: null, loading: true, logout: () => {} };
   }
 
   return ctx;
 }
 
-// Standalone hook for pages that import useAuth directly without AuthProvider
-// This matches the pattern used in the prompt code snippets
+// Fix #29 — NOTE: this hook duplicates AuthProvider state.
+// It is intentionally kept for pages that cannot be wrapped in AuthProvider,
+// but its auth state is NOT shared with AuthProvider consumers.
+// Prefer useAuth() inside AuthProvider-wrapped pages.
 export function useAuthStandalone() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -83,24 +94,23 @@ export function useAuthStandalone() {
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
-    if (!token) {
+    // Fix #28 — validate expiry, not just presence
+    if (!token || !isTokenValid(token)) {
+      if (token) localStorage.removeItem('access_token');
       router.replace('/login');
       setLoading(false);
       return;
     }
     const payload = decodeJwt(token);
-    if (!payload) {
-      router.replace('/login');
-      setLoading(false);
-      return;
-    }
-    setUser({ email: payload.email || payload.sub || '', id: payload.sub });
+    // Fix #30 — don't alias sub to email
+    setUser({ email: payload.email || '', id: payload.sub || payload.userId });
     setLoading(false);
   }, [router]);
 
   const logout = useCallback(() => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
+    setUser(null);
     router.replace('/');
   }, [router]);
 

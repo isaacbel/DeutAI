@@ -2,19 +2,23 @@
 import { Sparkles } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
-export default function CorrectionCard({ correction, correctedSentence, errors = [], originalSentence = '' }) {
+// Fix #9 — correctedSentence is the canonical prop; correction kept as a legacy alias.
+// Fix #10 — beforeSentence alias removed; originalSentence used directly.
+export default function CorrectionCard({ correctedSentence, correction, errors = [], originalSentence = '' }) {
   const { t, lang } = useLanguage();
   const isRtl = lang === 'ar';
-  const fullCorrectedSentence = correctedSentence || correction;
-  const beforeSentence = originalSentence || '';
+
+  // Fix #9 — nullish coalescing so an empty string correctedSentence doesn't fall back to correction
+  const fullCorrectedSentence = correctedSentence ?? correction;
 
   const paragraphStyle = {
     fontFamily: 'Georgia, "Times New Roman", serif',
     lineHeight: 1.8,
   };
 
+  // Fix #10 — uses originalSentence directly (the alias beforeSentence was redundant)
   const renderBeforeSentence = () => {
-    if (!beforeSentence) return null;
+    if (!originalSentence) return null;
 
     const tokens = errors
       .map((err) => err?.errorText)
@@ -25,13 +29,13 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
     if (!tokens.length) {
       return (
         <p className="text-lg md:text-2xl" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)' }}>
-          {beforeSentence}
+          {originalSentence}
         </p>
       );
     }
 
     const pattern = new RegExp(`(${tokens.join('|')})`, 'gi');
-    const parts = beforeSentence.split(pattern);
+    const parts = originalSentence.split(pattern);
 
     return (
       <p className="text-lg md:text-2xl" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)' }}>
@@ -127,7 +131,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
           marginBottom: fullCorrectedSentence && errors.length > 0 ? '18px' : 0,
         }}
       >
-        {beforeSentence && (
+        {originalSentence && (
           <div>
             <p
               style={{
@@ -178,6 +182,7 @@ export default function CorrectionCard({ correction, correctedSentence, errors =
                 height: '100%',
               }}
             >
+              {/* Fix #12 — corrected text is always German, so lang="de" is intentional */}
               <p
                 className="text-lg md:text-2xl"
                 lang="de"

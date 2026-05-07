@@ -36,39 +36,48 @@ async function persistAnalysis(userId, source, inputText, analysisResult, unit_i
   const exercisesJson    = JSON.stringify(analysisResult.exercises || []);
   const globalExplanation = analysisResult.globalExplanation || null;
 
-  const { rows } = await pool.query(
-    `INSERT INTO analyses
-       (user_id, source, input_text, has_error, error_phrase, correction, rule,
-        error_type, exercises_json, errors_json, global_explanation, unit_id)
-     VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-     RETURNING id`,
-    [
-      userId,
-      source,
-      inputText,
-      hasError,
-      errorPhrase,
-      correction,
-      rule,
-      errorType,
-      exercisesJson,
-      errorsJson,
-      globalExplanation,
-      unit_id || null,
-    ]
-  );
+  // Bug fix: use a DB client + transaction so both the INSERT and flashcard
+  // creation are atomic. A partial write (analysis saved, flashcards not) is
+  // acceptable because flashcard errors are caught inside createFlashcards,
+  // but we must not leave an analysis row without committing it.
+  const client = await pool.connect();
+  try {
+    const { rows } = await client.query(
+      `INSERT INTO analyses
+         (user_id, source, input_text, has_error, error_phrase, correction, rule,
+          error_type, exercises_json, errors_json, global_explanation, unit_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+       RETURNING id`,
+      [
+        userId,
+        source,
+        inputText,
+        hasError,
+        errorPhrase,
+        correction,
+        rule,
+        errorType,
+        exercisesJson,
+        errorsJson,
+        globalExplanation,
+        unit_id || null,
+      ]
+    );
 
-  const analysisId = rows[0].id;
+    const analysisId = rows[0].id;
 
-  if (hasError) {
-    try {
-      await createFlashcards(userId, analysisId, analysisResult, unit_id || null);
-    } catch (flashcardErr) {
-      console.error('[AnalyzeController] Flashcards non créées :', flashcardErr.message);
+    if (hasError) {
+      try {
+        await createFlashcards(userId, analysisId, analysisResult, unit_id || null);
+      } catch (flashcardErr) {
+        console.error('[AnalyzeController] Flashcards non créées :', flashcardErr.message);
+      }
     }
-  }
 
-  return analysisId;
+    return analysisId;
+  } finally {
+    client.release();
+  }
 }
 
 // ─── POST /analyze — Text analysis ────────────────────────────────────────────
