@@ -68,7 +68,7 @@ const HOW_IT_WORKS_AR = [
 
 export default function RootPage() {
   const router = useRouter();
-  const { t, lang } = useLanguage();
+  const { t, lang } = useLanguage() as { t: (key: string, params?: any) => string, lang: string };
   const [checkingAuth, setCheckingAuth] = useState(true);
 
   const localizedFeatures = lang === 'ar' ? FEATURES_AR : FEATURES_DE;

@@ -160,6 +160,7 @@ function ResetPasswordForm() {
 }
 
 export default function ResetPasswordPage() {
+  const { t } = useLanguage();
   return (
     <div className="min-h-screen bg-black flex flex-col justify-center px-4 py-12 relative overflow-hidden">
       <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
