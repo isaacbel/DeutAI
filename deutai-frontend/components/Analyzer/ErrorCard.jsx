@@ -161,8 +161,8 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
       {/* ── Body ── */}
       <div style={{ padding: '16px 18px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
 
-        {/* Before / After sentences side by side */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+        {/* Before / After sentences — stack on mobile, 2-col on md+ */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {/* Original */}
           <div>
             <div style={{

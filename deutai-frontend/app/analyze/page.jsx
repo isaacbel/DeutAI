@@ -195,7 +195,7 @@ function AnalyzeContent() {
       )}
 
       {/* ── Main content ── */}
-      <div className="px-4 sm:px-6 py-6 w-full lg:w-[80%] max-w-7xl mx-auto relative z-10">
+      <div className="px-3 sm:px-6 py-4 sm:py-6 w-full max-w-4xl mx-auto relative z-10">
 
         {/* Offline banner */}
         {offline && (
@@ -213,7 +213,7 @@ function AnalyzeContent() {
           <div className="flex items-center gap-2 mb-2.5">
             <span className="w-[3px] h-[11px] bg-[#C9A227] rounded-full" style={{ opacity: 0.6 }} />
             <label
-              className="text-[11px] font-mono tracking-[.18em] font-semibold uppercase"
+              className="text-[12px] font-mono tracking-[.18em] font-semibold uppercase"
               style={{ fontFamily: 'JetBrains Mono, monospace', color: '#b8a878' }}
             >
               {t('analyze.sentenceToAnalyze')}
@@ -263,14 +263,14 @@ function AnalyzeContent() {
         )}
 
         {/* Action buttons */}
-        <div className="flex flex-col sm:flex-row gap-2">
+        <div className="flex flex-col sm:flex-row gap-2 mt-4">
           <div className="flex-1 min-w-0">
             <ScanButton onClick={handleAnalyze} disabled={isDisabled} loading={scanning} />
           </div>
           {(result || text) && !scanning && (
             <button
               onClick={handleReset}
-              className="px-4 py-[14px] rounded-xl text-[12px] font-mono transition-all whitespace-nowrap sm:w-auto"
+              className="w-full sm:w-auto px-5 py-[14px] rounded-xl text-[13px] font-mono transition-all whitespace-nowrap"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 border: '1px solid rgba(255,255,255,0.1)',

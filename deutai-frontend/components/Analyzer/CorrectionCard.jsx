@@ -126,7 +126,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
       </div>
 
       <div
-        className="relative z-10 flex flex-col md:grid md:grid-cols-2 gap-4"
+        className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-4"
         style={{
           marginBottom: fullCorrectedSentence && errors.length > 0 ? '18px' : 0,
         }}
@@ -224,6 +224,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
                 flexWrap: 'wrap',
                 fontFamily: 'Inter, sans-serif',
                 justifyContent: isRtl ? 'flex-end' : 'flex-start',
+                rowGap: '6px',
               }}
             >
               <span
