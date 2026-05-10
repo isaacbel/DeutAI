@@ -323,7 +323,7 @@ export default function RootPage() {
       {/* ── Nav ── */}
       <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
         <div className="lp-nav-left">
-          <Image src="/ChatGPT Image 9 mai 2026, 14_24_29.png" alt="DeutAI" width={45} height={45} style={{ objectFit: 'contain' }} />
+          <Image src="/hero-image.png" alt="DeutAI" width={45} height={45} style={{ objectFit: 'contain' }} />
           <span className="lp-nav-brand">
             DEUTAI
           </span>
@@ -350,7 +350,7 @@ export default function RootPage() {
 
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
           <div className="hero-1" style={{ marginBottom: '28px', filter: 'drop-shadow(0 0 60px rgba(201,162,39,0.3))' }}>
-            <Image src="/ChatGPT Image 9 mai 2026, 14_24_29.png" className="hero-logo" alt="DeutAI" width={260} height={260} style={{ objectFit: 'contain' }} priority />
+            <Image src="/hero-image.png" className="hero-logo" alt="DeutAI" width={260} height={260} style={{ objectFit: 'contain' }} priority />
           </div>
 
           <h1 className="hero-2" style={{
@@ -546,7 +546,7 @@ export default function RootPage() {
       {/* ── FOOTER ── */}
       <footer className="lp-footer" style={{ position: 'relative', zIndex: 1 }}>
         <div className="lp-footer-brand">
-          <Image src="/ChatGPT Image 9 mai 2026, 14_24_29.png" alt="DeutAI" width={48} height={48} style={{ objectFit: 'contain' }} />
+          <Image src="/hero-image.png" alt="DeutAI" width={48} height={48} style={{ objectFit: 'contain' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
             <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '18px', fontWeight: 600, color: '#C9A227', letterSpacing: '1px' }}>
               DeutAI
