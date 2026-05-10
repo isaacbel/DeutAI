@@ -99,8 +99,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
           <Sparkles size={16} className="text-gold" />
         </div>
         <span
-          className="text-[13px] uppercase font-semibold"
-          style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.28em', color: '#E3C66F' }}
+          className="text-base uppercase font-semibold"
+          style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.2em', color: '#E3C66F' }}
         >
           {t('errorCard.correction')}
         </span>
@@ -110,8 +110,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
               marginLeft: isRtl ? undefined : 'auto',
               marginRight: isRtl ? 'auto' : undefined,
               fontFamily: 'Inter, sans-serif',
-              fontSize: '11px',
-              letterSpacing: '0.16em',
+              fontSize: '14px',
+              letterSpacing: '0.12em',
               textTransform: 'uppercase',
               padding: '5px 11px',
               borderRadius: '999px',
@@ -136,8 +136,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
             <p
               style={{
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '12px',
-                letterSpacing: '0.26em',
+                fontSize: '15px',
+                letterSpacing: '0.18em',
                 textTransform: 'uppercase',
                 color: '#FF6B6B',
                 marginBottom: '10px',
@@ -164,8 +164,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
             <p
               style={{
                 fontFamily: 'Inter, sans-serif',
-                fontSize: '12px',
-                letterSpacing: '0.26em',
+                fontSize: '15px',
+                letterSpacing: '0.18em',
                 textTransform: 'uppercase',
                 color: '#4ADE80',
                 marginBottom: '10px',
@@ -228,27 +228,27 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
             >
               <span
                 style={{
-                  fontSize: '13px',
+                  fontSize: '16px',
                   color: '#FF6B6B',
                   textDecoration: 'line-through',
                   textDecorationColor: 'rgba(255,107,107,0.8)',
                   textDecorationThickness: '2px',
                   background: 'rgba(255,107,107,0.12)',
                   border: '1px solid rgba(255,107,107,0.25)',
-                  padding: '4px 8px',
+                  padding: '6px 12px',
                   borderRadius: '8px',
                 }}
               >
                 {err.errorText}
               </span>
-              <span style={{ color: 'rgba(212,175,55,0.55)', fontSize: '12px' }}>→</span>
+              <span style={{ color: 'rgba(212,175,55,0.55)', fontSize: '18px' }}>→</span>
               <span
                 style={{
-                  fontSize: '13px',
+                  fontSize: '16px',
                   color: '#4ADE80',
                   background: 'rgba(74,222,128,0.12)',
                   border: '1px solid rgba(74,222,128,0.25)',
-                  padding: '4px 8px',
+                  padding: '6px 12px',
                   borderRadius: '8px',
                   fontWeight: 600,
                 }}

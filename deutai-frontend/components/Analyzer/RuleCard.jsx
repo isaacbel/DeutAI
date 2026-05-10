@@ -164,15 +164,15 @@ function ErrorRuleBlock({ error, index, explanationLanguage }) {
         }}
       >
         <div style={{
-          width: '18px', height: '18px', borderRadius: '50%',
+          width: '24px', height: '24px', borderRadius: '50%',
           background: `${color}20`, border: `1px solid ${color}40`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
+          fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
           fontWeight: 700, color, flexShrink: 0,
         }}>
           {index + 1}
         </div>
-        <span dir="ltr" lang="de" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color, flex: 1, textAlign: 'left' }}>
+        <span dir="ltr" lang="de" style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '14px', color, flex: 1, textAlign: 'left' }}>
           {error.errorText} → {error.correction}
         </span>
         {open
@@ -233,7 +233,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
           <BookOpen size={16} className="text-[#4A9A4A]" />
         </div>
         <span
-          className="text-[11px] font-mono tracking-[0.2em] font-bold"
+          className="text-sm font-mono tracking-[0.15em] font-bold"
           style={{ fontFamily: 'JetBrains Mono, monospace', color: '#4A9A4A' }}
         >
           {t('errorCard.grammarRules')}
@@ -245,7 +245,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
           >
             <button
               onClick={() => setExplanationLanguage('de')}
-              className="px-2 py-1 text-[10px] rounded"
+              className="px-3 py-1.5 text-sm rounded"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 background: explanationLanguage === 'de' ? 'rgba(212,175,55,0.16)' : 'transparent',
@@ -256,7 +256,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
             </button>
             <button
               onClick={() => setExplanationLanguage('ar')}
-              className="px-2 py-1 text-[10px] rounded"
+              className="px-3 py-1.5 text-sm rounded"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 background: explanationLanguage === 'ar' ? 'rgba(212,175,55,0.16)' : 'transparent',
@@ -302,13 +302,13 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
             <div className="flex items-center gap-2">
               <GraduationCap size={14} className="text-[#666] group-hover:text-gold transition-colors" />
               <span
-                className="text-[10px] font-mono tracking-[0.2em] text-[#555] group-hover:text-gold/70 transition-colors"
+                className="text-sm font-mono tracking-[0.15em] text-[#555] group-hover:text-gold/70 transition-colors"
                 style={{ fontFamily: 'JetBrains Mono, monospace' }}
               >
                 {t('errorCard.targetedExercises')}
               </span>
               <span
-                className="text-[9px] font-mono px-1.5 py-0.5 rounded"
+                className="text-xs font-mono px-2 py-1 rounded"
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
                   background: 'rgba(212,175,55,0.08)',
