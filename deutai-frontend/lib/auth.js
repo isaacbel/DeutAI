@@ -25,11 +25,10 @@ function decodeJwt(token) {
   }
 }
 
-// Fix #28 — check both signature validity AND expiry
 function isTokenValid(token) {
   const payload = decodeJwt(token);
   if (!payload) return false;
-  if (payload.exp && payload.exp * 1000 < Date.now()) return false;
+  // Trust the backend to validate expiry via 401s; client clocks can be out of sync
   return true;
 }
 
