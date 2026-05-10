@@ -28,7 +28,7 @@ export default function ScanButton({ onClick, disabled, loading }) {
         } : {
           background: '#13131a',
           border: '1px solid rgba(52,52,68,0.8)',
-          color: '#4a4a5c',
+          color: '#7a7a90',
           cursor: 'not-allowed',
         }),
       }}

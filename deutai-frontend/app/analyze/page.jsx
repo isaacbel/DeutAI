@@ -100,7 +100,7 @@ function AnalyzeContent() {
     } finally {
       setScanning(false);
     }
-  }, [text, unitId, offline]);
+  }, [text, unitId, offline, t]);
 
   const handleReset = useCallback(() => {
     setText('');
@@ -211,10 +211,10 @@ function AnalyzeContent() {
         {/* Input area */}
         <div className="mb-5">
           <div className="flex items-center gap-2 mb-2.5">
-            <span className="w-[3px] h-[11px] bg-[#4a4a60] rounded-full" />
+            <span className="w-[3px] h-[11px] bg-[#C9A227] rounded-full" style={{ opacity: 0.6 }} />
             <label
-              className="text-[10px] font-mono text-[#6a6a80] tracking-[.18em] font-semibold uppercase"
-              style={{ fontFamily: 'JetBrains Mono, monospace' }}
+              className="text-[11px] font-mono tracking-[.18em] font-semibold uppercase"
+              style={{ fontFamily: 'JetBrains Mono, monospace', color: '#b8a878' }}
             >
               {t('analyze.sentenceToAnalyze')}
             </label>
@@ -291,10 +291,10 @@ function AnalyzeContent() {
 
         {/* Empty state */}
         {!scanning && !result && !error && (
-          <div className="mt-14 flex flex-col items-center justify-center opacity-30" aria-hidden="true">
-            <div className="w-px h-10 mb-4" style={{ background: 'linear-gradient(to bottom, transparent, #6a6a80)' }} />
-            <p className="text-[11px] font-mono text-[#6a6a80] tracking-[.2em] flex items-center gap-1.5"
-               style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <div className="mt-14 flex flex-col items-center justify-center" style={{ opacity: 0.6 }} aria-hidden="true">
+            <div className="w-px h-10 mb-4" style={{ background: 'linear-gradient(to bottom, transparent, #C9A22760)' }} />
+            <p className="text-[12px] font-mono tracking-[.2em] flex items-center gap-1.5"
+               style={{ fontFamily: 'JetBrains Mono, monospace', color: '#9a8a5a' }}>
               <ChevronRight size={13} />
               {t('analyze.waiting')}
             </p>

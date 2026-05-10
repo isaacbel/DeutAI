@@ -78,7 +78,7 @@ export default function TextInput({ value, onChange, disabled }) {
           className="text-[11px] font-mono tabular-nums tracking-wider px-2 py-0.5 rounded transition-all"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
-            color: isOver ? '#CC5555' : isWarn ? '#D4AF37' : '#6a6a80',
+            color: isOver ? '#CC5555' : isWarn ? '#D4AF37' : '#a0a0b8',
             background: isOver ? 'rgba(204,85,85,0.08)' : isWarn ? 'rgba(212,175,55,0.08)' : 'transparent',
           }}
         >

@@ -143,7 +143,7 @@ export default function StatsPage() {
               >
                 {t('stats.title')}
               </h1>
-              <p className="text-[9px] uppercase tracking-[.22em] text-[#5a5a70] mt-1">
+              <p className="text-[10px] uppercase tracking-[.22em] mt-1" style={{ color: '#8a8a9c' }}>
                 {t('stats.subtitle')}
               </p>
             </div>

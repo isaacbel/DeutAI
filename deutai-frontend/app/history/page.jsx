@@ -305,9 +305,14 @@ export default function HistoryPage() {
   }, [items, selected, pageLoading]);
 
   async function handleDelete(id) {
-    await deleteHistoryItem(id);
-    setItems(prev => prev.filter(i => i.id !== id));
-    if (selected?.id === id) setSelected(null);
+    try {
+      const res = await deleteHistoryItem(id);
+      if (!res.ok) { setFetchError(t('history.errorDeleteFailed')); return; }
+      setItems(prev => prev.filter(i => i.id !== id));
+      if (selected?.id === id) setSelected(null);
+    } catch {
+      setFetchError(t('history.errorNetwork'));
+    }
   }
 
   async function handleClearAll() {

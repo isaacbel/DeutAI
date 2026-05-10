@@ -106,7 +106,7 @@ export default function RootPage() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
 
-
+        *, *::before, *::after { box-sizing: border-box; }
 
         .lp-blob {
           position: absolute; border-radius: 50%;
@@ -114,127 +114,207 @@ export default function RootPage() {
           filter: blur(80px); pointer-events: none;
         }
 
-        .lp-feat-card {
-          background: #111113;
-          border: 1px solid #1e1e26;
-          border-radius: 20px;
-          padding: 28px 24px;
-          display: flex; flex-direction: column; gap: 12px;
-          position: relative; overflow: hidden;
-          transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+        /* ── Nav ── */
+        .lp-nav {
+          position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+          height: 60px;
+          background: rgba(8,8,9,0.9);
+          backdrop-filter: blur(20px) saturate(1.5);
+          border-bottom: 1px solid #13131a;
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 0 20px;
         }
-        .lp-feat-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 12px 40px rgba(0,0,0,0.5);
-        }
+        .lp-nav-left { display: flex; align-items: center; gap: 8px; }
+        .lp-nav-brand { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; color: #C9A227; letter-spacing: 3px; }
+        .lp-nav-right { display: flex; gap: 8px; align-items: center; }
 
-        .lp-step {
-          display: flex; gap: 20px; align-items: flex-start;
-          padding: 24px;
-          border-radius: 16px;
-          background: #111113;
-          border: 1px solid #1a1a22;
-          position: relative; overflow: hidden;
-        }
-        .lp-step::before {
-          content: '';
-          position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
-          background: linear-gradient(to bottom, #C9A22780, transparent);
-        }
-
+        /* ── Buttons ── */
         .lp-cta-primary {
           display: inline-flex; align-items: center; justify-content: center;
-          padding: 14px 36px;
-          border-radius: 14px;
-          background: #C9A227;
-          color: #080809;
+          padding: 14px 36px; border-radius: 14px;
+          background: #C9A227; color: #080809;
           font-family: 'JetBrains Mono', monospace;
-          font-size: 14px; font-weight: 600;
-          letter-spacing: 1px;
+          font-size: 14px; font-weight: 600; letter-spacing: 1px;
           box-shadow: 0 4px 24px rgba(201,162,39,0.35);
           transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-          text-decoration: none;
+          text-decoration: none; white-space: nowrap;
         }
-        .lp-cta-primary:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 32px rgba(201,162,39,0.45);
-          background: #d4af37;
-        }
+        .lp-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(201,162,39,0.45); background: #d4af37; }
         .lp-cta-primary:active { transform: scale(0.97); }
 
         .lp-cta-secondary {
           display: inline-flex; align-items: center; justify-content: center;
-          padding: 13px 36px;
-          border-radius: 14px;
-          background: transparent;
-          color: #C9A227;
+          padding: 13px 36px; border-radius: 14px;
+          background: transparent; color: #C9A227;
           font-family: 'JetBrains Mono', monospace;
-          font-size: 14px; font-weight: 500;
-          letter-spacing: 1px;
+          font-size: 14px; font-weight: 500; letter-spacing: 1px;
           border: 1.5px solid #C9A22740;
           transition: border-color 0.2s, background 0.2s, transform 0.2s;
-          text-decoration: none;
+          text-decoration: none; white-space: nowrap;
         }
-        .lp-cta-secondary:hover {
-          border-color: #C9A227;
-          background: #C9A22710;
-          transform: translateY(-2px);
+        .lp-cta-secondary:hover { border-color: #C9A227; background: #C9A22710; transform: translateY(-2px); }
+
+        /* ── Feature cards ── */
+        .lp-feat-card {
+          background: #111113; border: 1px solid #1e1e26; border-radius: 20px;
+          padding: 28px 24px; display: flex; flex-direction: column; gap: 12px;
+          position: relative; overflow: hidden;
+          transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+        }
+        .lp-feat-card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+
+        .lp-feat-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 16px;
         }
 
-        .lp-nav {
-          position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-          height: 60px;
-          background: rgba(8,8,9,0.85);
-          backdrop-filter: blur(20px) saturate(1.5);
-          border-bottom: 1px solid #13131a;
-          display: flex; align-items: center; justify-content: space-between;
-          padding: 0 24px;
+        /* ── Steps ── */
+        .lp-step {
+          display: flex; gap: 20px; align-items: flex-start;
+          padding: 24px; border-radius: 16px;
+          background: #111113; border: 1px solid #1a1a22;
+          position: relative; overflow: hidden;
         }
-        .lp-nav-right { display: flex; gap: 12px; align-items: center; }
-        .lp-nav-left { display: flex; align-items: center; gap: 10px; }
+        .lp-step::before {
+          content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px;
+          background: linear-gradient(to bottom, #C9A22780, transparent);
+        }
 
+        /* ── Stat card ── */
         .lp-stat {
           display: flex; flex-direction: column; align-items: center; gap: 6px;
-          padding: 28px 24px;
-          border-radius: 20px;
-          background: #111113;
-          border: 1px solid #1e1e26;
-          flex: 1; min-width: 140px;
+          padding: 28px 24px; border-radius: 20px;
+          background: #111113; border: 1px solid #1e1e26;
+          flex: 1; min-width: 120px;
         }
 
+        /* ── Section labels / titles ── */
         .lp-section-label {
           font-family: 'JetBrains Mono', monospace;
           font-size: 13px; letter-spacing: 4px;
-          text-transform: uppercase; color: #C9A22780;
-          margin-bottom: 12px;
+          text-transform: uppercase; color: #C9A22780; margin-bottom: 12px;
         }
         .lp-section-title {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(28px, 5vw, 42px);
-          font-weight: 500; color: #e8e8f0;
-          line-height: 1.25; margin: 0;
+          font-weight: 500; color: #e8e8f0; line-height: 1.25; margin: 0;
         }
         .lp-section-title em { color: #C9A227; font-style: italic; }
 
+        /* ── CTA banner ── */
+        .lp-cta-banner {
+          padding: 52px 40px; border-radius: 28px;
+          background: #111113; border: 1px solid #1e1e26;
+          position: relative; overflow: hidden;
+          text-align: center;
+        }
+
+        /* ── Hero CTA row ── */
+        .hero-cta-row {
+          display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+        }
+
+        /* ── Footer ── */
+        .lp-footer {
+          display: flex; align-items: center; justify-content: space-between;
+          flex-wrap: wrap; gap: 16px;
+          padding: 36px 28px;
+          max-width: 1040px; margin: 0 auto;
+          border-top: 1px solid #1a1a22;
+        }
+        .lp-footer-brand { display: flex; align-items: center; gap: 14px; }
+
+        /* ── Section padding ── */
+        .lp-section { padding: 0 24px 80px; }
+        @media (max-width: 640px) {
+          .lp-section { padding: 0 16px 56px; }
+          .lp-section-header { margin-bottom: 36px !important; }
+          .lp-step-num { font-size: 26px !important; width: 40px !important; }
+        }
+
+        /* ── Divider ── */
+        .lp-divider {
+          width: 100%; height: 1px;
+          background: linear-gradient(90deg, transparent, #1e1e2a, transparent);
+          margin: 80px 0;
+        }
+
+        /* ── Hero logo ── */
+        .hero-logo { width: 260px; height: 260px; }
+        @media (max-width: 640px) {
+          .hero-logo { width: 160px; height: 160px; }
+          .hero-section { padding-top: 72px !important; padding-bottom: 40px !important; }
+        }
+
+        /* ── Animations ── */
         @keyframes hero-rise {
           from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        /* Fix #1 — spin-slow was referenced but never defined */
         @keyframes spin-slow {
           from { transform: rotate(0deg); }
           to   { transform: rotate(360deg); }
         }
         .hero-1 { animation: hero-rise 0.7s ease both; }
-        /* Fix #4 — hero-2 was dead; now used for h1. subtitle gets hero-3. */
         .hero-2 { animation: hero-rise 0.7s ease 0.15s both; }
         .hero-3 { animation: hero-rise 0.7s ease 0.30s both; }
         .hero-4 { animation: hero-rise 0.7s ease 0.45s both; }
 
-        .lp-divider {
-          width: 100%; height: 1px;
-          background: linear-gradient(90deg, transparent, #1e1e2a, transparent);
-          margin: 80px 0;
+        /* ══════════════════════════════════════
+           RESPONSIVE BREAKPOINTS
+        ══════════════════════════════════════ */
+
+        /* Tablet: ≤ 900px */
+        @media (max-width: 900px) {
+          .lp-feat-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+          .lp-cta-banner { padding: 40px 28px; }
+        }
+
+        /* Mobile: ≤ 640px */
+        @media (max-width: 640px) {
+          .lp-nav { padding: 0 14px; height: 56px; }
+          .lp-nav-brand { display: none; }
+
+          .lp-feat-grid {
+            grid-template-columns: 1fr;
+          }
+
+          .hero-cta-row {
+            flex-direction: column; align-items: stretch;
+            gap: 10px; width: 100%;
+          }
+          .hero-cta-row .lp-cta-primary,
+          .hero-cta-row .lp-cta-secondary {
+            padding: 14px 20px; width: 100%; text-align: center;
+          }
+
+          .lp-cta-banner { padding: 32px 20px; border-radius: 20px; }
+          .lp-cta-banner .hero-cta-row { margin-top: 4px; }
+
+          .lp-divider { margin: 48px 0; }
+
+          .lp-step { padding: 18px; gap: 14px; }
+
+          .lp-footer {
+            flex-direction: column; align-items: flex-start;
+            padding: 28px 20px; gap: 20px;
+          }
+
+          .lp-stat { padding: 20px 16px; min-width: 90px; }
+
+          .lp-feat-card { padding: 22px 18px; }
+
+          /* Hide nav register btn on very small screens, keep login */
+          .lp-nav-register { display: none; }
+        }
+
+        /* Very small: ≤ 400px */
+        @media (max-width: 400px) {
+          .lp-nav-right { gap: 6px; }
+          .lp-cta-secondary { padding: 8px 14px; font-size: 12px; }
         }
       `}</style>
 
@@ -243,8 +323,8 @@ export default function RootPage() {
       {/* ── Nav ── */}
       <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
         <div className="lp-nav-left">
-          <Image src="/AdobeExpressPhotos_9864d0d7f19b4e34ad48941dabad5e3e_CopyEdited.png" alt="DeutAI" width={45} height={45} style={{ objectFit: 'contain' }} />
-          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', fontWeight: 600, color: '#C9A227', letterSpacing: '3px' }}>
+          <Image src="/ChatGPT Image 9 mai 2026, 14_24_29.png" alt="DeutAI" width={45} height={45} style={{ objectFit: 'contain' }} />
+          <span className="lp-nav-brand">
             DEUTAI
           </span>
         </div>
@@ -253,14 +333,14 @@ export default function RootPage() {
           <Link href="/login" className="lp-cta-secondary" style={{ padding: '8px 24px', fontSize: '14px' }}>
             {t('nav.login')}
           </Link>
-          <Link href="/register" className="lp-cta-primary" style={{ padding: '8px 24px', fontSize: '14px' }}>
+          <Link href="/register" className="lp-cta-primary lp-nav-register" style={{ padding: '8px 24px', fontSize: '14px' }}>
             {t('nav.start')}
           </Link>
         </div>
       </nav>
 
       {/* ── HERO ── */}
-      <section style={{
+      <section className="hero-section" style={{
         position: 'relative', minHeight: '100vh',
         display: 'flex', flexDirection: 'column', alignItems: 'center',
         justifyContent: 'center', paddingTop: '80px', paddingBottom: '60px',
@@ -269,8 +349,8 @@ export default function RootPage() {
         <div className="lp-blob" style={{ width: '700px', height: '700px', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
 
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
-          <div className="hero-1" style={{ marginBottom: '36px', filter: 'drop-shadow(0 0 60px rgba(201,162,39,0.3))' }}>
-            <Image src="/AdobeExpressPhotos_9864d0d7f19b4e34ad48941dabad5e3e_CopyEdited.png" alt="DeutAI" width={260} height={260} style={{ objectFit: 'contain' }} priority />
+          <div className="hero-1" style={{ marginBottom: '28px', filter: 'drop-shadow(0 0 60px rgba(201,162,39,0.3))' }}>
+            <Image src="/ChatGPT Image 9 mai 2026, 14_24_29.png" className="hero-logo" alt="DeutAI" width={260} height={260} style={{ objectFit: 'contain' }} priority />
           </div>
 
           <h1 className="hero-2" style={{
@@ -293,7 +373,7 @@ export default function RootPage() {
             {t('landing.heroSub')}
           </p>
 
-          <div className="hero-4" style={{ display: 'flex', gap: '14px', flexWrap: 'wrap', justifyContent: 'center' }}>
+          <div className="hero-4 hero-cta-row">
             <Link href="/register" className="lp-cta-primary">
               {t('landing.startFree')}
             </Link>
@@ -315,23 +395,23 @@ export default function RootPage() {
       </section>
 
       {/* ── FEATURES ── */}
-      <section style={{ position: 'relative', zIndex: 1, padding: '0 24px 80px', maxWidth: '1040px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
+      <section className="lp-section" style={{ position: 'relative', zIndex: 1, maxWidth: '1040px', margin: '0 auto' }}>
+        <div className="lp-section-header" style={{ textAlign: 'center', marginBottom: '56px' }}>
           <p style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '13px', letterSpacing: '5px',
-            textTransform: 'uppercase', color: '#C9A22799',
-            marginBottom: '16px',
+            fontSize: '15px', letterSpacing: '5px',
+            textTransform: 'uppercase', color: '#C9A227cc',
+            marginBottom: '20px',
           }}>{t('landing.features')}</p>
           <h2 style={{
             fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: 'clamp(36px, 6vw, 56px)',
-            fontWeight: 600, color: '#e8e8f0',
-            lineHeight: 1.2, margin: 0,
+            fontSize: 'clamp(40px, 7vw, 64px)',
+            fontWeight: 700, color: '#f0f0fa',
+            lineHeight: 1.15, margin: 0,
           }}>{t('landing.featuresTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.featuresTitle2')}</em></h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
+        <div className="lp-feat-grid">
           {localizedFeatures.map((f) => (
             <div
               key={f.title}
@@ -367,26 +447,26 @@ export default function RootPage() {
       <div className="lp-divider" />
 
       {/* ── HOW IT WORKS ── */}
-      <section style={{ position: 'relative', zIndex: 1, padding: '0 24px 80px', maxWidth: '760px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
+      <section className="lp-section" style={{ position: 'relative', zIndex: 1, maxWidth: '760px', margin: '0 auto' }}>
+        <div className="lp-section-header" style={{ textAlign: 'center', marginBottom: '56px' }}>
           <p style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '13px', letterSpacing: '5px',
-            textTransform: 'uppercase', color: '#C9A22799',
-            marginBottom: '16px',
+            fontSize: '15px', letterSpacing: '5px',
+            textTransform: 'uppercase', color: '#C9A227cc',
+            marginBottom: '20px',
           }}>{t('landing.process')}</p>
           <h2 style={{
             fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: 'clamp(36px, 6vw, 56px)',
-            fontWeight: 600, color: '#e8e8f0',
-            lineHeight: 1.2, margin: 0,
+            fontSize: 'clamp(40px, 7vw, 64px)',
+            fontWeight: 700, color: '#f0f0fa',
+            lineHeight: 1.15, margin: 0,
           }}>{t('landing.processTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.processTitle2')}</em></h2>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {localizedHowItWorks.map((h) => (
             <div key={h.step} className="lp-step">
-              <div style={{
+              <div className="lp-step-num" style={{
                 fontFamily: "'Playfair Display', Georgia, serif",
                 fontSize: '36px', fontWeight: 700,
                 color: '#C9A22720', lineHeight: 1, flexShrink: 0,
@@ -396,15 +476,15 @@ export default function RootPage() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <h3 style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
-                  fontWeight: 600, color: '#b0b0c0', letterSpacing: '2px',
-                  textTransform: 'uppercase', margin: 0,
+                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontSize: '22px', fontWeight: 700,
+                  color: '#e0e0f0', margin: 0, lineHeight: 1.3,
                 }}>
                   {h.title}
                 </h3>
                 <p style={{
                   fontFamily: 'var(--font-inter), sans-serif', fontSize: '17px',
-                  color: '#7a7a8c', lineHeight: 1.7, margin: 0,
+                  color: '#8a8a9c', lineHeight: 1.75, margin: 0,
                 }}>
                   {h.desc}
                 </p>
@@ -417,17 +497,11 @@ export default function RootPage() {
       <div className="lp-divider" />
 
       {/* ── CTA BANNER ── */}
-      <section style={{
-        position: 'relative', zIndex: 1, padding: '0 24px 100px',
+      <section className="lp-section" style={{
+        position: 'relative', zIndex: 1, paddingBottom: '100px',
         maxWidth: '760px', margin: '0 auto', textAlign: 'center',
       }}>
-        <div style={{
-          padding: '52px 40px',
-          borderRadius: '28px',
-          background: '#111113',
-          border: '1px solid #1e1e26',
-          position: 'relative', overflow: 'hidden',
-        }}>
+        <div className="lp-cta-banner">
           <div style={{
             position: 'absolute', inset: 0, pointerEvents: 'none',
             background: 'radial-gradient(ellipse at 50% 0%, rgba(201,162,39,0.08) 0%, transparent 65%)',
@@ -437,12 +511,17 @@ export default function RootPage() {
             background: 'linear-gradient(90deg, transparent, #C9A227, transparent)',
           }} />
 
-          <p className="lp-section-label">{t('landing.ready')}</p>
+          <p style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '15px', letterSpacing: '5px',
+            textTransform: 'uppercase', color: '#C9A227cc',
+            marginBottom: '20px',
+          }}>{t('landing.ready')}</p>
           <h2 style={{
             fontFamily: "'Playfair Display', Georgia, serif",
-            fontSize: 'clamp(26px, 5vw, 38px)',
-            fontWeight: 600, color: '#e8e8f0',
-            lineHeight: 1.3, margin: '0 0 16px',
+            fontSize: 'clamp(30px, 6vw, 48px)',
+            fontWeight: 700, color: '#f0f0fa',
+            lineHeight: 1.25, margin: '0 0 20px',
           }}>
             {t('landing.ctaTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.ctaTitle2')}</em>
           </h2>
@@ -453,7 +532,7 @@ export default function RootPage() {
             {t('landing.ctaSub')}
           </p>
 
-          <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className="hero-cta-row">
             <Link href="/register" className="lp-cta-primary">
               {t('landing.createFreeAccount')}
             </Link>
@@ -465,15 +544,9 @@ export default function RootPage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer style={{
-        position: 'relative', zIndex: 1,
-        borderTop: '1px solid #1a1a22',
-        padding: '36px 28px',
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px',
-        maxWidth: '1040px', margin: '0 auto',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <Image src="/AdobeExpressPhotos_9864d0d7f19b4e34ad48941dabad5e3e_CopyEdited.png" alt="DeutAI" width={48} height={48} style={{ objectFit: 'contain' }} />
+      <footer className="lp-footer" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="lp-footer-brand">
+          <Image src="/ChatGPT Image 9 mai 2026, 14_24_29.png" alt="DeutAI" width={48} height={48} style={{ objectFit: 'contain' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
             <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '18px', fontWeight: 600, color: '#C9A227', letterSpacing: '1px' }}>
               DeutAI
