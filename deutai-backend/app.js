@@ -17,14 +17,26 @@ const errorHandler = require('./middleware/errorHandler');
 const app = express();
 
 // ─── CORS ────────────────────────────────────────────────────────────────────
+const ALLOWED_ORIGINS = [
+  'https://deut-ai.vercel.app',
+  'http://localhost:3000',
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
+// Also allow all Vercel preview deployments for this project
+const VERCEL_PREVIEW_RE = /^https:\/\/deut-[a-z0-9-]+-isaacbels-projects\.vercel\.app$/;
+
 app.use(
   cors({
-    origin: [
-      'https://deut-ai.vercel.app',
-      'http://localhost:3000',
-      process.env.FRONTEND_URL
-    ].filter(Boolean),
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // Fix #32 — include PUT/PATCH
+    origin: (origin, callback) => {
+      // Allow server-to-server requests (no origin)
+      if (!origin) return callback(null, true);
+      if (ALLOWED_ORIGINS.includes(origin) || VERCEL_PREVIEW_RE.test(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS: origin ${origin} not allowed`));
+    },
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   })
