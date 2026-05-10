@@ -98,45 +98,45 @@ function SingleErrorCard({ error, index, originalSentence, t, lang }) {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', paddingLeft: '6px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <div style={{
-            width: '20px', height: '20px', borderRadius: '50%',
+            width: '26px', height: '26px', borderRadius: '50%',
             background: `${typeColor}20`, border: `1px solid ${typeColor}40`,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+            fontFamily: 'JetBrains Mono, monospace', fontSize: '13px',
             fontWeight: 700, color: typeColor, flexShrink: 0,
           }}>
             {index + 1}
           </div>
           <div style={{
-            display: 'flex', alignItems: 'center', gap: '4px',
-            fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
-            padding: '2px 8px', borderRadius: '4px',
+            display: 'flex', alignItems: 'center', gap: '6px',
+            fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
+            padding: '4px 10px', borderRadius: '6px',
             background: `${typeColor}10`, border: `1px solid ${typeColor}30`,
             color: typeColor, letterSpacing: '1px',
           }}>
-            <Tag size={8} />
+            <Tag size={12} />
             {typeLabel}
           </div>
         </div>
 
         {/* Severity */}
         <div style={{
-          display: 'flex', alignItems: 'center', gap: '4px',
-          fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
+          display: 'flex', alignItems: 'center', gap: '6px',
+          fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
           color: severity.color, letterSpacing: '1px',
         }}>
-          <SeverityIcon size={10} />
+          <SeverityIcon size={14} />
           {severity.label}
         </div>
       </div>
 
       {/* Highlighted sentence */}
       <div style={{
-        padding: '10px 12px',
+        padding: '12px 14px',
         borderRadius: '8px',
         background: 'rgba(0,0,0,0.3)',
         border: '1px solid rgba(255,255,255,0.04)',
-        marginBottom: '10px',
-        fontSize: '13px',
+        marginBottom: '12px',
+        fontSize: '15px',
         lineHeight: '1.7',
         fontFamily: 'Inter, sans-serif',
         textAlign: isRtl ? 'left' : undefined,
@@ -148,20 +148,20 @@ function SingleErrorCard({ error, index, originalSentence, t, lang }) {
       </div>
 
       {/* Correction row */}
-      <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline', marginBottom: '6px' }}>
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '9px', color: '#555', width: '36px', flexShrink: 0 }}>CORR:</span>
-        <span dir="ltr" lang="de" style={{ fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#4ADE80', fontWeight: 700 }}>
+      <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline', marginBottom: '8px' }}>
+        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#777', width: '48px', flexShrink: 0 }}>CORR:</span>
+        <span dir="ltr" lang="de" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', color: '#4ADE80', fontWeight: 700 }}>
           {error.correction}
         </span>
       </div>
 
       {/* Suggestions */}
       {error.suggestions?.length > 0 && (
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', paddingLeft: '44px', marginBottom: '4px' }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', paddingLeft: '56px', marginBottom: '6px' }}>
           {error.suggestions.map((s, i) => (
             <span key={i} style={{
-              fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
-              padding: '2px 7px', borderRadius: '4px',
+              fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
+              padding: '3px 10px', borderRadius: '6px',
               background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.2)',
               color: '#4ADE80', letterSpacing: '0.5px',
             }}>
@@ -221,11 +221,11 @@ export default function ErrorCard({ result }) {
         <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl opacity-80" style={{ background: '#FF5050' }} />
         <div className="flex items-center justify-between pl-2">
           <div className="flex items-center gap-3">
-            <div className="p-1.5 rounded-lg" style={{ background: 'rgba(255,80,80,0.1)', border: '1px solid rgba(255,80,80,0.25)' }}>
-              <ShieldAlert size={16} style={{ color: '#FF5050' }} />
+            <div className="p-2 rounded-lg" style={{ background: 'rgba(255,80,80,0.1)', border: '1px solid rgba(255,80,80,0.25)' }}>
+              <ShieldAlert size={20} style={{ color: '#FF5050' }} />
             </div>
             <span
-              className="text-[11px] font-mono tracking-[0.2em] font-bold"
+              className="text-sm font-mono tracking-[0.15em] font-bold"
               style={{ fontFamily: 'JetBrains Mono, monospace', color: '#FF5050' }}
             >
               {t(errors.length > 1 ? 'errorCard.errorsDetected_other' : 'errorCard.errorsDetected_one', { count: errors.length }).toUpperCase()}
@@ -244,8 +244,8 @@ export default function ErrorCard({ result }) {
               const cfg = severityConfig[sev];
               return (
                 <span key={sev} style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
-                  padding: '2px 7px', borderRadius: '4px',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '11px',
+                  padding: '4px 10px', borderRadius: '6px',
                   background: `${cfg.color}15`, border: `1px solid ${cfg.color}30`,
                   color: cfg.color,
                 }}>
