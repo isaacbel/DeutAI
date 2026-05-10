@@ -2,12 +2,15 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { flushSync } from 'react-dom';
 import { register } from '@/lib/api';
+import { useAuth } from '@/lib/auth';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function RegisterForm() {
   const router = useRouter();
   const { t } = useLanguage();
+  const { login } = useAuth(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -34,8 +37,9 @@ export default function RegisterForm() {
         return;
       }
       if (data.access_token) {
-        localStorage.setItem('access_token', data.access_token);
-        if (data.refresh_token) localStorage.setItem('refresh_token', data.refresh_token);
+        flushSync(() => {
+          login(data.access_token, data.refresh_token);
+        });
         router.replace('/analyze');
       } else {
         // Auto-login not provided — redirect to login

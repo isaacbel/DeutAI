@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { flushSync } from 'react-dom';
 import { login as loginApi } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
@@ -9,7 +10,7 @@ import { useLanguage } from '@/lib/i18n/LanguageProvider';
 export default function LoginForm() {
   const router = useRouter();
   const { t } = useLanguage();
-  const { login } = useAuth(false); // false = don't redirect if unauthenticated
+  const { login } = useAuth(false); // false = don't redirect while on /login
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -28,8 +29,12 @@ export default function LoginForm() {
         return;
       }
       if (data.access_token) {
-        // Update AuthProvider state immediately BEFORE navigating
-        login(data.access_token, data.refresh_token);
+        // flushSync forces the setUser() inside login() to complete synchronously
+        // BEFORE router.replace fires — preventing the race condition where
+        // the protected page renders with user=null and redirects back to /login
+        flushSync(() => {
+          login(data.access_token, data.refresh_token);
+        });
         router.replace('/analyze');
       } else {
         setError(t('auth.errorUnexpectedResponse'));
