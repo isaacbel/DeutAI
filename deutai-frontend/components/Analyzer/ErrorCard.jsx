@@ -230,7 +230,7 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
 
         {/* Suggestions chips — below both texts */}
         {uniqueSuggestions.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', direction: isRtl ? 'rtl' : 'ltr' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', direction: isRtl ? 'rtl' : 'ltr', marginTop: '20px' }}>
             {uniqueSuggestions.map((s, i) => (
               <span key={i} style={{
                 fontFamily: 'JetBrains Mono, monospace',
