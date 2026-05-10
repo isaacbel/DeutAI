@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import AppShell from '@/components/Layout/AppShell';
 import FlashcardList from '@/components/Flashcards/FlashcardList';
-import { useAuth } from '@/lib/auth';
+import { useAuth, useAuthStandalone } from '@/lib/auth';
 import { getFlashcards, deleteFlashcard } from '@/lib/api';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
