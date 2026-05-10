@@ -35,6 +35,10 @@ app.use(express.json({ limit: '10mb' }));
 // Fix #34 — urlencoded removed: all routes use JSON bodies only
 
 // ─── Ping — cold start Render.com ─────────────────────────────────────────────
+app.get('/', (req, res) => {
+  res.status(200).json({ message: 'DeutAI Backend API is running successfully!' });
+});
+
 app.get('/ping', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
