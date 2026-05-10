@@ -175,16 +175,16 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
 
       {/* Suggestions */}
       {uniqueSuggestions.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', alignItems: isRtl ? 'flex-end' : 'flex-start', paddingLeft: isRtl ? '0' : '8px', paddingRight: isRtl ? '8px' : '0', marginTop: '16px' }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '20px', paddingLeft: isRtl ? '0' : '8px', paddingRight: isRtl ? '8px' : '0' }}>
           {uniqueSuggestions.map((s, i) => (
-            <div key={i} style={{
+            <span key={i} style={{
               fontFamily: 'JetBrains Mono, monospace', fontSize: '13px',
-              padding: '8px 16px', borderRadius: '8px',
-              background: 'rgba(74,222,128,0.06)', border: '1px solid rgba(74,222,128,0.15)',
+              padding: '6px 14px', borderRadius: '8px',
+              background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.2)',
               color: '#4ADE80', letterSpacing: '0.5px', fontWeight: 600
             }}>
               {s}
-            </div>
+            </span>
           ))}
         </div>
       )}
