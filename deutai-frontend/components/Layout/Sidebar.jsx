@@ -55,7 +55,7 @@ function Tooltip({ label, visible, lang }) {
 export default function Sidebar({ isOpen, setIsOpen }) {
   const { t, lang } = useLanguage();
   const pathname = usePathname();
-  const { logout } = useAuthStandalone();
+  const { logout } = useAuthStandalone(false); // false = Sidebar never redirects, page handles auth
   const [hovered, setHovered] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const prevPathRef = useRef(pathname);

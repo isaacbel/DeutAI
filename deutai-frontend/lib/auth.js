@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, useContext, createContext, useCallback } from 'react';
+import { useState, useEffect, useContext, createContext, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext(null);
@@ -98,26 +98,25 @@ export function useAuth(redirectIfUnauthenticated = true) {
 // It is intentionally kept for pages that cannot be wrapped in AuthProvider,
 // but its auth state is NOT shared with AuthProvider consumers.
 // Prefer useAuth() inside AuthProvider-wrapped pages.
-export function useAuthStandalone() {
+export function useAuthStandalone(redirectIfUnauthenticated = true) {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const router = useRouter();
-  // Keep a stable ref so the effect runs only once on mount
-  const routerRef = { current: router };
-  routerRef.current = router;
+  // useRef keeps a stable reference that never changes, so the effect runs once only
+  const routerRef = useRef(router);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
-    // Fix #28 — validate expiry, not just presence
     if (!token || !isTokenValid(token)) {
       if (token) localStorage.removeItem('access_token');
-      routerRef.current.replace('/login');
       setLoading(false);
+      if (redirectIfUnauthenticated) {
+        routerRef.current.replace('/login');
+      }
       return;
     }
     const payload = decodeJwt(token);
-    // Fix #30 — don't alias sub to email
-    setUser({ email: payload.email || '', id: payload.sub || payload.userId });
+    setUser({ email: payload?.email || '', id: payload?.sub || payload?.userId });
     setLoading(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
