@@ -38,51 +38,64 @@ const ERROR_TYPE_COLORS = {
   aucun:              '#4A9A4A',
 };
 
-function SingleErrorCard({ error, index, originalSentence, t, lang }) {
+const renderSentenceWithHighlights = (text, words, highlightColor) => {
+  if (!text || !words || words.length === 0) return <span style={{ color: '#999' }}>{text}</span>;
+
+  const validWords = words.filter(Boolean);
+  if (validWords.length === 0) return <span style={{ color: '#999' }}>{text}</span>;
+
+  const escapedWords = validWords
+    .map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .sort((a, b) => b.length - a.length);
+  const pattern = new RegExp(`(${escapedWords.join('|')})`, 'gi');
+  const parts = text.split(pattern);
+
+  return (
+    <>
+      {parts.map((part, idx) => {
+        const isMatch = validWords.some(w => w.toLowerCase() === part.toLowerCase());
+        if (!isMatch) return <span key={idx} style={{ color: '#aaa' }}>{part}</span>;
+        return (
+          <span key={idx} style={{
+            color: highlightColor,
+            background: `${highlightColor}15`,
+            borderRadius: '4px',
+            padding: '2px 4px',
+            textDecoration: 'underline wavy',
+            textDecorationColor: highlightColor,
+            fontWeight: 700,
+          }}>
+            {part}
+          </span>
+        );
+      })}
+    </>
+  );
+};
+
+function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedSentence, t, lang }) {
   const isRtl = lang === 'ar';
-  const typeColor = ERROR_TYPE_COLORS[error.errorType] || '#CC5555';
-  const typeLabel = t(`errorCard.errorTypes.${error.errorType}`) || (error.errorType?.toUpperCase() ?? t('errorCard.noError'));
+  const typeColor = ERROR_TYPE_COLORS[errorType] || '#CC5555';
+  const typeLabel = t(`errorCard.errorTypes.${errorType}`) || (errorType?.toUpperCase() ?? t('errorCard.noError'));
 
-  const severityConfig = {
-    high:   { icon: AlertTriangle, color: '#FF5050', label: t('errorCard.critical') },
-    medium: { icon: AlertCircle,   color: '#F5A623', label: t('errorCard.important') },
-    low:    { icon: Info,          color: '#60A5FA', label: t('errorCard.minor') },
-  };
-  const severity = severityConfig[error.severity] || severityConfig.medium;
-  const SeverityIcon = severity.icon;
+  const errorWords = groupErrors.map(e => e.errorText).filter(Boolean);
+  const correctionWords = groupErrors.map(e => e.correction).filter(Boolean);
 
-  const renderHighlightedSentence = () => {
-    if (!originalSentence || !error.errorText) {
-      return <span style={{ color: '#999' }}>{originalSentence || error.errorText}</span>;
+  const allSuggestions = [];
+  groupErrors.forEach(e => {
+    if (e.suggestions) {
+      allSuggestions.push(...e.suggestions);
     }
-    const idx = originalSentence.indexOf(error.errorText);
-    if (idx === -1) return <span style={{ color: '#999' }}>{originalSentence}</span>;
-    return (
-      <>
-        <span style={{ color: '#aaa' }}>{originalSentence.slice(0, idx)}</span>
-        <span style={{
-          color: typeColor,
-          background: `${typeColor}15`,
-          borderRadius: '3px',
-          padding: '0 2px',
-          textDecoration: 'underline wavy',
-          textDecorationColor: typeColor,
-          fontWeight: 600,
-        }}>
-          {error.errorText}
-        </span>
-        <span style={{ color: '#aaa' }}>{originalSentence.slice(idx + error.errorText.length)}</span>
-      </>
-    );
-  };
+  });
+  const uniqueSuggestions = Array.from(new Set(allSuggestions));
 
   return (
     <div
       style={{
         background: 'rgba(30,10,10,0.95)',
         border: `1px solid ${typeColor}30`,
-        borderRadius: '12px',
-        padding: '16px',
+        borderRadius: '16px',
+        padding: '20px',
         position: 'relative',
         overflow: 'hidden',
       }}
@@ -90,80 +103,85 @@ function SingleErrorCard({ error, index, originalSentence, t, lang }) {
       {/* Left accent */}
       <div style={{
         position: 'absolute', left: 0, top: 0, bottom: 0,
-        width: '3px', borderRadius: '12px 0 0 12px',
+        width: '4px', borderRadius: '16px 0 0 16px',
         background: typeColor, opacity: 0.8,
       }} />
 
       {/* Header row */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', paddingLeft: '6px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{
-            width: '26px', height: '26px', borderRadius: '50%',
-            background: `${typeColor}20`, border: `1px solid ${typeColor}40`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: 'JetBrains Mono, monospace', fontSize: '13px',
-            fontWeight: 700, color: typeColor, flexShrink: 0,
-          }}>
-            {index + 1}
-          </div>
-          <div style={{
-            display: 'flex', alignItems: 'center', gap: '6px',
-            fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
-            padding: '4px 10px', borderRadius: '6px',
-            background: `${typeColor}10`, border: `1px solid ${typeColor}30`,
-            color: typeColor, letterSpacing: '1px',
-          }}>
-            <Tag size={12} />
-            {typeLabel}
-          </div>
-        </div>
-
-        {/* Severity */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px', paddingLeft: '8px' }}>
         <div style={{
-          display: 'flex', alignItems: 'center', gap: '6px',
-          fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
-          color: severity.color, letterSpacing: '1px',
+          display: 'flex', alignItems: 'center', gap: '8px',
+          fontFamily: 'JetBrains Mono, monospace', fontSize: '14px',
+          padding: '6px 14px', borderRadius: '8px',
+          background: `${typeColor}15`, border: `1px solid ${typeColor}40`,
+          color: typeColor, letterSpacing: '1px', fontWeight: 700
         }}>
-          <SeverityIcon size={14} />
-          {severity.label}
+          <Tag size={16} />
+          {typeLabel.toUpperCase()}
+        </div>
+        <div style={{
+          fontFamily: 'Inter, sans-serif', fontSize: '14px',
+          color: '#888', fontWeight: 500
+        }}>
+          {groupErrors.length} {t(groupErrors.length > 1 ? 'errorCard.errorsDetected_other' : 'errorCard.errorsDetected_one', { count: groupErrors.length })}
         </div>
       </div>
 
-      {/* Highlighted sentence */}
-      <div style={{
-        padding: '12px 14px',
-        borderRadius: '8px',
-        background: 'rgba(0,0,0,0.3)',
-        border: '1px solid rgba(255,255,255,0.04)',
-        marginBottom: '12px',
-        fontSize: '15px',
-        lineHeight: '1.7',
-        fontFamily: 'Inter, sans-serif',
-        textAlign: isRtl ? 'left' : undefined,
-      }}
-      dir="ltr"
-      lang="de"
-    >
-        {renderHighlightedSentence()}
-      </div>
+      <div className="flex flex-col md:grid md:grid-cols-2 gap-4 pl-2">
+        {/* Original Sentence */}
+        {originalSentence && (
+          <div>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#FF6B6B', marginBottom: '6px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+              {t('errorCard.before')}
+            </div>
+            <div style={{
+              padding: '16px',
+              borderRadius: '12px',
+              background: 'rgba(255,107,107,0.06)',
+              border: '1px solid rgba(255,107,107,0.15)',
+              fontSize: '16px',
+              lineHeight: '1.8',
+              fontFamily: 'Inter, sans-serif',
+              textAlign: isRtl ? 'left' : undefined,
+              height: '100%'
+            }} dir="ltr" lang="de">
+              {renderSentenceWithHighlights(originalSentence, errorWords, '#FF6B6B')}
+            </div>
+          </div>
+        )}
 
-      {/* Correction row */}
-      <div style={{ display: 'flex', gap: '8px', alignItems: 'baseline', marginBottom: '8px' }}>
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#777', width: '48px', flexShrink: 0 }}>CORR:</span>
-        <span dir="ltr" lang="de" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', color: '#4ADE80', fontWeight: 700 }}>
-          {error.correction}
-        </span>
+        {/* Corrected Sentence */}
+        {correctedSentence && (
+          <div>
+            <div style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#4ADE80', marginBottom: '6px', letterSpacing: '1px', textTransform: 'uppercase' }}>
+              {t('errorCard.after')}
+            </div>
+            <div style={{
+              padding: '16px',
+              borderRadius: '12px',
+              background: 'rgba(74,222,128,0.06)',
+              border: '1px solid rgba(74,222,128,0.15)',
+              fontSize: '16px',
+              lineHeight: '1.8',
+              fontFamily: 'Inter, sans-serif',
+              textAlign: isRtl ? 'left' : undefined,
+              height: '100%'
+            }} dir="ltr" lang="de">
+              {renderSentenceWithHighlights(correctedSentence, correctionWords, '#4ADE80')}
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Suggestions */}
-      {error.suggestions?.length > 0 && (
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', paddingLeft: '56px', marginBottom: '6px' }}>
-          {error.suggestions.map((s, i) => (
+      {uniqueSuggestions.length > 0 && (
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', paddingLeft: '8px', marginTop: '16px' }}>
+          {uniqueSuggestions.map((s, i) => (
             <span key={i} style={{
-              fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
-              padding: '3px 10px', borderRadius: '6px',
+              fontFamily: 'JetBrains Mono, monospace', fontSize: '13px',
+              padding: '6px 14px', borderRadius: '8px',
               background: 'rgba(74,222,128,0.08)', border: '1px solid rgba(74,222,128,0.2)',
-              color: '#4ADE80', letterSpacing: '0.5px',
+              color: '#4ADE80', letterSpacing: '0.5px', fontWeight: 600
             }}>
               {s}
             </span>
@@ -176,9 +194,10 @@ function SingleErrorCard({ error, index, originalSentence, t, lang }) {
 
 export default function ErrorCard({ result }) {
   const { t, lang } = useLanguage();
-  const { hasErrors, hasError, errors = [], originalSentence, input } = result;
+  const { hasErrors, hasError, errors = [], originalSentence, input, correctedSentence, correction } = result;
   const hasAnyError = hasErrors ?? hasError ?? false;
   const sentence = originalSentence || input || '';
+  const finalCorrection = correctedSentence || correction || '';
 
   if (!hasAnyError || errors.length === 0) {
     return (
@@ -211,8 +230,16 @@ export default function ErrorCard({ result }) {
     );
   }
 
+  // Group errors by errorType
+  const groupedErrors = errors.reduce((acc, err) => {
+    const type = err.errorType || 'autre';
+    if (!acc[type]) acc[type] = [];
+    acc[type].push(err);
+    return acc;
+  }, {});
+
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-5">
       {/* Header summary */}
       <div
         className="rounded-xl p-4 relative overflow-hidden"
@@ -257,13 +284,14 @@ export default function ErrorCard({ result }) {
         </div>
       </div>
 
-      {/* Individual error cards */}
-      {errors.map((error, i) => (
-        <SingleErrorCard
-          key={i}
-          index={i}
-          error={error}
+      {/* Render a GroupedErrorCard for each error type */}
+      {Object.entries(groupedErrors).map(([type, group]) => (
+        <GroupedErrorCard
+          key={type}
+          errorType={type}
+          groupErrors={group}
           originalSentence={sentence}
+          correctedSentence={finalCorrection}
           t={t}
           lang={lang}
         />
