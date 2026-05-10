@@ -7,7 +7,12 @@ const AuthContext = createContext(null);
 function decodeJwt(token) {
   try {
     const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const pad = base64.length % 4;
+    if (pad) {
+      if (pad === 1) throw new Error('InvalidLengthError');
+      base64 += new Array(5 - pad).join('=');
+    }
     const json = decodeURIComponent(
       atob(base64)
         .split('')
