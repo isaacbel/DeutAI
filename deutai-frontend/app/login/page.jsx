@@ -16,7 +16,10 @@ export default function LoginPage() {
     if (token) {
       // Fix #19 — validate expiry before redirecting to avoid redirect loops
       try {
-        const { exp } = JSON.parse(atob(token.split('.')[1]));
+        let base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const pad = base64.length % 4;
+        if (pad) base64 += new Array(5 - pad).join('=');
+        const { exp } = JSON.parse(atob(base64));
         if (!exp || exp * 1000 > Date.now()) {
           router.replace('/analyze');
           return;

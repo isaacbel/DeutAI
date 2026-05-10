@@ -79,7 +79,10 @@ export default function RootPage() {
     if (token) {
       // Fix #2 — validate expiry, not just presence, to avoid redirect loops
       try {
-        const { exp } = JSON.parse(atob(token.split('.')[1]));
+        let base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const pad = base64.length % 4;
+        if (pad) base64 += new Array(5 - pad).join('=');
+        const { exp } = JSON.parse(atob(base64));
         if (!exp || exp * 1000 > Date.now()) {
           router.replace('/analyze');
           return;
