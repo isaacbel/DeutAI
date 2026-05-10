@@ -39,7 +39,7 @@ export default function ScanPage() {
       setStatus('success');
       // Redirect after brief delay to show success
       setTimeout(() => {
-        router.replace(`/analyze?unit=${slug}`);
+        router.replace(`/questions?unit=${slug}`);
       }, 1500);
     } catch {
       setError(t('scan.resolveError'));
