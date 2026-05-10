@@ -8,7 +8,7 @@ import TextInput from '@/components/Analyzer/TextInput';
 import ScanButton from '@/components/Analyzer/ScanButton';
 import ScanAnimation from '@/components/Analyzer/ScanAnimation';
 import ResultCards from '@/components/Analyzer/ResultCards';
-import { useAuthStandalone } from '@/lib/auth';
+import { useAuth } from '@/lib/auth';
 import { analyzeText } from '@/lib/api';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
@@ -18,7 +18,7 @@ const DRAFT_KEY = 'deutai:analyze-session-v1';
 
 function AnalyzeContent() {
   const { t, lang } = useLanguage();
-  const { loading: authLoading } = useAuthStandalone();
+  const { loading: authLoading } = useAuth();
   const searchParams = useSearchParams();
   const unitId = searchParams.get('unit');
 
