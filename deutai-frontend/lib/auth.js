@@ -96,13 +96,16 @@ export function useAuthStandalone() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const router = useRouter();
+  // Keep a stable ref so the effect runs only once on mount
+  const routerRef = { current: router };
+  routerRef.current = router;
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     // Fix #28 — validate expiry, not just presence
     if (!token || !isTokenValid(token)) {
       if (token) localStorage.removeItem('access_token');
-      router.replace('/login');
+      routerRef.current.replace('/login');
       setLoading(false);
       return;
     }
@@ -110,7 +113,8 @@ export function useAuthStandalone() {
     // Fix #30 — don't alias sub to email
     setUser({ email: payload.email || '', id: payload.sub || payload.userId });
     setLoading(false);
-  }, [router]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const logout = useCallback(() => {
     localStorage.removeItem('access_token');
