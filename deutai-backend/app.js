@@ -19,7 +19,11 @@ const app = express();
 // ─── CORS ────────────────────────────────────────────────────────────────────
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: [
+      'https://deut-ai.vercel.app',
+      'http://localhost:3000',
+      process.env.FRONTEND_URL
+    ].filter(Boolean),
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'], // Fix #32 — include PUT/PATCH
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
