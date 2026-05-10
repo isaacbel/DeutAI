@@ -1,11 +1,15 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { login } from '@/lib/api';
+import { useRouter } from 'next/navigation';
+import { login as loginApi } from '@/lib/api';
+import { useAuth } from '@/lib/auth';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function LoginForm() {
+  const router = useRouter();
   const { t } = useLanguage();
+  const { login } = useAuth(false); // false = don't redirect if unauthenticated
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,17 +21,16 @@ export default function LoginForm() {
     setError('');
     setLoading(true);
     try {
-      const res = await login(email, password);
+      const res = await loginApi(email, password);
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
         setError(data.message || t('auth.errorInvalidCredentials'));
         return;
       }
       if (data.access_token) {
-        localStorage.setItem('access_token', data.access_token);
-        if (data.refresh_token) localStorage.setItem('refresh_token', data.refresh_token);
-        // Hard redirect — bypasses SPA router which could be reversed by competing useEffects
-        window.location.href = '/analyze';
+        // Update AuthProvider state immediately BEFORE navigating
+        login(data.access_token, data.refresh_token);
+        router.replace('/analyze');
       } else {
         setError(t('auth.errorUnexpectedResponse'));
       }

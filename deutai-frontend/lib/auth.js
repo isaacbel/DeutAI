@@ -41,15 +41,21 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (!token || !isTokenValid(token)) {
-      // Fix #28 — clear expired token so the UI doesn't show stale auth state
       if (token) localStorage.removeItem('access_token');
       setLoading(false);
       return;
     }
     const payload = decodeJwt(token);
-    // Fix #30 — never alias a UUID sub to the email field
     setUser({ email: payload.email || '', id: payload.sub || payload.userId });
     setLoading(false);
+  }, []);
+
+  // ✅ Call after a successful login — updates state immediately without re-reading localStorage
+  const login = useCallback((accessToken, refreshToken) => {
+    localStorage.setItem('access_token', accessToken);
+    if (refreshToken) localStorage.setItem('refresh_token', refreshToken);
+    const payload = decodeJwt(accessToken);
+    setUser({ email: payload?.email || '', id: payload?.sub || payload?.userId });
   }, []);
 
   const logout = useCallback(() => {
@@ -60,7 +66,7 @@ export function AuthProvider({ children }) {
   }, [router]);
 
   return (
-    <AuthContext.Provider value={{ user, loading, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
