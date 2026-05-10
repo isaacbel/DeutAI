@@ -1,12 +1,10 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { login } from '@/lib/api';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export default function LoginForm() {
-  const router = useRouter();
   const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -28,7 +26,8 @@ export default function LoginForm() {
       if (data.access_token) {
         localStorage.setItem('access_token', data.access_token);
         if (data.refresh_token) localStorage.setItem('refresh_token', data.refresh_token);
-        router.replace('/analyze');
+        // Hard redirect — bypasses SPA router which could be reversed by competing useEffects
+        window.location.href = '/analyze';
       } else {
         setError(t('auth.errorUnexpectedResponse'));
       }

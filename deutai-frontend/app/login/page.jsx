@@ -21,14 +21,15 @@ export default function LoginPage() {
         if (pad) base64 += new Array(5 - pad).join('=');
         const { exp } = JSON.parse(atob(base64));
         if (!exp || exp * 1000 > Date.now()) {
-          router.replace('/analyze');
+          window.location.href = '/analyze';
           return;
         }
       } catch { /* malformed token — fall through */ }
       localStorage.removeItem('access_token');
     }
     setReady(true);
-  }, [router]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!ready) return null;
 
