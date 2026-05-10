@@ -241,7 +241,7 @@ export default function RootPage() {
         }
 
         /* ── Hero logo ── */
-        .hero-logo { width: 400px; height: 400px; }
+        .hero-logo { width: 380px; height: 380px; }
         @media (max-width: 640px) {
           .hero-logo { width: 240px; height: 240px; }
           .hero-section { padding-top: 72px !important; padding-bottom: 40px !important; }
@@ -349,25 +349,28 @@ export default function RootPage() {
         <div className="lp-blob" style={{ width: '700px', height: '700px', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
 
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
-          <div className="hero-1" style={{ marginBottom: '28px', filter: 'drop-shadow(0 0 60px rgba(201,162,39,0.3))' }}>
-            <Image src="/hero-image.png" className="hero-logo" alt="DeutAI" width={400} height={400} style={{ objectFit: 'contain' }} priority />
+          {/* marginBottom reduced from 28px → 12px; logo size reduced from 400px → 280px */}
+          <div className="hero-1" style={{ marginBottom: '12px', filter: 'drop-shadow(0 0 60px rgba(201,162,39,0.3))' }}>
+            <Image src="/hero-image.png" className="hero-logo" alt="DeutAI" width={380} height={380} style={{ objectFit: 'contain' }} priority />
           </div>
 
+          {/* margin-bottom reduced from 20px → 16px */}
           <h1 className="hero-2" style={{
             fontFamily: "'Playfair Display', Georgia, serif",
             fontSize: 'clamp(36px, 8vw, 72px)',
             fontWeight: 700, lineHeight: 1.1,
-            color: '#e8e8f0', margin: '0 0 20px',
+            color: '#e8e8f0', margin: '0 0 16px',
           }}>
             {t('landing.heroTitle1')}<br />
             <em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.heroTitle2')}</em>
           </h1>
 
+          {/* margin-bottom reduced from 44px → 36px */}
           <p className="hero-3" style={{
             fontFamily: 'var(--font-inter), sans-serif',
             fontSize: 'clamp(16px, 2vw, 18px)',
             color: '#8a8aa0', lineHeight: 1.8,
-            margin: '0 0 44px', maxWidth: '600px',
+            margin: '0 0 36px', maxWidth: '600px',
             fontWeight: 400,
           }}>
             {t('landing.heroSub')}
