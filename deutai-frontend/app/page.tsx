@@ -199,7 +199,7 @@ export default function RootPage() {
           text-transform: uppercase; color: #C9A22780; margin-bottom: 12px;
         }
         .lp-section-title {
-          font-family: 'Playfair Display', Georgia, serif;
+          font-family: 'Inter', sans-serif;
           font-size: clamp(28px, 5vw, 42px);
           font-weight: 500; color: #e8e8f0; line-height: 1.25; margin: 0;
         }
@@ -410,11 +410,11 @@ export default function RootPage() {
             marginBottom: '20px',
           }}>{t('landing.features')}</p>
           <h2 style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: 'clamp(40px, 7vw, 64px)',
             fontWeight: 700, color: '#f0f0fa',
             lineHeight: 1.15, margin: 0,
-          }}>{t('landing.featuresTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.featuresTitle2')}</em></h2>
+          }}>{t('landing.featuresTitle1')}<br /><span style={{ color: '#C9A227', fontFamily: "'Inter', sans-serif", letterSpacing: '-0.01em' }}>{t('landing.featuresTitle2')}</span></h2>
         </div>
 
         <div className="lp-feat-grid">
@@ -432,7 +432,7 @@ export default function RootPage() {
               }} />
               <div style={{ fontSize: '30px', lineHeight: 1, marginBottom: '4px' }}>{f.icon}</div>
               <h3 style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: '20px', fontWeight: 600, color: '#d8d8e8',
                 margin: 0, letterSpacing: '-0.2px',
               }}>
@@ -462,18 +462,18 @@ export default function RootPage() {
             marginBottom: '20px',
           }}>{t('landing.process')}</p>
           <h2 style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: 'clamp(40px, 7vw, 64px)',
             fontWeight: 700, color: '#f0f0fa',
             lineHeight: 1.15, margin: 0,
-          }}>{t('landing.processTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.processTitle2')}</em></h2>
+          }}>{t('landing.processTitle1')}<br /><span style={{ color: '#C9A227', fontFamily: "'Inter', sans-serif", letterSpacing: '-0.01em' }}>{t('landing.processTitle2')}</span></h2>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           {localizedHowItWorks.map((h) => (
             <div key={h.step} className="lp-step">
               <div className="lp-step-num" style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: '36px', fontWeight: 700,
                 color: '#C9A22720', lineHeight: 1, flexShrink: 0,
                 width: '52px', textAlign: 'right',
@@ -482,7 +482,7 @@ export default function RootPage() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 <h3 style={{
-                  fontFamily: "'Playfair Display', Georgia, serif",
+                  fontFamily: "'Inter', sans-serif",
                   fontSize: '22px', fontWeight: 700,
                   color: '#e0e0f0', margin: 0, lineHeight: 1.3,
                 }}>
@@ -524,12 +524,12 @@ export default function RootPage() {
             marginBottom: '20px',
           }}>{t('landing.ready')}</p>
           <h2 style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: 'clamp(30px, 6vw, 48px)',
             fontWeight: 700, color: '#f0f0fa',
             lineHeight: 1.25, margin: '0 0 20px',
           }}>
-            {t('landing.ctaTitle1')}<br /><em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.ctaTitle2')}</em>
+            {t('landing.ctaTitle1')}<br /><span style={{ color: '#C9A227', fontFamily: "'Inter', sans-serif", letterSpacing: '-0.01em' }}>{t('landing.ctaTitle2')}</span>
           </h2>
           <p style={{
             fontFamily: 'var(--font-inter), sans-serif', fontSize: '18px',
@@ -554,7 +554,7 @@ export default function RootPage() {
         <div className="lp-footer-brand">
           <Image src="/hero-image.png" alt="DeutAI" width={48} height={48} style={{ objectFit: 'contain' }} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-            <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '18px', fontWeight: 600, color: '#C9A227', letterSpacing: '1px' }}>
+            <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '18px', fontWeight: 600, color: '#C9A227', letterSpacing: '1px' }}>
               DeutAI
             </span>
             <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '14px', color: '#48485a', letterSpacing: '3px' }}>
