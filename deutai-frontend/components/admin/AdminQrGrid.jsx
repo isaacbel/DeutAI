@@ -1,6 +1,6 @@
 'use client';
 
-import { BookOpen, BookText, PenLine, Eye, Download, ExternalLink } from 'lucide-react';
+import { BookOpen, BookText, PenLine, Eye, Download, ExternalLink, Home } from 'lucide-react';
 import { useState } from 'react';
 
 const ICONS = {
@@ -8,6 +8,7 @@ const ICONS = {
   'book-text':  BookText,
   'pen-line':   PenLine,
   eye:          Eye,
+  home:         Home,
 };
 
 export default function AdminQrGrid({ items }) {

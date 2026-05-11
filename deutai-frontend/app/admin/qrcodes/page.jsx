@@ -9,6 +9,7 @@ const QUIZ_LINKS = [
   { slug: 'grammaire', title: 'Grammaire', icon: 'book-text', color: '#4DA8DA' },
   { slug: 'conjugaison', title: 'Conjugaison', icon: 'pen-line', color: '#E06C6C' },
   { slug: 'comprehension', title: 'Compréhension', icon: 'eye', color: '#7B61FF' },
+  { slug: 'homepage', title: 'Homepage', icon: 'home', color: '#D4AF37', isHome: true },
 ];
 
 export default async function AdminQrCodesPage() {
@@ -25,7 +26,7 @@ export default async function AdminQrCodesPage() {
 
   const items = await Promise.all(
     QUIZ_LINKS.map(async (c) => {
-      const url = `${base}/quiz/${c.slug}`;
+      const url = c.isHome ? base : `${base}/quiz/${c.slug}`;
       const dataUrl = await QRCode.toDataURL(url, {
         width: 400,
         margin: 2,
