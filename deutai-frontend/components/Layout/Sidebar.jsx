@@ -29,7 +29,7 @@ function Tooltip({ label, visible, lang }) {
           className={`absolute ${lang === 'ar' ? 'right-[calc(100%+10px)]' : 'left-[calc(100%+10px)]'} top-1/2 -translate-y-1/2 z-[200] pointer-events-none`}
         >
           <span
-            className="relative px-3 py-1.5 rounded-lg font-mono text-[11px] tracking-[.08em] font-semibold whitespace-nowrap block"
+            className="relative px-3 py-1.5 rounded-lg font-mono text-[15px] tracking-[.08em] font-semibold whitespace-nowrap block"
             style={{
               background: 'rgba(14,14,22,0.98)',
               border: '1px solid rgba(212,175,55,0.22)',
@@ -149,7 +149,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                     <Zap size={15} className="text-black" fill="black" />
                   </div>
                   <span
-                    className="font-mono text-[13px] tracking-[.18em] font-bold uppercase"
+                    className="font-mono text-[15px] tracking-[.18em] font-bold uppercase"
                     style={{ color: '#c8b87a' }}
                   >
                     DeutAI
@@ -218,7 +218,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                         >
                           <Icon size={16} />
                         </div>
-                        <span className="font-mono text-[13px] tracking-[.06em] font-semibold">
+                        <span className="font-mono text-[15px] tracking-[.06em] font-semibold">
                           {label}
                         </span>
                         {isActive && (
@@ -254,7 +254,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                   >
                     <LogOut size={15} />
                   </div>
-                  <span className="font-mono text-[13px] tracking-[.06em] font-semibold">
+                  <span className="font-mono text-[15px] tracking-[.06em] font-semibold">
                     {t('sidebar.logout')}
                   </span>
                 </button>

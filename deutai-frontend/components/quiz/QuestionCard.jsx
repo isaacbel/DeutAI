@@ -87,12 +87,12 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
       }}
     >
       <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-        <span className="font-mono text-[10px] text-[#5c6078] tracking-wider">
+        <span className="font-mono text-[14px] text-[#5c6078] tracking-wider">
           Question {questionNumber}/{totalQuestions}
         </span>
         <div className="flex items-center gap-2">
           <span
-            className="font-mono text-[10px] tracking-[0.18em] uppercase px-2 py-1 rounded-md"
+            className="font-mono text-[15px] tracking-[0.18em] uppercase px-2 py-1 rounded-md"
             style={{
               background: 'rgba(212,175,55,0.1)',
               border: '1px solid rgba(212,175,55,0.22)',
@@ -101,7 +101,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
           >
             {t(`quiz.type_${question.type}`) || question.type}
           </span>
-          <span className="font-mono text-[10px] text-[#5c6078] tracking-wider">
+          <span className="font-mono text-[14px] text-[#5c6078] tracking-wider">
             +{question.points} {t('quiz.pts')}
           </span>
         </div>
@@ -146,7 +146,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
                 key={v.id}
                 type="button"
                 onClick={() => setChoice(v.id)}
-                className="flex-1 rounded-xl py-3 font-mono text-[12px] tracking-[0.12em] uppercase"
+                className="flex-1 rounded-xl py-3 font-mono text-[14px] tracking-[0.12em] uppercase"
                 style={{
                   background: active ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
                   border: active ? '1px solid rgba(212,175,55,0.35)' : '1px solid rgba(255,255,255,0.07)',
@@ -184,7 +184,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
               ? !choice
               : !textValue.trim()
           }
-          className="mt-6 w-full sm:w-auto font-mono text-[11px] tracking-[0.16em] uppercase py-3 px-8 rounded-xl disabled:opacity-35 disabled:cursor-not-allowed"
+          className="mt-6 w-full sm:w-auto font-mono text-[15px] tracking-[0.16em] uppercase py-3 px-8 rounded-xl disabled:opacity-35 disabled:cursor-not-allowed"
           style={{
             background: 'linear-gradient(135deg, #c9a227, #e8d48a)',
             color: '#0a0a0c',
@@ -214,16 +214,16 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
                 <XCircle className="shrink-0 text-red-400" size={22} />
               )}
               <div>
-                <p className="font-mono text-[11px] tracking-[0.14em] uppercase mb-1" style={{ color: correct ? '#6ee7b7' : '#fca5a5' }}>
+                <p className="font-mono text-[15px] tracking-[0.14em] uppercase mb-1" style={{ color: correct ? '#6ee7b7' : '#fca5a5' }}>
                   {correct ? t('quiz.correctAnswerMsg') : t('quiz.wrongAnswerMsg')}
                 </p>
                 {!correct && (
-                  <p className="text-[13px] font-sans mb-2" style={{ color: '#e8e8f0' }}>
+                  <p className="text-[15px] font-sans mb-2" style={{ color: '#e8e8f0' }}>
                     <span className="text-[#8a90a8]">{t('quiz.expected')}</span>
                     <span className="text-[#f1d98d]">{question.type === 'true_false' ? (question.correctAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : question.correctAnswer}</span>
                   </p>
                 )}
-                <p className="text-[13px] font-sans leading-relaxed" style={{ color: '#b8bdd4' }}>
+                <p className="text-[15px] font-sans leading-relaxed" style={{ color: '#b8bdd4' }}>
                   {question.explanation}
                 </p>
               </div>
@@ -232,7 +232,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
             <button
               type="button"
               onClick={handleContinue}
-              className="mt-4 w-full sm:w-auto flex items-center justify-center gap-2 font-mono text-[11px] tracking-[0.12em] uppercase py-2.5 px-6 rounded-lg"
+              className="mt-4 w-full sm:w-auto flex items-center justify-center gap-2 font-mono text-[15px] tracking-[0.12em] uppercase py-2.5 px-6 rounded-lg"
               style={{
                 background: 'rgba(255,255,255,0.06)',
                 border: '1px solid rgba(255,255,255,0.12)',

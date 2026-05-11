@@ -59,7 +59,7 @@ export default function LoginForm() {
 
       <div className="flex flex-col gap-1.5">
         <label
-          className="text-[11px] font-mono text-text-muted tracking-widest"
+          className="text-[15px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
           {t('auth.email')}
@@ -78,7 +78,7 @@ export default function LoginForm() {
 
       <div className="flex flex-col gap-1.5">
         <label
-          className="text-[11px] font-mono text-text-muted tracking-widest"
+          className="text-[15px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
           {t('auth.password')}
@@ -117,12 +117,12 @@ export default function LoginForm() {
       <div className="flex flex-col items-center gap-3 mt-2">
         <Link
           href="/forgot-password"
-          className="text-xs font-mono text-text-muted hover:text-gold transition-colors"
+          className="text-sm font-mono text-text-muted hover:text-gold transition-colors"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
           {t('auth.forgotPassword')}
         </Link>
-        <p className="text-xs text-text-muted" style={{ fontFamily: 'Inter, sans-serif' }}>
+        <p className="text-sm text-text-muted" style={{ fontFamily: 'Inter, sans-serif' }}>
           {t('auth.noAccount')}{' '}
           <Link href="/register" className="text-gold hover:underline">
             {t('auth.signUp')}

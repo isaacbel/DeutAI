@@ -36,7 +36,7 @@ export default function QuizLoader() {
       }}
     >
       <p
-        className="font-mono text-[11px] tracking-[0.22em] uppercase text-center mb-6"
+        className="font-mono text-[15px] tracking-[0.22em] uppercase text-center mb-6"
         style={{ color: '#c9a227' }}
       >
         {t('quiz.generatingQuestions')}
@@ -50,7 +50,7 @@ export default function QuizLoader() {
           <div className="h-10 rounded-lg" style={{ background: 'rgba(255,255,255,0.04)' }} />
         </div>
       </div>
-      <p className="mt-6 text-center text-[12px] text-[#6b7088] font-sans">
+      <p className="mt-6 text-center text-[14px] text-[#6b7088] font-sans">
         {t('quiz.generatingWait')}
       </p>
     </motion.div>

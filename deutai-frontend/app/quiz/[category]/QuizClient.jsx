@@ -108,7 +108,7 @@ export default function QuizClient({ slug }) {
       >
         <Link
           href="/"
-          className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.14em] uppercase"
+          className="inline-flex items-center gap-2 font-mono text-[15px] tracking-[0.14em] uppercase"
           style={{ color: '#8a90a8' }}
         >
           <ArrowLeft size={14} />
@@ -119,7 +119,7 @@ export default function QuizClient({ slug }) {
             <ProgressBar current={currentIndex + 1} total={questions.length} />
           </div>
         )}
-        <span className="font-mono text-[10px] tracking-[0.18em] uppercase" style={{ color: '#c9a227' }}>
+        <span className="font-mono text-[15px] tracking-[0.18em] uppercase" style={{ color: '#c9a227' }}>
           {t('quiz.title')}
         </span>
       </div>
@@ -144,7 +144,7 @@ export default function QuizClient({ slug }) {
           >
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="text-[#c9a227]" size={20} />
-              <span className="font-mono text-[10px] tracking-[0.22em] uppercase" style={{ color: '#c9a227' }}>
+              <span className="font-mono text-[15px] tracking-[0.22em] uppercase" style={{ color: '#c9a227' }}>
                 DeutAI
               </span>
             </div>
@@ -155,14 +155,14 @@ export default function QuizClient({ slug }) {
               {meta?.description}
             </p>
 
-            <p className="font-mono text-[10px] tracking-[0.18em] uppercase mb-3" style={{ color: '#6b7088' }}>
+            <p className="font-mono text-[15px] tracking-[0.18em] uppercase mb-3" style={{ color: '#6b7088' }}>
               {t('quiz.difficulty')}
             </p>
             <DifficultySelector value={difficulty} onChange={setDifficulty} />
 
             {genError && (
               <div
-                className="mt-6 rounded-xl p-4 text-[13px]"
+                className="mt-6 rounded-xl p-4 text-[15px]"
                 style={{
                   background: 'rgba(180,60,60,0.12)',
                   border: '1px solid rgba(180,60,60,0.25)',
@@ -173,7 +173,7 @@ export default function QuizClient({ slug }) {
                 <button
                   type="button"
                   onClick={startQuiz}
-                  className="mt-3 block font-mono text-[10px] uppercase tracking-wider underline"
+                  className="mt-3 block font-mono text-[14px] uppercase tracking-wider underline"
                   style={{ color: '#f1d98d' }}
                 >
                   {t('quiz.retry')}
@@ -184,7 +184,7 @@ export default function QuizClient({ slug }) {
             <button
               type="button"
               onClick={startQuiz}
-              className="mt-8 w-full sm:w-auto font-mono text-[11px] tracking-[0.16em] uppercase py-3.5 px-10 rounded-xl"
+              className="mt-8 w-full sm:w-auto font-mono text-[15px] tracking-[0.16em] uppercase py-3.5 px-10 rounded-xl"
               style={{
                 background: 'linear-gradient(135deg, #c9a227, #e8d48a)',
                 color: '#0a0a0c',

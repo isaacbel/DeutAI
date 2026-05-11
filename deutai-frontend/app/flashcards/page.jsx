@@ -278,7 +278,7 @@ export default function FlashcardsPage() {
                           onClick={() => setSelectedType(opt.value)}
                           style={{
                             fontFamily: 'JetBrains Mono, monospace',
-                            fontSize: '11px',
+                            fontSize: '15px',
                             padding: '7px 12px',
                             borderRadius: '999px',
                             border: active ? '1px solid rgba(201,162,39,0.45)' : '1px solid #2b2b36',

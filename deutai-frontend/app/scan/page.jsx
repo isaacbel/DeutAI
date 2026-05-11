@@ -76,7 +76,7 @@ export default function ScanPage() {
         <div className="px-4 py-8 max-w-sm mx-auto flex flex-col gap-6">
           {status === 'scanning' && (
             <>
-              <p className="text-xs font-mono text-text-muted text-center" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <p className="text-sm font-mono text-text-muted text-center" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                 {t('scan.pointCamera')}
               </p>
               <QRScanner onDetected={handleDetected} onError={handleError} />
@@ -108,11 +108,11 @@ export default function ScanPage() {
                 {unitInfo.title}
               </p>
               {unitInfo.chapter_number && (
-                <span className="text-xs font-mono text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                <span className="text-sm font-mono text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                   {t('scan.chapter')} {unitInfo.chapter_number}
                 </span>
               )}
-              <p className="text-xs text-text-muted mt-1">{t('scan.redirecting')}</p>
+              <p className="text-sm text-text-muted mt-1">{t('scan.redirecting')}</p>
             </div>
           )}
 

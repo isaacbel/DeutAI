@@ -31,12 +31,12 @@ export default function DifficultySelector({ value, onChange }) {
             }}
           >
             <span
-              className="block font-mono text-[11px] tracking-[0.14em] uppercase"
+              className="block font-mono text-[15px] tracking-[0.14em] uppercase"
               style={{ color: active ? '#f1d98d' : '#8a90a8' }}
             >
               {lvl.label}
             </span>
-            <span className="block mt-1 text-[12px] text-[#6b7088] font-sans">{lvl.hint}</span>
+            <span className="block mt-1 text-[14px] text-[#6b7088] font-sans">{lvl.hint}</span>
           </motion.button>
         );
       })}

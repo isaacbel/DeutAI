@@ -87,7 +87,7 @@ export default function ColdStartLoader() {
         {/* Message */}
         <div className="text-center" style={{ minHeight: '40px' }}>
           <p
-            className="text-xs font-mono text-gold"
+            className="text-sm font-mono text-gold"
             style={{
               fontFamily: 'JetBrains Mono, monospace',
               letterSpacing: '1px',

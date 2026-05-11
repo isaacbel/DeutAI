@@ -13,7 +13,7 @@ export default function ScanButton({ onClick, disabled, loading }) {
       className="w-full py-[15px] rounded-xl font-bold font-mono relative overflow-hidden transition-all duration-300 select-none"
       style={{
         fontFamily: 'JetBrains Mono, monospace',
-        fontSize: '13px',
+        fontSize: '15px',
         letterSpacing: '2.5px',
         ...(isActive ? {
           background: 'linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.18), rgba(212,175,55,0.1))',

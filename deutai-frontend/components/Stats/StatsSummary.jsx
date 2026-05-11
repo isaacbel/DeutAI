@@ -46,7 +46,7 @@ export default function StatsSummary({ stats }) {
           >
             <div className="flex items-center justify-between">
               <span
-                className="text-[10px] uppercase tracking-[.18em] font-semibold"
+                className="text-[15px] uppercase tracking-[.18em] font-semibold"
                 style={{ fontFamily: 'JetBrains Mono, monospace', color: item.color, opacity: 0.8 }}
               >
                 {item.label}

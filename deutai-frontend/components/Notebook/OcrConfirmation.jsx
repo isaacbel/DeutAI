@@ -34,7 +34,7 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
       {/* Confidence indicator */}
       <div className="flex items-center gap-2">
         <span
-          className="text-[10px] font-mono tracking-wider px-2 py-1 rounded"
+          className="text-[14px] font-mono tracking-wider px-2 py-1 rounded"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
             background: styles.bg,
@@ -59,7 +59,7 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
 
       {/* Extracted text editable area */}
       <div>
-        <label className="block text-[11px] font-mono text-text-muted mb-2 tracking-wider" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+        <label className="block text-[15px] font-mono text-text-muted mb-2 tracking-wider" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
           {t('notebook.extractedTextLabel')}
         </label>
         <textarea
@@ -72,7 +72,7 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
           maxLength={1000}
           lang="de"
         />
-        <p className="text-[10px] font-mono text-text-muted mt-1 text-right" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+        <p className="text-[14px] font-mono text-text-muted mt-1 text-right" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
           {text?.length ?? 0} / 1000
         </p>
       </div>

@@ -90,7 +90,7 @@ function ExerciseItem({ exercise, index, t, explanationLanguage }) {
     >
       <div className="flex items-start gap-3">
         <div
-          className="shrink-0 w-5 h-5 rounded flex items-center justify-center text-[9px] font-mono font-bold mt-0.5"
+          className="shrink-0 w-5 h-5 rounded flex items-center justify-center text-[15px] font-mono font-bold mt-0.5"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
             background: 'rgba(212,175,55,0.1)',
@@ -130,7 +130,7 @@ function ExerciseItem({ exercise, index, t, explanationLanguage }) {
           ) : (
             <button
               onClick={() => setRevealed(true)}
-              className="flex items-center gap-2 text-[11px] font-mono text-text-muted hover:text-gold transition-all py-1.5 px-3 rounded-md hover:bg-gold/10 border border-transparent hover:border-gold/20"
+              className="flex items-center gap-2 text-[15px] font-mono text-text-muted hover:text-gold transition-all py-1.5 px-3 rounded-md hover:bg-gold/10 border border-transparent hover:border-gold/20"
               style={{ fontFamily: 'JetBrains Mono, monospace' }}
             >
               <Eye size={12} />
@@ -167,7 +167,7 @@ function ErrorRuleBlock({ error, index, explanationLanguage }) {
           width: '24px', height: '24px', borderRadius: '50%',
           background: `${color}20`, border: `1px solid ${color}40`,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
+          fontFamily: 'JetBrains Mono, monospace', fontSize: '14px',
           fontWeight: 700, color, flexShrink: 0,
         }}>
           {index + 1}
@@ -308,7 +308,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
                 {t('errorCard.targetedExercises')}
               </span>
               <span
-                className="text-xs font-mono px-2 py-1 rounded"
+                className="text-sm font-mono px-2 py-1 rounded"
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
                   background: 'rgba(212,175,55,0.08)',

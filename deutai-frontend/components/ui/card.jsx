@@ -19,7 +19,7 @@ export function CardTitle({ className = '', children }) {
 }
 
 export function CardDescription({ className = '', children }) {
-  return <p className={`text-xs text-[#8b8b98] ${className}`}>{children}</p>;
+  return <p className={`text-sm text-[#8b8b98] ${className}`}>{children}</p>;
 }
 
 export function CardContent({ className = '', children }) {

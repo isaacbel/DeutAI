@@ -32,7 +32,7 @@ export default function FlashcardList({ flashcards, onDelete }) {
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <p style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '11px', color: '#383840',
+            fontSize: '15px', color: '#383840',
             letterSpacing: '3px', textTransform: 'uppercase', margin: 0,
           }}>
             {t('flashcards.noCards')}

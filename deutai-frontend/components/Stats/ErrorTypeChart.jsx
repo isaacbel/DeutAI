@@ -99,7 +99,7 @@ function PieTooltip({ active, payload }) {
   const pct = total > 0 ? Math.round((val / total) * 100) : 0;
   return (
     <div
-      className="rounded-lg border border-white/10 bg-[#12121a]/95 px-3 py-2 text-xs shadow-xl backdrop-blur-sm"
+      className="rounded-lg border border-white/10 bg-[#12121a]/95 px-3 py-2 text-sm shadow-xl backdrop-blur-sm"
       style={{ fontFamily: 'JetBrains Mono, monospace' }}
     >
       <p className="font-medium text-[#e8e8ef]">{p.payload.isOther ? p.payload.tName : p.name}</p>
@@ -143,7 +143,7 @@ export default function ErrorTypeChart({ data }) {
       {/* Summary strip */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-          <p className="text-[10px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[14px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.totalErrorsLabel')}
           </p>
           <p className="mt-1 font-mono text-xl font-semibold tabular-nums text-[#f0e6d2]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -151,7 +151,7 @@ export default function ErrorTypeChart({ data }) {
           </p>
         </div>
         <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-          <p className="text-[10px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[14px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.activeTypesLabel')}
           </p>
           <p className="mt-1 font-mono text-xl font-semibold tabular-nums text-[#c8b896]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -159,13 +159,13 @@ export default function ErrorTypeChart({ data }) {
           </p>
         </div>
         <div className="col-span-2 rounded-xl border border-[#453a16]/40 bg-[#d4af37]/[0.06] px-3 py-2.5 sm:col-span-1">
-          <p className="text-[10px] uppercase tracking-wider text-[#8a7820]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[14px] uppercase tracking-wider text-[#8a7820]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.mostFrequentLabel')}
           </p>
           <p className="mt-1 truncate text-sm font-medium text-[#e5c266]" title={top.name}>
             {top.name}
           </p>
-          <p className="font-mono text-xs text-[#9a8a50]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="font-mono text-sm text-[#9a8a50]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {top.count} ({top.percent}%)
           </p>
         </div>
@@ -175,7 +175,7 @@ export default function ErrorTypeChart({ data }) {
         {/* Ranked list + bars */}
         <div className="min-h-0 lg:col-span-3">
           <p
-            className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[#5c5c6b]"
+            className="mb-3 text-[15px] uppercase tracking-[0.2em] text-[#5c5c6b]"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
             {t('stats.ranking')}
@@ -185,7 +185,7 @@ export default function ErrorTypeChart({ data }) {
               <li key={row.typeKey} className="rounded-lg border border-white/[0.05] bg-black/20 px-3 py-2.5">
                 <div className="flex items-start gap-2.5">
                   <span
-                    className="mt-0.5 w-5 shrink-0 text-right text-[10px] tabular-nums text-[#4a4a58]"
+                    className="mt-0.5 w-5 shrink-0 text-right text-[14px] tabular-nums text-[#4a4a58]"
                     style={{ fontFamily: 'JetBrains Mono, monospace' }}
                   >
                     {i + 1}
@@ -199,7 +199,7 @@ export default function ErrorTypeChart({ data }) {
                     <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
                       <span className="text-sm font-medium text-[#d8d8e4]">{row.name}</span>
                       <span
-                        className="shrink-0 text-xs tabular-nums text-[#9a9aaf]"
+                        className="shrink-0 text-sm tabular-nums text-[#9a9aaf]"
                         style={{ fontFamily: 'JetBrains Mono, monospace' }}
                       >
                         {row.count}
@@ -227,7 +227,7 @@ export default function ErrorTypeChart({ data }) {
         {/* Donut */}
         <div className="flex flex-col items-center justify-start lg:col-span-2">
           <p
-            className="mb-2 w-full text-[10px] uppercase tracking-[0.2em] text-[#5c5c6b] lg:text-center"
+            className="mb-2 w-full text-[15px] uppercase tracking-[0.2em] text-[#5c5c6b] lg:text-center"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
             {t('stats.distribution')}
@@ -262,7 +262,7 @@ export default function ErrorTypeChart({ data }) {
               <span className="font-mono text-2xl font-bold tabular-nums text-[#f0e6d2]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                 {totalErrors}
               </span>
-              <span className="text-[10px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <span className="text-[14px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                 {t('stats.errorsSuffix')}
               </span>
             </div>

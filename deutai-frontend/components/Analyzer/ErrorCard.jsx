@@ -116,7 +116,7 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
         {/* Type name */}
         <span style={{
           fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '13px',
+          fontSize: '15px',
           letterSpacing: '1.5px',
           fontWeight: 700,
           color: typeColor,
@@ -130,7 +130,7 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
         {sevCfg && (
           <span style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '11px',
+            fontSize: '15px',
             padding: '3px 10px',
             borderRadius: '6px',
             background: sevCfg.bg,
@@ -146,7 +146,7 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
         {groupErrors.length > 1 && (
           <span style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '11px',
+            fontSize: '15px',
             padding: '3px 9px',
             borderRadius: '6px',
             background: `${typeColor}15`,
@@ -167,7 +167,7 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
           <div>
             <div style={{
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '10px',
+              fontSize: '15px',
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
               color: '#FF6B6B',
@@ -199,7 +199,7 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
           <div>
             <div style={{
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '10px',
+              fontSize: '15px',
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
               color: '#4ADE80',
@@ -234,7 +234,7 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
             {uniqueSuggestions.map((s, i) => (
               <span key={i} style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '13px',
+                fontSize: '15px',
                 padding: '6px 14px',
                 borderRadius: '8px',
                 background: 'rgba(74,222,128,0.07)',
@@ -285,13 +285,13 @@ export default function ErrorCard({ result }) {
         </div>
         <div>
           <p style={{
-            fontFamily: 'JetBrains Mono, monospace', fontSize: '11px',
+            fontFamily: 'JetBrains Mono, monospace', fontSize: '15px',
             letterSpacing: '2px', color: '#4A9A4A', fontWeight: 700,
             textTransform: 'uppercase', marginBottom: '6px',
           }}>
             {t('errorCard.noError')}
           </p>
-          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '13px', color: '#666', lineHeight: '1.6', margin: 0 }}>
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px', color: '#666', lineHeight: '1.6', margin: 0 }}>
             {t('errorCard.noErrorMessage')}
           </p>
           {sentence && (
@@ -334,7 +334,7 @@ export default function ErrorCard({ result }) {
         <ShieldAlert size={18} style={{ color: '#FF5050', flexShrink: 0 }} />
         <span style={{
           fontFamily: 'JetBrains Mono, monospace',
-          fontSize: '12px',
+          fontSize: '14px',
           letterSpacing: '1.5px',
           fontWeight: 700,
           color: '#FF5050',
@@ -354,7 +354,7 @@ export default function ErrorCard({ result }) {
             return (
               <span key={sev} style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '11px',
+                fontSize: '15px',
                 padding: '4px 10px',
                 borderRadius: '6px',
                 background: cfg.bg,

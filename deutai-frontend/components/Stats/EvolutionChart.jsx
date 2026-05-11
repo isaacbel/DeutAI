@@ -79,7 +79,7 @@ const CustomTooltip = ({ active, payload }) => {
   const v = payload[0].value;
   return (
     <div
-      className="rounded-lg border border-white/10 bg-[#12121a]/95 px-3 py-2 text-xs shadow-xl backdrop-blur-sm"
+      className="rounded-lg border border-white/10 bg-[#12121a]/95 px-3 py-2 text-sm shadow-xl backdrop-blur-sm"
       style={{ fontFamily: 'JetBrains Mono, monospace' }}
     >
       <p className="text-[#9a9aaf]">{row.dateKey}</p>
@@ -105,7 +105,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
         <p className="text-sm text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
           {t('stats.noActivityPeriod')}
         </p>
-        <p className="text-xs text-[#4a4a58]">{t('stats.activityWillAppear')}</p>
+        <p className="text-sm text-[#4a4a58]">{t('stats.activityWillAppear')}</p>
       </div>
     );
   }
@@ -114,7 +114,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
         <div className="rounded-lg border border-white/6 bg-white/2 px-2.5 py-2">
-          <p className="text-[9px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[15px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.labelAnalyses')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-semibold tabular-nums text-[#f0e6d2]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -122,7 +122,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
           </p>
         </div>
         <div className="rounded-lg border border-white/6 bg-white/2 px-2.5 py-2">
-          <p className="text-[9px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[15px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.labelActiveDays')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-semibold tabular-nums text-[#c8b896]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -130,18 +130,18 @@ export default function EvolutionChart({ data, period = '30d' }) {
           </p>
         </div>
         <div className="rounded-lg border border-white/6 bg-white/2 px-2.5 py-2">
-          <p className="text-[9px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[15px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.labelPeak')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-semibold tabular-nums text-[#d4af37]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {peak}
           </p>
-          <p className="truncate text-[10px] text-[#5c5c6b]" title={peakLabel}>
+          <p className="truncate text-[14px] text-[#5c5c6b]" title={peakLabel}>
             {peakLabel}
           </p>
         </div>
         <div className="rounded-lg border border-white/6 bg-white/2 px-2.5 py-2">
-          <p className="text-[9px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[15px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.labelAvgPerDay')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-semibold tabular-nums text-[#9a9aaf]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -195,7 +195,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
         )}
       </div>
 
-      <p className="text-center text-[10px] text-[#4a4a58]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+      <p className="text-center text-[14px] text-[#4a4a58]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
         {t('stats.chartCaption')}
       </p>
     </div>

@@ -42,13 +42,13 @@ export default function AdminQrGrid({ items }) {
         {/* ── Header ── */}
         <div className="mb-10 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-2" style={{ color: '#c9a227' }}>
+            <p className="font-mono text-[15px] tracking-[0.22em] uppercase mb-2" style={{ color: '#c9a227' }}>
               Administration · DeutAI
             </p>
             <h1 className="font-sans text-2xl sm:text-3xl font-semibold mb-1" style={{ color: '#f1d98d' }}>
               QR Codes — Quiz
             </h1>
-            <p className="text-[13px]" style={{ color: '#8a90a8' }}>
+            <p className="text-[15px]" style={{ color: '#8a90a8' }}>
               Scannez ou téléchargez un code pour accéder directement à la page du quiz correspondante.
             </p>
           </div>
@@ -58,7 +58,7 @@ export default function AdminQrGrid({ items }) {
             type="button"
             onClick={downloadAll}
             disabled={downloading}
-            className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.12em] uppercase py-3 px-6 rounded-xl shrink-0 disabled:opacity-60 disabled:cursor-wait"
+            className="inline-flex items-center gap-2 font-mono text-[15px] tracking-[0.12em] uppercase py-3 px-6 rounded-xl shrink-0 disabled:opacity-60 disabled:cursor-wait"
             style={{
               background: 'linear-gradient(135deg, #c9a227, #e8d48a)',
               color: '#0a0a0c',
@@ -152,7 +152,7 @@ export default function AdminQrGrid({ items }) {
                   <button
                     type="button"
                     onClick={() => downloadPng(item.dataUrl, item.slug)}
-                    className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.12em] uppercase py-2.5 px-6 rounded-xl w-full justify-center transition-all"
+                    className="inline-flex items-center gap-2 font-mono text-[15px] tracking-[0.12em] uppercase py-2.5 px-6 rounded-xl w-full justify-center transition-all"
                     style={{
                       background: `${color}15`,
                       border: `1px solid ${color}40`,
@@ -178,7 +178,7 @@ export default function AdminQrGrid({ items }) {
         </div>
 
         {/* ── Footer hint ── */}
-        <p className="mt-10 text-center font-mono text-[10px] tracking-wider uppercase" style={{ color: '#2a2a38' }}>
+        <p className="mt-10 text-center font-mono text-[14px] tracking-wider uppercase" style={{ color: '#2a2a38' }}>
           DeutAI · Administration
         </p>
       </div>

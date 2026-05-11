@@ -28,7 +28,7 @@ function PeriodSelector({ period, onChange, t }) {
           <button
             key={opt.key}
             onClick={() => onChange(opt.key)}
-            className="px-3.5 py-[7px] rounded-lg text-[12px] font-mono transition-all"
+            className="px-3.5 py-[7px] rounded-lg text-[14px] font-mono transition-all"
             style={{
               fontFamily: 'JetBrains Mono, monospace',
               background: active ? '#201a0c' : 'rgba(255,255,255,0.02)',
@@ -125,13 +125,13 @@ export default function StatsPage() {
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span
-                  className="text-[9px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
+                  className="text-[15px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
                   style={{ fontFamily: 'JetBrains Mono, monospace', background: '#171306', border: '1px solid #453a16', color: '#d6b354' }}
                 >
                   {t('stats.dashboard')}
                 </span>
                 <span
-                  className="text-[9px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
+                  className="text-[15px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
                   style={{ fontFamily: 'JetBrains Mono, monospace', background: '#131318', border: '1px solid rgba(255,255,255,0.1)', color: '#7a7a90' }}
                 >
                   {PERIOD_OPTIONS.find(o => o.key === period)?.label}
@@ -143,7 +143,7 @@ export default function StatsPage() {
               >
                 {t('stats.title')}
               </h1>
-              <p className="text-[10px] uppercase tracking-[.22em] mt-1" style={{ color: '#8a8a9c' }}>
+              <p className="text-[15px] uppercase tracking-[.22em] mt-1" style={{ color: '#8a8a9c' }}>
                 {t('stats.subtitle')}
               </p>
             </div>
@@ -161,13 +161,13 @@ export default function StatsPage() {
           {/* Error state */}
           {error && (
             <div
-              className="flex items-center justify-between p-4 rounded-xl text-[13px]"
+              className="flex items-center justify-between p-4 rounded-xl text-[15px]"
               style={{ background: 'rgba(23,13,13,0.9)', border: '1px solid rgba(77,34,34,0.7)', color: '#f08e8e' }}
             >
               <span>⚠ {error}</span>
               <button
                 onClick={() => loadStats()}
-                className="flex items-center gap-1.5 text-[12px] font-mono px-3 py-1.5 rounded-lg transition-all"
+                className="flex items-center gap-1.5 text-[14px] font-mono px-3 py-1.5 rounded-lg transition-all"
                 style={{ fontFamily: 'JetBrains Mono, monospace', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#c0c0d0' }}
               >
                 <RefreshCw size={13} />
@@ -194,10 +194,10 @@ export default function StatsPage() {
               style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
             >
               <Sparkles size={34} className="text-[#D4AF37] opacity-60" />
-              <p className="font-mono text-[13px] text-[#c8c8d8]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <p className="font-mono text-[15px] text-[#c8c8d8]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                 {t('stats.noAnalysis')}
               </p>
-              <p className="text-[12px] text-[#5a5a70]">{t('stats.startAnalysisPrompt')}</p>
+              <p className="text-[14px] text-[#5a5a70]">{t('stats.startAnalysisPrompt')}</p>
             </div>
           ) : (
             <>
@@ -213,13 +213,13 @@ export default function StatsPage() {
                 >
                   <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <div>
-                      <p className="font-mono text-[13px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                      <p className="font-mono text-[15px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                         {t('stats.errorsByType')}
                       </p>
-                      <p className="text-[10px] text-[#5a5a70] mt-0.5 tracking-wide">{t('stats.errorsByTypeMethod')}</p>
+                      <p className="text-[14px] text-[#5a5a70] mt-0.5 tracking-wide">{t('stats.errorsByTypeMethod')}</p>
                     </div>
                     <span
-                      className="text-[9px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
+                      className="text-[15px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
                       style={{ fontFamily: 'JetBrains Mono, monospace', background: '#131318', border: '1px solid rgba(255,255,255,0.1)', color: '#7a7a90' }}
                     >
                       {t('stats.typesLabel')}
@@ -237,10 +237,10 @@ export default function StatsPage() {
                 >
                   <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
                     <div>
-                      <p className="font-mono text-[13px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                      <p className="font-mono text-[15px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                         {t('stats.analysisActivity')}
                       </p>
-                      <p className="text-[10px] text-[#5a5a70] mt-0.5 tracking-wide">
+                      <p className="text-[14px] text-[#5a5a70] mt-0.5 tracking-wide">
                         {t('stats.dailyVolume', { period: PERIOD_OPTIONS.find(o => o.key === period)?.label })}
                       </p>
                     </div>

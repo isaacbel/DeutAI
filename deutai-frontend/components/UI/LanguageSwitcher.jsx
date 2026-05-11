@@ -20,7 +20,7 @@ export default function LanguageSwitcher({ isMobile = false }) {
         }}
       >
         <Globe size={16} />
-        <span className="font-mono text-[12px] font-semibold">
+        <span className="font-mono text-[14px] font-semibold">
           {lang === 'ar' ? 'العربية' : 'Deutsch'}
         </span>
       </button>
@@ -39,7 +39,7 @@ export default function LanguageSwitcher({ isMobile = false }) {
       title="Toggle Language"
     >
       <Globe size={14} className="mb-0.5 opacity-70" />
-      <span className="font-mono text-[10px] font-bold tracking-wider">
+      <span className="font-mono text-[14px] font-bold tracking-wider">
         {lang === 'ar' ? 'AR' : 'DE'}
       </span>
     </button>

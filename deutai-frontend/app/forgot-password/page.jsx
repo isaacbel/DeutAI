@@ -46,7 +46,7 @@ export default function ForgotPasswordPage() {
           >
             DeutAI
           </h1>
-          <p className="system-subtitle mt-2" style={{ fontSize: '10px' }}>
+          <p className="system-subtitle mt-2" style={{ fontSize: '14px' }}>
             {t('auth.recoverySystem')}
           </p>
         </div>
@@ -79,7 +79,7 @@ export default function ForgotPasswordPage() {
 
             <div className="flex flex-col gap-1.5">
               <label
-                className="text-[11px] font-mono text-text-muted tracking-widest"
+                className="text-[15px] font-mono text-text-muted tracking-widest"
                 style={{ fontFamily: 'JetBrains Mono, monospace' }}
               >
                 {t('auth.email')}
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
               {loading ? t('auth.sending') : t('auth.sendLink')}
             </button>
 
-            <Link href="/login" className="text-xs text-center text-text-muted hover:text-gold transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
+            <Link href="/login" className="text-sm text-center text-text-muted hover:text-gold transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
               {t('auth.backToLogin')}
             </Link>
           </form>

@@ -86,7 +86,7 @@ export default function QuestionsPage() {
               style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}
             >
               <Brain size={14} style={{ color: '#D4AF37' }} />
-              <span className="font-mono text-[11px] tracking-[0.1em] font-semibold uppercase" style={{ color: '#D4AF37' }}>
+              <span className="font-mono text-[15px] tracking-[0.1em] font-semibold uppercase" style={{ color: '#D4AF37' }}>
                 {t('questions.modeTest')}
               </span>
             </div>
@@ -152,7 +152,7 @@ export default function QuestionsPage() {
 
                   <div className="flex items-center gap-2 mt-auto">
                     <div className="h-1.5 w-1.5 rounded-full" style={{ background: type.color, boxShadow: `0 0 8px ${type.color}` }} />
-                    <span className="font-mono text-xs tracking-wider uppercase font-semibold" style={{ color: type.color }}>
+                    <span className="font-mono text-sm tracking-wider uppercase font-semibold" style={{ color: type.color }}>
                       {t('questions.questionsAvailable', { count: type.questionsCount })}
                     </span>
                   </div>

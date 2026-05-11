@@ -9,12 +9,12 @@ export default function ProgressBar({ current, total }) {
     <div className="w-full">
       <div className="flex justify-between items-center mb-2">
         <span
-          className="font-mono text-[10px] tracking-[0.2em] uppercase"
+          className="font-mono text-[15px] tracking-[0.2em] uppercase"
           style={{ color: '#8a90a8' }}
         >
           {t('quiz.progress')}
         </span>
-        <span className="font-mono text-[11px] tabular-nums" style={{ color: '#c9a227' }}>
+        <span className="font-mono text-[15px] tabular-nums" style={{ color: '#c9a227' }}>
           {current}/{total}
         </span>
       </div>

@@ -145,7 +145,7 @@ function AnalyzeContent() {
             />
             DeutAI
           </h1>
-          <p className="text-[9px] text-[#4a4a58] tracking-[.26em] uppercase mt-0.5">{t('app.system404')}</p>
+          <p className="text-[15px] text-[#4a4a58] tracking-[.26em] uppercase mt-0.5">{t('app.system404')}</p>
         </div>
 
         <div className={`flex items-center gap-2 ${lang === 'ar' ? 'pl-12 sm:pl-0' : 'pr-12 sm:pr-0'}`}>
@@ -156,7 +156,7 @@ function AnalyzeContent() {
             <Link
               key={href}
               href={href}
-              className="flex items-center gap-1.5 px-2.5 py-[7px] rounded-lg text-[12px] font-mono transition-all"
+              className="flex items-center gap-1.5 px-2.5 py-[7px] rounded-lg text-[14px] font-mono transition-all"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 border: '1px solid rgba(255,255,255,0.08)',
@@ -181,7 +181,7 @@ function AnalyzeContent() {
         >
           <span className={`absolute top-0 bottom-0 w-1 bg-[#D4AF37]/50 ${lang === 'ar' ? 'right-0 rounded-r-xl' : 'left-0 rounded-l-xl'}`} />
           <Crosshair size={13} className="text-[#D4AF37] flex-shrink-0" />
-          <span className="text-[12px] font-mono text-[#D4AF37]/95 tracking-wide flex-1" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <span className="text-[14px] font-mono text-[#D4AF37]/95 tracking-wide flex-1" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('analyze.activeUnit', { unit: unitId })}
           </span>
           <Link
@@ -200,7 +200,7 @@ function AnalyzeContent() {
         {/* Offline banner */}
         {offline && (
           <div
-            className="mb-5 px-4 py-3 rounded-xl flex items-center gap-2.5 text-[13px]"
+            className="mb-5 px-4 py-3 rounded-xl flex items-center gap-2.5 text-[15px]"
             style={{ background: 'rgba(204,85,85,0.07)', border: '1px solid rgba(204,85,85,0.2)', color: '#e05252' }}
           >
             <WifiOff size={16} className="flex-shrink-0" />
@@ -213,7 +213,7 @@ function AnalyzeContent() {
           <div className="flex items-center gap-2 mb-2.5">
             <span className="w-[3px] h-[11px] bg-[#C9A227] rounded-full" style={{ opacity: 0.6 }} />
             <label
-              className="text-[12px] font-mono tracking-[.18em] font-semibold uppercase"
+              className="text-[14px] font-mono tracking-[.18em] font-semibold uppercase"
               style={{ fontFamily: 'JetBrains Mono, monospace', color: '#b8a878' }}
             >
               {t('analyze.sentenceToAnalyze')}
@@ -230,7 +230,7 @@ function AnalyzeContent() {
         {/* Error message */}
         {error && !scanning && (
           <div
-            className="mb-5 p-4 rounded-xl text-[13px] flex flex-col gap-3"
+            className="mb-5 p-4 rounded-xl text-[15px] flex flex-col gap-3"
             style={{ background: '#140a0a', border: '1px solid rgba(204,85,85,0.2)', color: '#e05252' }}
           >
             <div className="flex items-start justify-between gap-3">
@@ -250,7 +250,7 @@ function AnalyzeContent() {
             {(error.includes('unavailable') || error.includes('server') || error.includes('متاح') || error.includes('Dienst') || error.includes('erreichbar')) && (
               <button
                 onClick={handleAnalyze}
-                className="flex items-center gap-1.5 self-start text-[12px] font-mono px-2 py-1 -ml-1 rounded transition-all"
+                className="flex items-center gap-1.5 self-start text-[14px] font-mono px-2 py-1 -ml-1 rounded transition-all"
                 style={{ fontFamily: 'JetBrains Mono, monospace', color: '#D4AF37' }}
                 onMouseEnter={e => { e.currentTarget.style.background='rgba(212,175,55,0.08)'; }}
                 onMouseLeave={e => { e.currentTarget.style.background='transparent'; }}
@@ -270,7 +270,7 @@ function AnalyzeContent() {
           {(result || text) && !scanning && (
             <button
               onClick={handleReset}
-              className="w-full sm:w-auto px-5 py-[14px] rounded-xl text-[13px] font-mono transition-all whitespace-nowrap"
+              className="w-full sm:w-auto px-5 py-[14px] rounded-xl text-[15px] font-mono transition-all whitespace-nowrap"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 border: '1px solid rgba(255,255,255,0.1)',
@@ -293,7 +293,7 @@ function AnalyzeContent() {
         {!scanning && !result && !error && (
           <div className="mt-14 flex flex-col items-center justify-center" style={{ opacity: 0.6 }} aria-hidden="true">
             <div className="w-px h-10 mb-4" style={{ background: 'linear-gradient(to bottom, transparent, #C9A22760)' }} />
-            <p className="text-[12px] font-mono tracking-[.2em] flex items-center gap-1.5"
+            <p className="text-[14px] font-mono tracking-[.2em] flex items-center gap-1.5"
                style={{ fontFamily: 'JetBrains Mono, monospace', color: '#9a8a5a' }}>
               <ChevronRight size={13} />
               {t('analyze.waiting')}

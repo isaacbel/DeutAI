@@ -137,7 +137,7 @@ export default function PhotoCapture({ onCapture, loading }) {
             <span className="text-4xl opacity-40">📷</span>
             <p className="text-sm text-text-muted text-center" style={{ fontFamily: 'Inter, sans-serif' }}>
               {t('notebook.placeholderMain')}<br />
-              <span className="text-xs">{t('notebook.placeholderSub')}</span>
+              <span className="text-sm">{t('notebook.placeholderSub')}</span>
             </p>
           </div>
 

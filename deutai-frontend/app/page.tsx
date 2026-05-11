@@ -395,7 +395,7 @@ export default function RootPage() {
           display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
           animation: 'hero-rise 1s ease 1s both',
         }}>
-          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#303038', letterSpacing: '3px' }}>{t('landing.scroll')}</span>
+          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '14px', color: '#303038', letterSpacing: '3px' }}>{t('landing.scroll')}</span>
           <div style={{ width: '1px', height: '32px', background: 'linear-gradient(to bottom, #303038, transparent)' }} />
         </div>
       </section>
@@ -557,12 +557,12 @@ export default function RootPage() {
             <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '18px', fontWeight: 600, color: '#C9A227', letterSpacing: '1px' }}>
               DeutAI
             </span>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#48485a', letterSpacing: '3px' }}>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '14px', color: '#48485a', letterSpacing: '3px' }}>
               {t('app.deutaiSystem404')}
             </span>
           </div>
         </div>
-        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', color: '#3a3a4a', letterSpacing: '3px' }}>
+        <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '15px', color: '#3a3a4a', letterSpacing: '3px' }}>
           {t('app.poweredByAi')}
         </span>
       </footer>

@@ -84,7 +84,7 @@ function ResetPasswordForm() {
         >
           <span className="text-xl">✓</span>
           <span>{message}</span>
-          <span className="text-xs opacity-80 mt-1">{t('resetPassword.redirecting')}</span>
+          <span className="text-sm opacity-80 mt-1">{t('resetPassword.redirecting')}</span>
         </div>
       )}
 
@@ -102,7 +102,7 @@ function ResetPasswordForm() {
         <>
           <div className="flex flex-col gap-1.5">
             <label
-              className="text-[11px] font-mono text-text-muted tracking-widest"
+              className="text-[15px] font-mono text-text-muted tracking-widest"
               style={{ fontFamily: 'JetBrains Mono, monospace' }}
             >
               {t('resetPassword.newPassword')}
@@ -121,7 +121,7 @@ function ResetPasswordForm() {
 
           <div className="flex flex-col gap-1.5">
             <label
-              className="text-[11px] font-mono text-text-muted tracking-widest"
+              className="text-[15px] font-mono text-text-muted tracking-widest"
               style={{ fontFamily: 'JetBrains Mono, monospace' }}
             >
               {t('resetPassword.confirmPassword')}
@@ -152,7 +152,7 @@ function ResetPasswordForm() {
         </>
       )}
 
-      <Link href="/login" className="text-xs text-center text-text-muted hover:text-gold transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
+      <Link href="/login" className="text-sm text-center text-text-muted hover:text-gold transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
         {t('resetPassword.backToLogin')}
       </Link>
     </form>
@@ -172,7 +172,7 @@ export default function ResetPasswordPage() {
           >
             DeutAI
           </h1>
-          <p className="system-subtitle mt-2" style={{ fontSize: '10px' }}>
+          <p className="system-subtitle mt-2" style={{ fontSize: '14px' }}>
             {t('resetPassword.title')}
           </p>
         </div>

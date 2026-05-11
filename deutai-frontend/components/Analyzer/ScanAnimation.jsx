@@ -66,7 +66,7 @@ export default function ScanAnimation({ text }) {
 
         {/* Text preview */}
         <p
-          className="text-xs text-text-muted leading-relaxed text-center max-w-[80%] mx-auto"
+          className="text-sm text-text-muted leading-relaxed text-center max-w-[80%] mx-auto"
           style={{ fontFamily: 'Inter, sans-serif', filter: 'blur(2px)', opacity: 0.4 }}
         >
           {text}
@@ -90,7 +90,7 @@ export default function ScanAnimation({ text }) {
       {/* Status message */}
       <div className="absolute bottom-4 left-0 right-0 flex justify-center z-20">
         <span
-          className="text-[10px] font-mono text-gold px-4 py-1.5 rounded-sm flex items-center gap-2 uppercase font-bold"
+          className="text-[14px] font-mono text-gold px-4 py-1.5 rounded-sm flex items-center gap-2 uppercase font-bold"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
             background: 'rgba(20, 15, 0, 0.9)',

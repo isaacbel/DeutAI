@@ -150,7 +150,7 @@ export default function QRScanner({ onDetected, onError }) {
       </div>
 
       {!started && (
-        <p className="text-xs font-mono text-text-muted text-center" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+        <p className="text-sm font-mono text-text-muted text-center" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
           {t('scanner.initCamera')}
         </p>
       )}

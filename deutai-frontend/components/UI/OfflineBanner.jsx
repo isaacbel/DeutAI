@@ -14,7 +14,7 @@ export default function OfflineBanner() {
     >
       <span className="text-error text-sm">⚠</span>
       <span
-        className="text-xs font-mono text-error"
+        className="text-sm font-mono text-error"
         style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '1px' }}
       >
         {t('analyze.offline')}

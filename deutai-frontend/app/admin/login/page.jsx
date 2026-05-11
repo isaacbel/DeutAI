@@ -52,7 +52,7 @@ function AdminLoginForm() {
           boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
         }}
       >
-        <p className="font-mono text-[10px] tracking-[0.22em] uppercase mb-2" style={{ color: '#c9a227' }}>
+        <p className="font-mono text-[15px] tracking-[0.22em] uppercase mb-2" style={{ color: '#c9a227' }}>
           {t('admin.title')}
         </p>
         <h1 className="font-sans text-xl font-semibold mb-6" style={{ color: '#f1d98d' }}>
@@ -60,7 +60,7 @@ function AdminLoginForm() {
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block font-mono text-[10px] tracking-wider uppercase mb-2" style={{ color: '#6b7088' }}>
+            <label className="block font-mono text-[14px] tracking-wider uppercase mb-2" style={{ color: '#6b7088' }}>
               {t('admin.password')}
             </label>
             <input
@@ -78,14 +78,14 @@ function AdminLoginForm() {
             />
           </div>
           {error && (
-            <p className="text-[13px]" style={{ color: '#fca5a5' }}>
+            <p className="text-[15px]" style={{ color: '#fca5a5' }}>
               {error}
             </p>
           )}
           <button
             type="submit"
             disabled={loading}
-            className="w-full font-mono text-[11px] tracking-[0.14em] uppercase py-3 rounded-xl disabled:opacity-40"
+            className="w-full font-mono text-[15px] tracking-[0.14em] uppercase py-3 rounded-xl disabled:opacity-40"
             style={{
               background: 'linear-gradient(135deg, #c9a227, #e8d48a)',
               color: '#0a0a0c',
@@ -95,7 +95,7 @@ function AdminLoginForm() {
             {loading ? '…' : t('admin.enter')}
           </button>
         </form>
-        <Link href="/" className="mt-6 block text-center font-mono text-[10px] uppercase" style={{ color: '#6b7088' }}>
+        <Link href="/" className="mt-6 block text-center font-mono text-[14px] uppercase" style={{ color: '#6b7088' }}>
           {t('admin.home')}
         </Link>
       </div>

@@ -48,7 +48,7 @@ export default function RegisterPage() {
           >
             DeutAI
           </h1>
-          <p className="system-subtitle mt-2" style={{ fontSize: '10px' }}>
+          <p className="system-subtitle mt-2" style={{ fontSize: '14px' }}>
             {t('auth.registerSystem')}
           </p>
         </div>

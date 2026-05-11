@@ -119,7 +119,7 @@ function SidebarItem({ item, isSelected, onSelect, onDelete, t, lang }) {
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '5px' }}>
         <span style={{
-          fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+          fontFamily: 'JetBrains Mono, monospace', fontSize: '15px',
           color: isSelected ? '#c9a227b8' : '#8c91a9', letterSpacing: '0.5px',
         }}>
           {fmtRelative(item.created_at, t, lang)}
@@ -173,7 +173,7 @@ function SidebarItem({ item, isSelected, onSelect, onDelete, t, lang }) {
             background: confirmDel ? 'rgba(180,40,40,0.2)' : 'rgba(18,18,24,0.98)',
             border: confirmDel ? '1px solid rgba(180,40,40,0.42)' : '1px solid rgba(255,255,255,0.12)',
             borderRadius: '6px', padding: '4px 9px', cursor: 'pointer',
-            fontSize: '9px', fontFamily: 'JetBrains Mono, monospace',
+            fontSize: '15px', fontFamily: 'JetBrains Mono, monospace',
             color: confirmDel ? '#ff6a6a' : '#8f95ad',
             transition: 'all 0.12s',
           }}
@@ -224,7 +224,7 @@ function AnalyzeReplay({ selected, lang }) {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
                 <span style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '9px', letterSpacing: '2.5px',
+                  fontSize: '15px', letterSpacing: '2.5px',
                   textTransform: 'uppercase', color: '#343445',
                 }}>
                   You
@@ -256,7 +256,7 @@ function AnalyzeReplay({ selected, lang }) {
             }}>
               <span style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '9px', letterSpacing: '2.5px',
+                fontSize: '15px', letterSpacing: '2.5px',
                 textTransform: 'uppercase', color: '#9a8030',
               }}>
                 DeutAI
@@ -402,7 +402,7 @@ export default function HistoryPage() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
                 <h1 style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', fontWeight: 700,
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '14px', fontWeight: 700,
                   color: '#C9A227', letterSpacing: '3px', textTransform: 'uppercase',
                   margin: 0, display: 'flex', alignItems: 'center', gap: '7px',
                 }}>
@@ -414,7 +414,7 @@ export default function HistoryPage() {
                 </h1>
                 {!pageLoading && items.length > 0 && (
                   <p style={{
-                    fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+                    fontFamily: 'JetBrains Mono, monospace', fontSize: '14px',
                   }}>
                     {t(items.length !== 1 ? 'history.analyses_other' : 'history.analyses_one', { count: items.length })}
                   </p>
@@ -423,7 +423,7 @@ export default function HistoryPage() {
               <button
                 onClick={() => router.push('/analyze')}
                 style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '14px',
                   padding: '7px 12px', borderRadius: '8px', cursor: 'pointer',
                   background: 'rgba(201,162,39,0.12)', border: '1px solid rgba(201,162,39,0.32)',
                   color: '#e3c66f', letterSpacing: '1px', transition: 'all 0.14s',
@@ -447,7 +447,7 @@ export default function HistoryPage() {
             )}
 
             {!pageLoading && fetchError && (
-              <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '9px', color: '#bb4444', padding: '16px 8px', margin: 0 }}>
+              <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '15px', color: '#bb4444', padding: '16px 8px', margin: 0 }}>
                 ⚠ {fetchError}
               </p>
             )}
@@ -462,13 +462,13 @@ export default function HistoryPage() {
                 }}>
                   <span style={{ fontSize: '18px', opacity: 0.7 }}>🗂</span>
                 </div>
-                <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color: '#8c91a9', letterSpacing: '2px', margin: 0, textTransform: 'uppercase' }}>
+                <p style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '15px', color: '#8c91a9', letterSpacing: '2px', margin: 0, textTransform: 'uppercase' }}>
                   {t('history.noHistory')}
                 </p>
                 <button
                   onClick={() => router.push('/analyze')}
                   style={{
-                    fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+                    fontFamily: 'JetBrains Mono, monospace', fontSize: '14px',
                     padding: '8px 14px', borderRadius: '8px', cursor: 'pointer',
                     background: 'rgba(201,162,39,0.12)', border: '1px solid rgba(201,162,39,0.3)',
                     color: '#e3c66f', letterSpacing: '1px',
@@ -497,7 +497,7 @@ export default function HistoryPage() {
                 onClick={handleClearAll}
                 disabled={clearing}
                 style={{
-                  width: '100%', fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+                  width: '100%', fontFamily: 'JetBrains Mono, monospace', fontSize: '14px',
                   padding: '9px', borderRadius: '8px',
                   cursor: clearing ? 'not-allowed' : 'pointer',
                   background: confirmClear ? 'rgba(180,40,40,0.14)' : 'rgba(255,255,255,0.02)',
@@ -531,7 +531,7 @@ export default function HistoryPage() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px',
               }}>🗂</div>
               <p style={{
-                fontFamily: 'JetBrains Mono, monospace', fontSize: '9px',
+                fontFamily: 'JetBrains Mono, monospace', fontSize: '15px',
                 letterSpacing: '2.5px', color: '#1e1e2a', textTransform: 'uppercase', margin: 0,
               }}>
                 {t('history.selectAnalysis')}

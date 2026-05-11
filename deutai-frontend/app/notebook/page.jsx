@@ -143,7 +143,7 @@ export default function NotebookPage() {
                   style={{ background: isDone ? '#D4AF37' : isActive ? '#D4AF37' : '#2a2a2a' }}
                 />
                 <span
-                  className="text-[9px] font-mono tracking-wider"
+                  className="text-[15px] font-mono tracking-wider"
                   style={{
                     fontFamily: 'JetBrains Mono, monospace',
                     color: isActive || isDone ? '#D4AF37' : '#444',
@@ -195,7 +195,7 @@ export default function NotebookPage() {
                 <div className="flex items-center gap-2 mb-2.5">
                   <span className="w-[3px] h-[11px] bg-[#4a4a60] rounded-full" />
                   <label
-                    className="text-[10px] font-mono text-[#6a6a80] tracking-[.18em] font-semibold uppercase"
+                    className="text-[15px] font-mono text-[#6a6a80] tracking-[.18em] font-semibold uppercase"
                     style={{ fontFamily: 'JetBrains Mono, monospace' }}
                   >
                     {t('analyze.sentenceToAnalyze')}
@@ -209,7 +209,7 @@ export default function NotebookPage() {
               <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={handleReset}
-                  className="px-4 py-[14px] rounded-xl text-[12px] font-mono transition-all whitespace-nowrap sm:w-auto w-full text-center"
+                  className="px-4 py-[14px] rounded-xl text-[14px] font-mono transition-all whitespace-nowrap sm:w-auto w-full text-center"
                   style={{
                     fontFamily: 'JetBrains Mono, monospace',
                     border: '1px solid rgba(255,255,255,0.1)',

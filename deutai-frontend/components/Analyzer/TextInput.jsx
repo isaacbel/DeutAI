@@ -65,7 +65,7 @@ export default function TextInput({ value, onChange, disabled }) {
       {/* Footer row */}
       <div className="flex items-center justify-between mt-2 px-1">
         <span
-          className="text-[11px] font-mono transition-all"
+          className="text-[15px] font-mono transition-all"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
             color: isOver ? '#CC5555' : 'transparent',
@@ -75,7 +75,7 @@ export default function TextInput({ value, onChange, disabled }) {
           {isOver ? t('analyze.limitExceeded', { count: count - MAX_CHARS }) : '—'}
         </span>
         <span
-          className="text-[11px] font-mono tabular-nums tracking-wider px-2 py-0.5 rounded transition-all"
+          className="text-[15px] font-mono tabular-nums tracking-wider px-2 py-0.5 rounded transition-all"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
             color: isOver ? '#CC5555' : isWarn ? '#D4AF37' : '#a0a0b8',

@@ -65,7 +65,7 @@ export default function RegisterForm() {
 
       <div className="flex flex-col gap-1.5">
         <label
-          className="text-[11px] font-mono text-text-muted tracking-widest"
+          className="text-[15px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
           {t('auth.email')}
@@ -84,7 +84,7 @@ export default function RegisterForm() {
 
       <div className="flex flex-col gap-1.5">
         <label
-          className="text-[11px] font-mono text-text-muted tracking-widest"
+          className="text-[15px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
           {t('auth.password')}
@@ -103,7 +103,7 @@ export default function RegisterForm() {
 
       <div className="flex flex-col gap-1.5">
         <label
-          className="text-[11px] font-mono text-text-muted tracking-widest"
+          className="text-[15px] font-mono text-text-muted tracking-widest"
           style={{ fontFamily: 'JetBrains Mono, monospace' }}
         >
           {t('auth.confirmPassword')}
@@ -142,7 +142,7 @@ export default function RegisterForm() {
         )}
       </button>
 
-      <p className="text-xs text-center text-text-muted" style={{ fontFamily: 'Inter, sans-serif' }}>
+      <p className="text-sm text-center text-text-muted" style={{ fontFamily: 'Inter, sans-serif' }}>
         {t('auth.alreadyRegistered')}{' '}
         <Link href="/login" className="text-gold hover:underline">
           {t('landing.signIn')}
