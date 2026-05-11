@@ -223,7 +223,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               dir="ltr"
               lang="de"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: '24px', lineHeight: '1.7',
                 color: '#D7DBEE',
                 textDecoration: 'line-through',
@@ -248,7 +248,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   dir="ltr"
                   lang="de"
                   style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: '15px', color: '#b8bed8',
                     fontStyle: 'italic', lineHeight: '1.65',
                     wordBreak: 'break-word',
@@ -400,7 +400,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               dir="ltr"
               lang="de"
               style={{
-                fontFamily: "'Playfair Display', Georgia, serif",
+                fontFamily: "'Inter', sans-serif",
                 fontSize: '20px', lineHeight: '1.6',
                 color: '#C9A227', margin: 0,
                 fontStyle: 'italic',
@@ -425,7 +425,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   dir="ltr"
                   lang="fr"
                   style={{
-                    fontFamily: "'Playfair Display', Georgia, serif",
+                    fontFamily: "'Inter', sans-serif",
                     fontSize: '14px', color: '#726a38',
                     lineHeight: '1.7', margin: 0,
                     wordBreak: 'break-word',
