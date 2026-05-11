@@ -189,7 +189,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             <div>
               <span style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                fontSize: '11px', fontWeight: 700,
+                fontSize: '14px', fontWeight: 700,
                 letterSpacing: '2.5px', textTransform: 'uppercase',
                 color: meta.hue, opacity: 1,
                 display: 'block', marginBottom: '14px',
@@ -203,7 +203,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                 </div>
               )}
             </div>
-            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '10px', color: '#8e94ac', letterSpacing: '1px' }}>
+            <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', color: '#8e94ac', letterSpacing: '1px' }}>
               {formatDate(flashcard.created_at, lang)}
             </span>
           </div>
@@ -224,7 +224,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               lang="de"
               style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: '24px', lineHeight: '1.7',
+                fontSize: '28px', lineHeight: '1.7',
                 color: '#D7DBEE',
                 textDecoration: 'line-through',
                 textDecorationColor: meta.hue + 'AA',
@@ -240,7 +240,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             {flashcard.input_text && flashcard.input_text !== flashcard.front && (
               <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start' }}>
                 <span style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
                   letterSpacing: '2px', color: '#8e94ac',
                   paddingTop: '3px', flexShrink: 0, textTransform: 'uppercase',
                 }}>Phrase</span>
@@ -249,7 +249,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   lang="de"
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: '15px', color: '#b8bed8',
+                    fontSize: '18px', color: '#b8bed8',
                     fontStyle: 'italic', lineHeight: '1.65',
                     wordBreak: 'break-word',
                     textAlign: lang === 'ar' ? 'left' : undefined,
@@ -280,8 +280,8 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               style={{
                 background: confirmDelete ? `${meta.hue}20` : '#171720',
                 border: `1px solid ${confirmDelete ? meta.hue + '60' : '#303040'}`,
-                borderRadius: '10px', padding: '6px 9px', cursor: 'pointer',
-                fontSize: '12px',
+                borderRadius: '10px', padding: '8px 12px', cursor: 'pointer',
+                fontSize: '14px',
                 fontFamily: 'JetBrains Mono, monospace',
                 fontWeight: 700,
                 letterSpacing: '0.3px',
@@ -297,7 +297,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
 
             <span className="fc-rail-text" style={{
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '11px', color: '#6f758d',
+              fontSize: '14px', color: '#6f758d',
               letterSpacing: '1px',
               writingMode: 'vertical-rl',
               textOrientation: 'mixed',
@@ -337,7 +337,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             background: 'linear-gradient(135deg, rgba(201,162,39,0.06) 0%, transparent 60%)',
           }}>
             <span style={{
-              fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+              fontFamily: 'JetBrains Mono, monospace', fontSize: '14px',
               letterSpacing: '2.5px', textTransform: 'uppercase',
               color: '#bca54b', fontWeight: 700,
             }}>
@@ -357,8 +357,8 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   onClick={() => setExplanationLanguage('de')}
                   style={{
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '9px',
-                    padding: '2px 7px',
+                    fontSize: '11px',
+                    padding: '4px 10px',
                     borderRadius: '6px',
                     border: '1px solid rgba(201,162,39,0.24)',
                     background: explanationLanguage === 'de' ? 'rgba(201,162,39,0.18)' : 'transparent',
@@ -371,8 +371,8 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   onClick={() => setExplanationLanguage('ar')}
                   style={{
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '9px',
-                    padding: '2px 7px',
+                    fontSize: '11px',
+                    padding: '4px 10px',
                     borderRadius: '6px',
                     border: '1px solid rgba(201,162,39,0.24)',
                     background: explanationLanguage === 'ar' ? 'rgba(201,162,39,0.18)' : 'transparent',
@@ -401,7 +401,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
               lang="de"
               style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: '20px', lineHeight: '1.6',
+                fontSize: '24px', lineHeight: '1.6',
                 color: '#C9A227', margin: 0,
                 fontStyle: 'italic',
                 wordBreak: 'break-word',
@@ -416,7 +416,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             {rule && (
               <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                 <span style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
                   letterSpacing: '2px', color: '#484820',
                   paddingTop: '3px', flexShrink: 0,
                   textTransform: 'uppercase', minWidth: '36px',
@@ -426,7 +426,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   lang="fr"
                   style={{
                     fontFamily: "'Inter', sans-serif",
-                    fontSize: '14px', color: '#726a38',
+                    fontSize: '16px', color: '#726a38',
                     lineHeight: '1.7', margin: 0,
                     wordBreak: 'break-word',
                     textAlign: lang === 'ar' ? 'left' : undefined,
@@ -440,14 +440,14 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             {visibleExplanation && visibleExplanation !== rule && (
               <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                 <span style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
                   letterSpacing: '2px', color: '#484820',
                   paddingTop: '3px', flexShrink: 0,
                   textTransform: 'uppercase', minWidth: '36px',
                 }}>Expl.</span>
                 <p style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '11px', color: '#585840',
+                  fontSize: '14px', color: '#585840',
                   lineHeight: '1.65', margin: 0,
                   wordBreak: 'break-word',
                   direction: explanationLanguage === 'ar' && bilingualExplanation ? 'rtl' : 'ltr',
@@ -461,7 +461,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
             {suggestions.length > 0 && (
               <div style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
                 <span style={{
-                  fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
+                  fontFamily: 'JetBrains Mono, monospace', fontSize: '12px',
                   letterSpacing: '2px', color: '#484820',
                   paddingTop: '5px', flexShrink: 0,
                   textTransform: 'uppercase', minWidth: '36px',
@@ -469,8 +469,8 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                   {suggestions.map((s, i) => (
                     <span key={i} dir="ltr" lang="de" style={{
-                      fontFamily: 'JetBrains Mono, monospace', fontSize: '10px',
-                      padding: '3px 9px', borderRadius: '6px',
+                      fontFamily: 'JetBrains Mono, monospace', fontSize: '13px',
+                      padding: '4px 10px', borderRadius: '6px',
                       background: 'rgba(201,162,39,0.07)',
                       border: '1px solid rgba(201,162,39,0.18)',
                       color: '#8a7820',
@@ -492,7 +492,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
           }}>
             <span className="fc-rail-text" style={{
               fontFamily: 'JetBrains Mono, monospace',
-              fontSize: '11px', color: '#6f6c3f',
+              fontSize: '14px', color: '#6f6c3f',
               letterSpacing: '1px',
               writingMode: 'vertical-rl',
               textOrientation: 'mixed',
