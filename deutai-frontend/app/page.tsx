@@ -359,13 +359,13 @@ export default function RootPage() {
 
           {/* margin-bottom reduced from 20px → 16px */}
           <h1 className="hero-2" style={{
-            fontFamily: "'Playfair Display', Georgia, serif",
+            fontFamily: "'Inter', sans-serif",
             fontSize: 'clamp(36px, 8vw, 72px)',
             fontWeight: 700, lineHeight: 1.1,
             color: '#e8e8f0', margin: '0 0 16px',
           }}>
             {t('landing.heroTitle1')}<br />
-            <em style={{ color: '#C9A227', fontStyle: 'italic', fontFamily: 'var(--font-inter), sans-serif', letterSpacing: '-0.01em' }}>{t('landing.heroTitle2')}</em>
+            <span style={{ color: '#C9A227', fontFamily: "'Inter', sans-serif", letterSpacing: '-0.01em' }}>{t('landing.heroTitle2')}</span>
           </h1>
 
           {/* margin-bottom reduced from 44px → 36px */}
