@@ -26,7 +26,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-full bg-black text-text-primary antialiased">
+      <body className="min-h-full text-text-primary antialiased" style={{ background: 'var(--color-bg-main)' }}>
         <LanguageProvider>
           <AuthProvider>
             {children}

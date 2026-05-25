@@ -2,17 +2,27 @@
 
 /* ─── Design tokens ─────────────────────────────────── */
 @theme inline {
-  --color-gold:          #D4AF37;
-  --color-gold-dark:     #B8962E;
-  --color-surface:       #12121a;
-  --color-surface-2:     #1a1a24;
-  --color-surface-3:     #252532;
-  --color-border:        #47475e;
-  --color-text-primary:  #F1F3FF;
-  --color-text-muted:    #BCC1D7;
+  --color-gold:          #9C7BAC;
+  --color-gold-dark:     #FF7F2D;
+  --color-surface:       #F2F8FC;
+  --color-surface-2:     #D0E6FF;
+  --color-surface-3:     #FEF6F4;
+  --color-border:        #C5DFFF;
+  --color-text-primary:  #4A4B4B;
+  --color-text-secondary: #6A6D6D;
+  --color-text-muted:    #6A6D6D;
   --color-error:         #CC5555;
-  --color-success:       #4A9A4A;
-  --color-rule-border:   #1a2a1a;
+  --color-success:       #7CB078;
+  --color-rule-border:   #E1EBF5;
+
+  --color-primary:       #9C7BAC;
+  --color-accent:        #FF7F2D;
+  --color-info:          #4CB1FF;
+  --color-bg-main:       #F2F8FC;
+  --color-bg-ice:        #F2F8FC;
+  --color-bg-success-tint: #F5FAF5;
+  --color-bg-warm:       #FEF6F4;
+  --color-bg-sidebar:    #F5F6FC;
 
   --font-mono:  'JetBrains Mono', 'Space Mono', monospace;
   --font-sans:  'Inter', sans-serif;
@@ -23,8 +33,8 @@
 
 html, body {
   height: 100%;
-  background: #06060a;
-  color: #F1F3FF;
+  background: var(--color-bg-main);
+  color: var(--color-text-primary);
   font-family: var(--font-inter), 'Inter', 'Segoe UI', sans-serif;
   font-size: clamp(14px, 0.24vw + 14px, 16px);
   line-height: 1.6;
@@ -112,7 +122,7 @@ html[dir="rtl"] .rtl-border-accent-left {
 }
 
 h1, h2, h3, h4 {
-  color: #F7F8FF;
+  color: var(--color-text-primary);
   line-height: 1.3;
 }
 
@@ -122,9 +132,9 @@ p, li, label, input, textarea, button {
 
 /* ─── Scrollbar ──────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #0a0a0a; }
-::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+::-webkit-scrollbar-track { background: var(--color-bg-sidebar); }
+::-webkit-scrollbar-thumb { background: #d0d8e0; border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-primary); }
 
 /* ─── Animations ─────────────────────────────────────── */
 @keyframes scanLine {
@@ -150,8 +160,8 @@ p, li, label, input, textarea, button {
 }
 
 @keyframes pulse-gold {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.3); }
-  50%       { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(156, 123, 172, 0.3); }
+  50%       { box-shadow: 0 0 0 8px rgba(156, 123, 172, 0); }
 }
 
 @keyframes shimmer {
@@ -217,9 +227,9 @@ p, li, label, input, textarea, button {
 .shimmer {
   background: linear-gradient(
     90deg,
-    #111 0%,
-    #1a1a1a 50%,
-    #111 100%
+    #e6effa 0%,
+    #d8e8fc 50%,
+    #e6effa 100%
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
@@ -233,8 +243,8 @@ p, li, label, input, textarea, button {
 /* ─── Grid scan background ───────────────────────────── */
 .grid-scan-bg {
   background-image:
-    linear-gradient(rgba(212,175,55,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(212,175,55,0.04) 1px, transparent 1px);
+    linear-gradient(rgba(156,123,172,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(156,123,172,0.06) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
@@ -246,7 +256,7 @@ p, li, label, input, textarea, button {
 
 /* ─── System subtitle ────────────────────────────────── */
 .system-subtitle {
-  color: #7f859b;
+  color: #6A6D6D;
   letter-spacing: 3px;
   font-family: 'JetBrains Mono', monospace;
   font-size: 10px;
@@ -259,8 +269,8 @@ p, li, label, input, textarea, button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background: #D4AF37;
-  color: #000000;
+  background: var(--color-primary);
+  color: white;
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   font-weight: 700;
@@ -268,11 +278,12 @@ p, li, label, input, textarea, button {
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s, color 0.2s;
 }
 .btn-gold:hover:not(:disabled) {
-  background: #B8962E;
-  box-shadow: 0 0 20px rgba(212,175,55,0.3);
+  background: var(--color-accent);
+  color: white;
+  box-shadow: 0 0 20px rgba(156, 123, 172, 0.35);
   transform: translateY(-1px);
 }
 .btn-gold:active:not(:disabled) {
@@ -289,19 +300,19 @@ p, li, label, input, textarea, button {
   justify-content: center;
   gap: 8px;
   background: transparent;
-  color: #a3a8bf;
+  color: var(--color-text-primary);
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1px;
   border-radius: 8px;
-  border: 1px solid #343444;
+  border: 1px solid var(--color-border);
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s;
 }
 .btn-outline:hover:not(:disabled) {
-  border-color: rgba(212,175,55,0.4);
-  color: #D4AF37;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 .btn-outline:disabled {
   opacity: 0.35;
@@ -310,26 +321,27 @@ p, li, label, input, textarea, button {
 
 /* ─── Input dark ─────────────────────────────────────── */
 .input-dark {
-  background: #111117;
-  border: 1px solid #343444;
+  background: var(--color-bg-sidebar);
+  border: 1px solid var(--color-border);
   border-radius: 10px;
-  color: #F1F3FF;
+  color: var(--color-text-primary);
   font-family: 'Inter', sans-serif;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
   display: block;
 }
-.input-dark::placeholder { color: #8389a3; }
+.input-dark::placeholder { color: #8A8D8D; }
 .input-dark:focus {
-  border-color: rgba(212,175,55,0.4);
-  box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(156, 123, 172, 0.15);
 }
 
 /* ─── Auth form container ────────────────────────────── */
 .auth-card {
-  background: #080808;
-  border: 1px solid #1a1a1a;
+  background: white;
+  border: 1px solid var(--color-border);
   border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(156,123,172,0.08);
 }
 
 /* ─── Bottom nav active indicator ────────────────────── */
@@ -340,6 +352,6 @@ p, li, label, input, textarea, button {
   transform: translateX(-50%);
   width: 20px;
   height: 2px;
-  background: #D4AF37;
+  background: var(--color-primary);
   border-radius: 2px 2px 0 0;
 }

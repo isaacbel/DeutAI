@@ -95,7 +95,7 @@ export default function PhotoCapture({ onCapture, loading }) {
     <div className="flex flex-col gap-4" dir={isRtl ? 'rtl' : 'ltr'}>
       {/* Camera view */}
       {cameraActive && (
-        <div className="relative rounded-xl overflow-hidden" style={{ border: '1px solid #2a2a2a' }}>
+        <div className="relative rounded-xl overflow-hidden" style={{ border: '1px solid var(--color-border)' }}>
           <video
             ref={videoRef}
             className="w-full aspect-video object-cover"
@@ -104,8 +104,8 @@ export default function PhotoCapture({ onCapture, loading }) {
           />
           {/* Scan overlay */}
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)', animation: 'scanLineLoop 2s ease-in-out infinite' }} />
-            <div className="absolute inset-4 border border-gold/30 rounded" />
+            <div className="absolute left-0 right-0 h-0.5" style={{ background: 'linear-gradient(90deg, transparent, var(--color-primary), transparent)', animation: 'scanLineLoop 2s ease-in-out infinite' }} />
+            <div className="absolute inset-4 rounded" style={{ border: '1px solid rgba(156,123,172,0.30)' }} />
           </div>
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-3">
             <button
@@ -130,8 +130,8 @@ export default function PhotoCapture({ onCapture, loading }) {
           <div
             className="flex flex-col items-center justify-center gap-3 py-12 rounded-xl"
             style={{
-              border: '2px dashed #2a2a2a',
-              background: 'rgba(10,10,10,0.5)',
+              border: '2px dashed var(--color-border)',
+              background: 'var(--color-bg-sidebar)',
             }}
           >
             <span className="text-4xl opacity-40">📷</span>
@@ -142,7 +142,7 @@ export default function PhotoCapture({ onCapture, loading }) {
           </div>
 
           {cameraError && (
-            <div className="px-4 py-3 rounded-lg text-sm text-error" style={{ background: '#1A0A0A', border: '1px solid #3A1A1A' }}>
+            <div className="px-4 py-3 rounded-lg text-sm flex items-start gap-2" style={{ background: 'rgba(220,100,80,0.06)', border: '1px solid rgba(220,100,80,0.20)', color: 'var(--color-error)' }}>
               ⚠ {cameraError}
             </div>
           )}

@@ -46,7 +46,7 @@ const PAGE_STYLES = `
 
   .skel {
     border-radius: 16px;
-    background: linear-gradient(90deg, #111113 25%, #17171c 50%, #111113 75%);
+    background: linear-gradient(90deg, #e4ecf4 25%, #eef4f9 50%, #e4ecf4 75%);
     background-size: 800px 100%;
     animation: shimmer 1.6s infinite linear;
     width: 100%;
@@ -55,7 +55,7 @@ const PAGE_STYLES = `
     min-height: 100vh;
     height: 100vh;
     overflow: hidden;
-    background: #080809;
+    background: var(--color-bg-ice);
     position: relative;
     display: flex;
     flex-direction: column;
@@ -63,8 +63,8 @@ const PAGE_STYLES = `
   .grid-bg {
     position: fixed; inset: 0; z-index: 0; pointer-events: none;
     background-image:
-      linear-gradient(rgba(255,255,255,0.012) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.012) 1px, transparent 1px);
+      linear-gradient(rgba(156,123,172,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(156,123,172,0.04) 1px, transparent 1px);
     background-size: 48px 48px;
   }
   .page-header {
@@ -72,16 +72,15 @@ const PAGE_STYLES = `
     padding: 0 28px;
     height: 72px;
     flex-shrink: 0;
-    background: rgba(8,8,9,0.92);
+    background: rgba(242,248,252,0.92);
     backdrop-filter: blur(20px) saturate(1.4);
-    border-bottom: 1px solid #16161c;
+    border-bottom: 1px solid var(--color-border);
     display: flex; align-items: center; justify-content: space-between;
   }
   .header-left { display: flex; flex-direction: column; gap: 3px; }
   .header-title {
-    font-family: 'JetBrains Mono', monospace;
     font-size: 14px; font-weight: 700;
-    color: #E3C66F; letter-spacing: 4px;
+    color: var(--color-primary); letter-spacing: 3px;
     text-transform: uppercase; margin: 0;
     display: flex; align-items: center; gap: 8px;
   }
@@ -89,22 +88,20 @@ const PAGE_STYLES = `
     content: '';
     display: block;
     width: 2px; height: 13px; border-radius: 2px;
-    background: linear-gradient(to bottom, #C9A227, #C9A22740);
+    background: linear-gradient(to bottom, var(--color-primary), rgba(156,123,172,0.3));
   }
   .header-sub {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; color: #7f859d;
+    font-size: 10px; color: var(--color-text-muted);
     letter-spacing: 2.4px; text-transform: uppercase;
     margin: 0 0 0 10px;
   }
   .count-badge {
-    font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     padding: 6px 14px;
     border-radius: 8px;
-    background: rgba(201,162,39,0.14);
-    border: 1px solid rgba(201,162,39,0.28);
-    color: #e5c266;
+    background: rgba(156,123,172,0.12);
+    border: 1px solid rgba(156,123,172,0.28);
+    color: var(--color-primary);
     letter-spacing: 1px;
     transition: all 0.3s ease;
   }
@@ -118,12 +115,12 @@ const PAGE_STYLES = `
     padding: 24px 28px 64px;
     animation: fade-in 0.4s ease both;
     scrollbar-width: thin;
-    scrollbar-color: #222228 transparent;
+    scrollbar-color: #c8d8e8 transparent;
   }
   .page-scroll::-webkit-scrollbar { width: 6px; }
   .page-scroll::-webkit-scrollbar-track { background: transparent; }
-  .page-scroll::-webkit-scrollbar-thumb { background: #222228; border-radius: 3px; }
-  .page-scroll::-webkit-scrollbar-thumb:hover { background: #2e2e38; }
+  .page-scroll::-webkit-scrollbar-thumb { background: #c8d8e8; border-radius: 3px; }
+  .page-scroll::-webkit-scrollbar-thumb:hover { background: #b0c8e0; }
 
   .page-inner {
     max-width: 1180px;
@@ -135,18 +132,16 @@ const PAGE_STYLES = `
     margin-bottom: 18px;
     padding: 12px 18px;
     border-radius: 12px;
-    background: #0f0808;
-    border: 1px solid #2a1010;
+    background: rgba(204,85,85,0.06);
+    border: 1px solid rgba(204,85,85,0.2);
     display: flex; align-items: center; justify-content: space-between; gap: 12px;
   }
   .error-msg {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 11px; color: #bb4444; letter-spacing: 0.5px;
+    font-size: 13px; color: var(--color-error); letter-spacing: 0.5px;
   }
   .retry-btn {
     background: transparent; border: none;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px; color: #C9A227;
+    font-size: 12px; color: var(--color-primary);
     cursor: pointer; letter-spacing: 1px;
     padding: 0; white-space: nowrap;
     text-decoration: underline; text-underline-offset: 3px;
@@ -154,11 +149,10 @@ const PAGE_STYLES = `
   }
   .retry-btn:hover { opacity: 1; }
   .hint-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 2.5px; text-transform: uppercase;
     margin-bottom: 16px;
-    color: #80859c;
+    color: var(--color-text-muted);
   }
   .filter-wrap {
     display: flex;
@@ -167,8 +161,8 @@ const PAGE_STYLES = `
     margin-bottom: 16px;
     padding: 6px;
     border-radius: 12px;
-    border: 1px solid #1b1b24;
-    background: rgba(10,10,14,0.7);
+    border: 1px solid var(--color-border);
+    background: white;
   }
 `;
 
@@ -277,16 +271,15 @@ export default function FlashcardsPage() {
                           key={opt.value}
                           onClick={() => setSelectedType(opt.value)}
                           style={{
-                            fontFamily: 'JetBrains Mono, monospace',
-                            fontSize: '15px',
-                            padding: '7px 12px',
+                            fontSize: '13px',
+                            padding: '6px 12px',
                             borderRadius: '999px',
-                            border: active ? '1px solid rgba(201,162,39,0.45)' : '1px solid #2b2b36',
-                            background: active ? 'rgba(201,162,39,0.18)' : '#14141b',
-                            color: active ? '#E3C66F' : '#8a90a8',
+                            border: active ? '1px solid rgba(156,123,172,0.45)' : '1px solid var(--color-border)',
+                            background: active ? 'rgba(156,123,172,0.15)' : 'white',
+                            color: active ? 'var(--color-primary)' : 'var(--color-text-muted)',
                             cursor: 'pointer',
                             transition: 'all 0.18s',
-                            boxShadow: active ? '0 0 0 1px rgba(201,162,39,0.08), 0 4px 14px rgba(201,162,39,0.08)' : 'none',
+                            boxShadow: active ? '0 0 0 1px rgba(156,123,172,0.08), 0 4px 14px rgba(156,123,172,0.08)' : 'none',
                           }}
                         >
                           {opt.label}

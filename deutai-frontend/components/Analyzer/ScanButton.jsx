@@ -16,24 +16,36 @@ export default function ScanButton({ onClick, disabled, loading }) {
         fontSize: '15px',
         letterSpacing: '2.5px',
         ...(isActive ? {
-          background: 'linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.18), rgba(212,175,55,0.1))',
-          border: '1px solid rgba(212,175,55,0.4)',
-          color: '#f0d787',
+          background: 'var(--color-primary)',
+          border: '1px solid var(--color-primary)',
+          color: '#121212',
           cursor: 'pointer',
         } : loading ? {
-          background: 'linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.14), rgba(212,175,55,0.08))',
-          border: '1px solid rgba(212,175,55,0.28)',
-          color: '#d4af37',
+          background: 'rgba(156,123,172,0.7)',
+          border: '1px solid rgba(156,123,172,0.8)',
+          color: '#121212',
           cursor: 'not-allowed',
         } : {
-          background: '#13131a',
-          border: '1px solid rgba(52,52,68,0.8)',
-          color: '#7a7a90',
+          background: 'var(--color-bg-sidebar)',
+          border: '1px solid var(--color-border)',
+          color: 'var(--color-text-muted)',
           cursor: 'not-allowed',
         }),
       }}
-      onMouseEnter={e => { if (isActive) e.currentTarget.style.boxShadow = '0 0 24px rgba(212,175,55,0.16)'; }}
-      onMouseLeave={e => { e.currentTarget.style.boxShadow = 'none'; }}
+      onMouseEnter={e => {
+        if (isActive) {
+          e.currentTarget.style.background = 'var(--color-accent)';
+          e.currentTarget.style.borderColor = 'var(--color-accent)';
+          e.currentTarget.style.boxShadow = '0 0 24px rgba(255,127,45,0.3)';
+        }
+      }}
+      onMouseLeave={e => {
+        if (isActive) {
+          e.currentTarget.style.background = 'var(--color-primary)';
+          e.currentTarget.style.borderColor = 'var(--color-primary)';
+          e.currentTarget.style.boxShadow = 'none';
+        }
+      }}
       onMouseDown={e => { if (isActive) e.currentTarget.style.transform = 'scale(0.99)'; }}
       onMouseUp={e => { e.currentTarget.style.transform = 'scale(1)'; }}
       aria-label={loading ? t('analyze.scanInProgress') : t('analyze.startAnalyze')}
@@ -43,7 +55,7 @@ export default function ScanButton({ onClick, disabled, loading }) {
         <span
           className="absolute inset-y-0 w-1/3 pointer-events-none"
           style={{
-            background: 'linear-gradient(90deg, transparent, rgba(212,175,55,0.18), transparent)',
+            background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)',
             animation: 'shimmerSlide 2.4s ease-in-out infinite',
           }}
         />
@@ -52,7 +64,7 @@ export default function ScanButton({ onClick, disabled, loading }) {
       <span className="flex items-center justify-center gap-3 relative z-10">
         {loading ? (
           <>
-            <Loader2 size={17} className="animate-spin text-[#D4AF37]" />
+            <Loader2 size={17} className="animate-spin text-[#121212]" />
             <span className="animate-pulse tracking-[4px]">{t('analyze.scanning')}</span>
           </>
         ) : (

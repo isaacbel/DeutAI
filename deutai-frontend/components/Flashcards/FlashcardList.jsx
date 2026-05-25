@@ -13,26 +13,26 @@ export default function FlashcardList({ flashcards, onDelete }) {
       }}>
         <div style={{
           width: '56px', height: '56px',
-          border: '1px solid #222228',
+          border: '1px solid var(--color-border)',
           borderRadius: '16px',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          background: '#111113',
+          background: 'var(--color-bg-sidebar)',
           position: 'relative', overflow: 'hidden',
         }}>
           <div style={{
             position: 'absolute', inset: 0,
-            background: 'radial-gradient(circle at 50% 0%, #C9A22710, transparent 70%)',
+            background: 'radial-gradient(circle at 50% 0%, rgba(156,123,172,0.15), transparent 70%)',
           }} />
           <span style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '22px', color: '#2e2e38',
+            fontSize: '22px', color: 'var(--color-text-muted)',
           }}>⌗</span>
         </div>
 
         <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <p style={{
             fontFamily: 'JetBrains Mono, monospace',
-            fontSize: '15px', color: '#383840',
+            fontSize: '15px', color: 'var(--color-text-muted)',
             letterSpacing: '3px', textTransform: 'uppercase', margin: 0,
           }}>
             {t('flashcards.noCards')}

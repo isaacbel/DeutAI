@@ -10,24 +10,24 @@ export default function ProgressBar({ current, total }) {
       <div className="flex justify-between items-center mb-2">
         <span
           className="font-mono text-[15px] tracking-[0.2em] uppercase"
-          style={{ color: '#8a90a8' }}
+          style={{ color: 'var(--color-text-muted)' }}
         >
           {t('quiz.progress')}
         </span>
-        <span className="font-mono text-[15px] tabular-nums" style={{ color: '#c9a227' }}>
+        <span className="font-mono text-[15px] tabular-nums" style={{ color: 'var(--color-primary)' }}>
           {current}/{total}
         </span>
       </div>
       <div
         className="h-1.5 rounded-full overflow-hidden"
-        style={{ background: 'rgba(255,255,255,0.06)' }}
+        style={{ background: 'var(--color-bg-sidebar)' }}
       >
         <div
           className="h-full rounded-full transition-all duration-300 ease-out"
           style={{
             width: `${pct}%`,
-            background: 'linear-gradient(90deg, #c9a227, #f1d98d)',
-            boxShadow: '0 0 12px rgba(201,162,39,0.35)',
+            background: 'linear-gradient(90deg, var(--color-primary), rgba(156,123,172,0.65))',
+            boxShadow: '0 0 12px rgba(156,123,172,0.30)',
           }}
         />
       </div>

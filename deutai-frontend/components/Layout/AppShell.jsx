@@ -54,7 +54,7 @@ export default function AppShell({ children }) {
 
   return (
     /* Sidebar always overlays — no content push */
-    <div className="min-h-screen bg-[#08080a] w-full overflow-x-hidden relative" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
+    <div className="min-h-screen bg-bg-main w-full overflow-x-hidden relative" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
 
       <Sidebar isOpen={isSidebarOpen} setIsOpen={setSidebarOpen} />
 
@@ -72,10 +72,10 @@ export default function AppShell({ children }) {
               onClick={() => setSidebarOpen(true)}
               className={`md:hidden fixed top-4 ${lang === 'ar' ? 'left-4' : 'right-4'} z-50 w-10 h-10 rounded-xl flex items-center justify-center`}
               style={{
-                background: 'rgba(14,14,22,0.92)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: '#c6ccdf',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.4)',
+                background: 'var(--color-bg-sidebar)',
+                border: '1px solid var(--color-border)',
+                color: 'var(--color-text-primary)',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
               }}
               aria-label={t('nav.openMenu')}
             >
@@ -96,9 +96,9 @@ export default function AppShell({ children }) {
               onClick={() => setSidebarOpen(true)}
               className={`hidden md:flex fixed z-50 bottom-6 ${lang === 'ar' ? 'right-5' : 'left-5'} w-12 h-12 rounded-full items-center justify-center cursor-pointer select-none`}
               style={{
-                background: 'linear-gradient(135deg,#C9A227,#f1d98d)',
-                boxShadow: '0 4px 22px rgba(201,162,39,0.5), 0 0 0 1px rgba(201,162,39,0.2)',
-                color: '#000',
+                background: 'linear-gradient(135deg, var(--color-primary), #b59dbf)',
+                boxShadow: '0 4px 22px rgba(156, 123, 172, 0.35)',
+                color: '#121212',
               }}
               aria-label={t('nav.openMenu')}
               whileHover={{ scale: 1.1 }}

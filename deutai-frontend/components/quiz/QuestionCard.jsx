@@ -80,28 +80,28 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
       transition={{ type: 'spring', stiffness: 320, damping: 28 }}
       className="rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto"
       style={{
-        background: 'rgba(10,10,16,0.98)',
-        border: '1px solid rgba(255,255,255,0.07)',
+        background: 'white',
+        border: '1px solid var(--color-border)',
         backdropFilter: 'blur(24px)',
-        boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
+        boxShadow: '0 8px 32px rgba(156,123,172,0.10)',
       }}
     >
       <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-        <span className="font-mono text-[14px] text-[#5c6078] tracking-wider">
+        <span className="text-[14px]" style={{ color: 'var(--color-text-muted)' }}>
           Question {questionNumber}/{totalQuestions}
         </span>
         <div className="flex items-center gap-2">
           <span
-            className="font-mono text-[15px] tracking-[0.18em] uppercase px-2 py-1 rounded-md"
+            className="text-[13px] tracking-[0.18em] uppercase px-2 py-1 rounded-md"
             style={{
-              background: 'rgba(212,175,55,0.1)',
-              border: '1px solid rgba(212,175,55,0.22)',
-              color: '#c9a227',
+              background: 'rgba(156,123,172,0.1)',
+              border: '1px solid rgba(156,123,172,0.22)',
+              color: 'var(--color-primary)',
             }}
           >
             {t(`quiz.type_${question.type}`) || question.type}
           </span>
-          <span className="font-mono text-[14px] text-[#5c6078] tracking-wider">
+          <span className="text-[13px]" style={{ color: 'var(--color-text-muted)' }}>
             +{question.points} {t('quiz.pts')}
           </span>
         </div>
@@ -109,7 +109,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
 
       <p
         className="font-sans text-[16px] sm:text-[17px] leading-relaxed mb-6"
-        style={{ color: '#e8e8f0' }}
+        style={{ color: 'var(--color-text-primary)' }}
       >
         {question.question}
       </p>
@@ -125,9 +125,9 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
                 onClick={() => setChoice(opt)}
                 className="text-left rounded-xl px-4 py-3 text-[14px] font-sans transition-all duration-150"
                 style={{
-                  background: active ? 'rgba(212,175,55,0.1)' : 'rgba(255,255,255,0.03)',
-                  border: active ? '1px solid rgba(212,175,55,0.35)' : '1px solid rgba(255,255,255,0.07)',
-                  color: active ? '#f5e6b8' : '#b8bdd4',
+                  background: active ? 'rgba(156,123,172,0.1)' : 'white',
+                  border: active ? '1px solid rgba(156,123,172,0.4)' : '1px solid var(--color-border)',
+                  color: active ? 'var(--color-primary)' : 'var(--color-text-primary)',
                 }}
               >
                 {opt}
@@ -148,9 +148,9 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
                 onClick={() => setChoice(v.id)}
                 className="flex-1 rounded-xl py-3 font-mono text-[14px] tracking-[0.12em] uppercase"
                 style={{
-                  background: active ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
-                  border: active ? '1px solid rgba(212,175,55,0.35)' : '1px solid rgba(255,255,255,0.07)',
-                  color: active ? '#f1d98d' : '#8a90a8',
+                  background: active ? 'rgba(156,123,172,0.1)' : 'white',
+                  border: active ? '1px solid rgba(156,123,172,0.4)' : '1px solid var(--color-border)',
+                  color: active ? 'var(--color-primary)' : 'var(--color-text-muted)',
                 }}
               >
                 {v.label}
@@ -168,9 +168,9 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
           placeholder={t('quiz.yourAnswerGerman')}
           className="w-full rounded-xl px-4 py-3 font-sans text-[14px] outline-none resize-none"
           style={{
-            background: 'rgba(0,0,0,0.35)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            color: '#e8e8f0',
+            background: 'var(--color-bg-sidebar)',
+            border: '1px solid var(--color-border)',
+            color: 'var(--color-text-primary)',
           }}
         />
       )}
@@ -184,12 +184,12 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
               ? !choice
               : !textValue.trim()
           }
-          className="mt-6 w-full sm:w-auto font-mono text-[15px] tracking-[0.16em] uppercase py-3 px-8 rounded-xl disabled:opacity-35 disabled:cursor-not-allowed"
+          className="mt-6 w-full sm:w-auto text-[15px] tracking-[0.16em] uppercase py-3 px-8 rounded-xl disabled:opacity-35 disabled:cursor-not-allowed"
           style={{
-            background: 'linear-gradient(135deg, #c9a227, #e8d48a)',
-            color: '#0a0a0c',
+            background: 'var(--color-primary)',
+            color: 'white',
             border: 'none',
-            boxShadow: '0 4px 20px rgba(201,162,39,0.35)',
+            boxShadow: '0 4px 20px rgba(156,123,172,0.3)',
           }}
         >
           {t('quiz.validate')}
@@ -203,27 +203,27 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
             animate={{ opacity: 1, y: 0 }}
             className="mt-6 rounded-xl p-4"
             style={{
-              background: correct ? 'rgba(40,130,70,0.12)' : 'rgba(180,60,60,0.12)',
-              border: `1px solid ${correct ? 'rgba(40,130,70,0.28)' : 'rgba(180,60,60,0.28)'}`,
+              background: correct ? 'rgba(124,176,120,0.10)' : 'rgba(220,100,80,0.08)',
+              border: `1px solid ${correct ? 'rgba(124,176,120,0.30)' : 'rgba(220,100,80,0.25)'}`,
             }}
           >
             <div className="flex items-start gap-3">
               {correct ? (
-                <CheckCircle2 className="shrink-0 text-emerald-400" size={22} />
+                <CheckCircle2 className="shrink-0" style={{ color: 'var(--color-success)' }} size={22} />
               ) : (
-                <XCircle className="shrink-0 text-red-400" size={22} />
+                <XCircle className="shrink-0" style={{ color: 'var(--color-error)' }} size={22} />
               )}
               <div>
-                <p className="font-mono text-[15px] tracking-[0.14em] uppercase mb-1" style={{ color: correct ? '#6ee7b7' : '#fca5a5' }}>
+                <p className="text-[15px] tracking-[0.14em] uppercase mb-1" style={{ color: correct ? 'var(--color-success)' : 'var(--color-error)' }}>
                   {correct ? t('quiz.correctAnswerMsg') : t('quiz.wrongAnswerMsg')}
                 </p>
                 {!correct && (
-                  <p className="text-[15px] font-sans mb-2" style={{ color: '#e8e8f0' }}>
-                    <span className="text-[#8a90a8]">{t('quiz.expected')}</span>
-                    <span className="text-[#f1d98d]">{question.type === 'true_false' ? (question.correctAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : question.correctAnswer}</span>
+                  <p className="text-[15px] font-sans mb-2" style={{ color: 'var(--color-text-primary)' }}>
+                    <span style={{ color: 'var(--color-text-muted)' }}>{t('quiz.expected')}</span>
+                    <span style={{ color: 'var(--color-primary)' }}>{question.type === 'true_false' ? (question.correctAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : question.correctAnswer}</span>
                   </p>
                 )}
-                <p className="text-[15px] font-sans leading-relaxed" style={{ color: '#b8bdd4' }}>
+                <p className="text-[15px] font-sans leading-relaxed" style={{ color: 'var(--color-text-muted)' }}>
                   {question.explanation}
                 </p>
               </div>
@@ -232,11 +232,11 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
             <button
               type="button"
               onClick={handleContinue}
-              className="mt-4 w-full sm:w-auto flex items-center justify-center gap-2 font-mono text-[15px] tracking-[0.12em] uppercase py-2.5 px-6 rounded-lg"
+              className="mt-4 w-full sm:w-auto flex items-center justify-center gap-2 text-[15px] tracking-[0.12em] uppercase py-2.5 px-6 rounded-lg"
               style={{
-                background: 'rgba(255,255,255,0.06)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                color: '#c9a227',
+                background: 'rgba(156,123,172,0.08)',
+                border: '1px solid var(--color-border)',
+                color: 'var(--color-primary)',
               }}
             >
               {questionNumber >= totalQuestions ? t('quiz.seeResults') : t('quiz.nextQuestion')}

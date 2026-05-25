@@ -28,21 +28,21 @@ export default function ResultsScreen({
       animate={{ opacity: 1, y: 0 }}
       className="rounded-2xl p-6 sm:p-10 max-w-2xl mx-auto"
       style={{
-        background: 'rgba(10,10,16,0.98)',
-        border: '1px solid rgba(255,255,255,0.07)',
+        background: 'white',
+        border: '1px solid var(--color-border)',
         backdropFilter: 'blur(24px)',
-        boxShadow: '0 24px 64px rgba(0,0,0,0.5)',
+        boxShadow: '0 8px 32px rgba(156,123,172,0.12)',
       }}
     >
       <p
-        className="font-mono text-[15px] tracking-[0.22em] uppercase text-center mb-2"
-        style={{ color: '#8a90a8' }}
+        className="text-[15px] tracking-[0.22em] uppercase text-center mb-2"
+        style={{ color: 'var(--color-text-muted)' }}
       >
         {t('quiz.resultsTitle')}{categoryTitle}
       </p>
       <h2
         className="text-center font-sans text-[22px] sm:text-[26px] font-semibold mb-2"
-        style={{ color: '#f1d98d' }}
+        style={{ color: 'var(--color-text-primary)' }}
       >
         {score} / {maxScore} {t('quiz.points')}
       </h2>
@@ -52,14 +52,15 @@ export default function ResultsScreen({
           <Star
             key={s}
             size={28}
-            className={s <= stars ? 'text-[#c9a227] fill-[#c9a227]/35' : 'text-[#3a3a48]'}
+            className={s <= stars ? 'fill-[var(--color-primary)]/35' : ''}
+            style={{ color: s <= stars ? 'var(--color-primary)' : 'var(--color-border)' }}
           />
         ))}
       </div>
 
       {wrongItems.length > 0 && (
         <div className="mb-8">
-          <p className="font-mono text-[15px] tracking-[0.18em] uppercase mb-3" style={{ color: '#c9a227' }}>
+          <p className="text-[15px] tracking-[0.18em] uppercase mb-3" style={{ color: 'var(--color-primary)' }}>
             {t('quiz.answersToReview')}
           </p>
           <ul className="space-y-3 max-h-[280px] overflow-y-auto pr-1">
@@ -68,16 +69,16 @@ export default function ResultsScreen({
                 key={i}
                 className="rounded-xl p-3 text-[15px] font-sans"
                 style={{
-                  background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.06)',
-                  color: '#b8bdd4',
+                  background: 'rgba(156,123,172,0.05)',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-text-primary)',
                 }}
               >
-                <p className="text-[#8a90a8] text-[15px] font-mono mb-1 uppercase tracking-wider">
-                  {t('quiz.yourAnswer')} <span className="text-red-300">{w.question.type === 'true_false' ? (w.userAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : (w.userAnswer || '—')}</span>
+                <p className="text-[13px] mb-1 uppercase tracking-wider" style={{ color: 'var(--color-text-muted)' }}>
+                  {t('quiz.yourAnswer')} <span style={{ color: 'var(--color-error)' }}>{w.question.type === 'true_false' ? (w.userAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : (w.userAnswer || '—')}</span>
                 </p>
-                <p className="text-[#e8e8f0] mb-1">{w.question.question}</p>
-                <p className="text-[#f1d98d] text-[14px]">{t('quiz.correctAnswer')} {w.question.type === 'true_false' ? (w.question.correctAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : w.question.correctAnswer}</p>
+                <p className="mb-1" style={{ color: 'var(--color-text-primary)' }}>{w.question.question}</p>
+                <p className="text-[14px]" style={{ color: 'var(--color-success)' }}>{t('quiz.correctAnswer')} {w.question.type === 'true_false' ? (w.question.correctAnswer === 'true' ? t('quiz.true') : t('quiz.false')) : w.question.correctAnswer}</p>
               </li>
             ))}
           </ul>
@@ -85,7 +86,7 @@ export default function ResultsScreen({
       )}
 
       {wrongItems.length === 0 && (
-        <p className="text-center text-[14px] font-sans mb-8" style={{ color: '#6ee7b7' }}>
+        <p className="text-center text-[14px] font-sans mb-8" style={{ color: 'var(--color-success)' }}>
           {t('quiz.perfectScore')}
         </p>
       )}
@@ -94,10 +95,10 @@ export default function ResultsScreen({
         <button
           type="button"
           onClick={onRestart}
-          className="flex-1 flex items-center justify-center gap-2 font-mono text-[15px] tracking-[0.12em] uppercase py-3 rounded-xl"
+          className="flex-1 flex items-center justify-center gap-2 text-[15px] tracking-[0.12em] uppercase py-3 rounded-xl"
           style={{
-            background: 'linear-gradient(135deg, #c9a227, #e8d48a)',
-            color: '#0a0a0c',
+            background: 'var(--color-primary)',
+            color: 'white',
             border: 'none',
           }}
         >
@@ -107,11 +108,11 @@ export default function ResultsScreen({
         <button
           type="button"
           onClick={onChangeDifficulty}
-          className="flex-1 flex items-center justify-center gap-2 font-mono text-[15px] tracking-[0.12em] uppercase py-3 rounded-xl"
+          className="flex-1 flex items-center justify-center gap-2 text-[15px] tracking-[0.12em] uppercase py-3 rounded-xl"
           style={{
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.12)',
-            color: '#c9a227',
+            background: 'rgba(156,123,172,0.07)',
+            border: '1px solid var(--color-border)',
+            color: 'var(--color-primary)',
           }}
         >
           <SlidersHorizontal size={16} />

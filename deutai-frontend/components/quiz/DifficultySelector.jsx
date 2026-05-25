@@ -25,18 +25,23 @@ export default function DifficultySelector({ value, onChange }) {
             onClick={() => onChange(lvl.id)}
             className="rounded-xl px-4 py-3 text-left transition-all duration-200"
             style={{
-              background: active ? 'rgba(212,175,55,0.12)' : 'rgba(255,255,255,0.03)',
-              border: active ? '1px solid rgba(212,175,55,0.35)' : '1px solid rgba(255,255,255,0.07)',
-              boxShadow: active ? '0 0 20px rgba(212,175,55,0.12)' : 'none',
+              background: active ? 'rgba(156,123,172,0.10)' : 'white',
+              border: active ? '1px solid rgba(156,123,172,0.35)' : '1px solid var(--color-border)',
+              boxShadow: active ? '0 0 20px rgba(156,123,172,0.10)' : 'none',
             }}
           >
             <span
               className="block font-mono text-[15px] tracking-[0.14em] uppercase"
-              style={{ color: active ? '#f1d98d' : '#8a90a8' }}
+              style={{ color: active ? 'var(--color-primary)' : 'var(--color-text-muted)' }}
             >
               {lvl.label}
             </span>
-            <span className="block mt-1 text-[14px] text-[#6b7088] font-sans">{lvl.hint}</span>
+            <span
+              className="block mt-1 text-[14px] font-sans"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              {lvl.hint}
+            </span>
           </motion.button>
         );
       })}

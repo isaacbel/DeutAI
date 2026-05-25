@@ -7,8 +7,8 @@ export default function OfflineBanner() {
     <div
       className="fixed top-0 left-0 right-0 z-50 flex items-center justify-center gap-2 py-2 px-4"
       style={{
-        background: '#1A0A0A',
-        borderBottom: '1px solid #3A1A1A',
+        background: 'rgba(220,100,80,0.06)',
+        borderBottom: '1px solid rgba(220,100,80,0.20)',
         animation: 'slideUp 0.3s ease-out',
       }}
     >

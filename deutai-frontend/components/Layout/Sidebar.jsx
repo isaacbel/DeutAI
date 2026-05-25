@@ -31,17 +31,17 @@ function Tooltip({ label, visible, lang }) {
           <span
             className="relative px-3 py-1.5 rounded-lg font-mono text-[15px] tracking-[.08em] font-semibold whitespace-nowrap block"
             style={{
-              background: 'rgba(14,14,22,0.98)',
-              border: '1px solid rgba(212,175,55,0.22)',
-              color: '#e8e0c8',
-              boxShadow: '0 4px 16px rgba(0,0,0,0.55)',
+              background: 'var(--color-bg-sidebar)',
+              border: '1px solid var(--color-border)',
+              color: 'var(--color-text-primary)',
+              boxShadow: '0 4px 16px rgba(0,0,0,0.08)',
             }}
           >
             <span style={{
               position: 'absolute', right: '100%', top: '50%',
               transform: 'translateY(-50%)', width: 0, height: 0,
               borderTop: '5px solid transparent', borderBottom: '5px solid transparent',
-              borderRight: '5px solid rgba(212,175,55,0.22)', display: 'block',
+              borderRight: '5px solid var(--color-border)', display: 'block',
             }} />
             {label}
           </span>
@@ -85,13 +85,13 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
   /* ── shared sidebar style ── */
   const sidebarStyle = {
-    background: 'rgba(10,10,16,0.99)',
+    background: 'var(--color-bg-sidebar)',
     backdropFilter: 'blur(28px)',
-    borderRight: !isMobile ? '1px solid rgba(255,255,255,0.07)' : 'none',
-    borderTop: isMobile ? '1px solid rgba(255,255,255,0.07)' : 'none',
+    borderRight: !isMobile ? '1px solid var(--color-border)' : 'none',
+    borderTop: isMobile ? '1px solid var(--color-border)' : 'none',
     boxShadow: isMobile
-      ? '0 -10px 40px rgba(0,0,0,0.7)'
-      : '8px 0 40px rgba(0,0,0,0.7)',
+      ? '0 -10px 40px rgba(0,0,0,0.06)'
+      : '8px 0 40px rgba(0,0,0,0.06)',
   };
 
   return (
@@ -106,7 +106,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             className="fixed inset-0 z-[90]"
-            style={{ background: 'rgba(0,0,0,0.55)', backdropFilter: 'blur(3px)' }}
+            style={{ background: 'rgba(0,0,0,0.15)', backdropFilter: 'blur(2px)' }}
             onClick={() => setIsOpen(false)}
             aria-hidden="true"
           />
@@ -129,28 +129,28 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               <div className="flex justify-center pt-3 pb-1">
                 <div
                   className="w-10 h-1 rounded-full"
-                  style={{ background: 'rgba(255,255,255,0.15)' }}
+                  style={{ background: 'rgba(0,0,0,0.15)' }}
                 />
               </div>
 
               {/* Header */}
               <div
                 className="flex items-center justify-between px-5 py-3"
-                style={{ borderBottom: '1px solid rgba(255,255,255,0.07)' }}
+                style={{ borderBottom: '1px solid var(--color-border)' }}
               >
                 <div className="flex items-center gap-3">
                   <div
                     className="w-8 h-8 rounded-lg flex items-center justify-center"
                     style={{
-                      background: 'linear-gradient(135deg,#C9A227,#f1d98d)',
-                      boxShadow: '0 3px 12px rgba(201,162,39,0.4)',
+                      background: 'linear-gradient(135deg, var(--color-primary), #b59dbf)',
+                      boxShadow: '0 3px 12px rgba(156,123,172,0.3)',
                     }}
                   >
                     <Zap size={15} className="text-black" fill="black" />
                   </div>
                   <span
                     className="font-mono text-[15px] tracking-[.18em] font-bold uppercase"
-                    style={{ color: '#c8b87a' }}
+                    style={{ color: 'var(--color-primary)' }}
                   >
                     DeutAI
                   </span>
@@ -162,9 +162,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                   onClick={() => setIsOpen(false)}
                   className="w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{
-                    background: 'rgba(255,255,255,0.06)',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    color: '#686880',
+                    background: 'rgba(0,0,0,0.03)',
+                    border: '1px solid var(--color-border)',
+                    color: 'var(--color-text-primary)',
                   }}
                   aria-label={t('nav.closeMenu')}
                 >
@@ -189,12 +189,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                         href={item.href}
                         className="flex items-center gap-4 px-4 py-3.5 rounded-2xl relative overflow-hidden"
                         style={isActive ? {
-                          background: 'linear-gradient(90deg,rgba(212,175,55,0.15),rgba(212,175,55,0.04))',
-                          border: '1px solid rgba(212,175,55,0.28)',
-                          color: '#f1d98d',
+                          background: 'linear-gradient(90deg,rgba(156,123,172,0.15),rgba(156,123,172,0.04))',
+                          border: '1px solid rgba(156,123,172,0.28)',
+                          color: 'var(--color-primary)',
                         } : {
                           border: '1px solid transparent',
-                          color: '#8890aa',
+                          color: 'var(--color-text-primary)',
                         }}
                         aria-current={isActive ? 'page' : undefined}
                       >
@@ -202,18 +202,18 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                         {isActive && (
                           <span
                             className={`absolute ${lang === 'ar' ? 'right-0 rounded-l-full' : 'left-0 rounded-r-full'} top-1/2 -translate-y-1/2 w-[3px] h-6`}
-                            style={{ background: '#D4AF37', boxShadow: '0 0 8px rgba(212,175,55,0.8)' }}
+                            style={{ background: 'var(--color-primary)', boxShadow: '0 0 8px rgba(156,123,172,0.4)' }}
                             aria-hidden="true"
                           />
                         )}
                         <div
                           className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
                           style={isActive ? {
-                            background: 'rgba(212,175,55,0.15)',
-                            border: '1px solid rgba(212,175,55,0.2)',
+                            background: 'rgba(156,123,172,0.15)',
+                            border: '1px solid rgba(156,123,172,0.2)',
                           } : {
-                            background: 'rgba(255,255,255,0.05)',
-                            border: '1px solid rgba(255,255,255,0.07)',
+                            background: 'rgba(0,0,0,0.03)',
+                            border: '1px solid var(--color-border)',
                           }}
                         >
                           <Icon size={16} />
@@ -224,7 +224,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                         {isActive && (
                           <span
                             className={`w-1.5 h-1.5 rounded-full ${lang === 'ar' ? 'mr-auto' : 'ml-auto'}`}
-                            style={{ background: '#D4AF37', boxShadow: '0 0 6px rgba(212,175,55,0.9)' }}
+                            style={{ background: 'var(--color-primary)', boxShadow: '0 0 6px rgba(156,123,172,0.5)' }}
                           />
                         )}
                       </Link>
@@ -236,16 +236,16 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               {/* Language Switcher and Logout */}
               <div
                 className="px-3 pb-6 pt-2 flex items-center justify-between gap-2"
-                style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
+                style={{ borderTop: '1px solid var(--color-border)' }}
               >
                 <LanguageSwitcher isMobile={true} />
                 <button
                   onClick={logout}
                   className="flex-1 flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-150"
                   style={{
-                    background: 'rgba(204,85,85,0.06)',
-                    border: '1px solid rgba(204,85,85,0.15)',
-                    color: '#b06060',
+                    background: 'rgba(204,85,85,0.08)',
+                    border: '1px solid rgba(204,85,85,0.25)',
+                    color: 'var(--color-error)',
                   }}
                 >
                   <div
@@ -283,8 +283,8 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                 transition={{ delay: 0.04, type: 'spring', stiffness: 320, damping: 22 }}
                 className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mb-2"
                 style={{
-                  background: 'linear-gradient(135deg,#C9A227 0%,#f1d98d 100%)',
-                  boxShadow: '0 4px 18px rgba(201,162,39,0.4)',
+                  background: 'linear-gradient(135deg, var(--color-primary) 0%, #b59dbf 100%)',
+                  boxShadow: '0 4px 18px rgba(156, 123, 172, 0.3)',
                 }}
               >
                 <Zap size={18} className="text-black" fill="black" />
@@ -300,9 +300,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                 whileTap={{ scale: 0.88 }}
                 className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 flex-shrink-0"
                 style={{
-                  background: 'rgba(255,255,255,0.04)',
-                  border: '1px solid rgba(255,255,255,0.08)',
-                  color: '#686880',
+                  background: 'rgba(0,0,0,0.03)',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-text-primary)',
                 }}
                 aria-label={t('nav.closeMenu')}
               >
@@ -310,7 +310,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               </motion.button>
 
               {/* Divider */}
-              <div className="w-8 flex-shrink-0 mb-3" style={{ height: '1px', background: 'rgba(255,255,255,0.07)' }} />
+              <div className="w-8 flex-shrink-0 mb-3" style={{ height: '1px', background: 'var(--color-border)' }} />
 
               {/* Nav items */}
               <nav className="flex flex-col gap-1.5 flex-1 items-center w-full px-2" aria-label={t('sidebar.mainMenu')}>
@@ -332,14 +332,14 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                         href={item.href}
                         className="relative w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-150"
                         style={isActive ? {
-                          background: 'linear-gradient(135deg,rgba(212,175,55,0.22),rgba(212,175,55,0.07))',
-                          border: '1px solid rgba(212,175,55,0.32)',
-                          color: '#f1d98d',
-                          boxShadow: '0 0 14px rgba(212,175,55,0.14)',
+                          background: 'linear-gradient(135deg,rgba(156,123,172,0.22),rgba(156,123,172,0.07))',
+                          border: '1px solid rgba(156,123,172,0.32)',
+                          color: 'var(--color-primary)',
+                          boxShadow: '0 0 14px rgba(156,123,172,0.14)',
                         } : {
-                          background: hovered === item.href ? 'rgba(255,255,255,0.06)' : 'transparent',
-                          border: '1px solid ' + (hovered === item.href ? 'rgba(255,255,255,0.09)' : 'transparent'),
-                          color: hovered === item.href ? '#dde0f0' : '#686880',
+                          background: hovered === item.href ? 'rgba(156,123,172,0.08)' : 'transparent',
+                          border: '1px solid ' + (hovered === item.href ? 'rgba(156,123,172,0.15)' : 'transparent'),
+                          color: hovered === item.href ? 'var(--color-primary)' : 'var(--color-text-primary)',
                         }}
                         aria-current={isActive ? 'page' : undefined}
                         aria-label={label}
@@ -347,7 +347,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                         {isActive && (
                           <span
                             className={`absolute ${lang === 'ar' ? '-right-[3px] rounded-l-full' : '-left-[3px] rounded-r-full'} top-1/2 -translate-y-1/2 w-[3px] h-5`}
-                            style={{ background: '#D4AF37', boxShadow: '0 0 8px rgba(212,175,55,0.8)' }}
+                            style={{ background: 'var(--color-primary)', boxShadow: '0 0 8px rgba(156,123,172,0.4)' }}
                             aria-hidden="true"
                           />
                         )}
@@ -365,7 +365,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.3 }}
                 className="relative flex flex-col items-center w-full px-2 pt-3 gap-2"
-                style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
+                style={{ borderTop: '1px solid var(--color-border)' }}
               >
                 <LanguageSwitcher />
 
@@ -378,9 +378,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                   onClick={logout}
                   className="w-11 h-11 rounded-xl flex items-center justify-center transition-all duration-150"
                   style={{
-                    background: hovered === 'logout' ? 'rgba(204,85,85,0.1)' : 'transparent',
+                    background: hovered === 'logout' ? 'rgba(204,85,85,0.12)' : 'transparent',
                     border: '1px solid ' + (hovered === 'logout' ? 'rgba(204,85,85,0.25)' : 'transparent'),
-                    color: hovered === 'logout' ? '#e06c6c' : '#7a4040',
+                    color: hovered === 'logout' ? 'var(--color-error)' : '#c07070',
                   }}
                   aria-label={t('sidebar.logout')}
                 >

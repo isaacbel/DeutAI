@@ -30,27 +30,27 @@ export default function ColdStartLoader() {
   return (
     <div
       className="fixed inset-0 z-50 flex flex-col items-center justify-center"
-      style={{ background: '#000000' }}
+      style={{ background: 'var(--color-bg-ice)' }}
     >
       {/* Grid BG */}
-      <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
+      <div className="absolute inset-0 grid-scan-bg opacity-30 pointer-events-none" />
 
       {/* Scan bar */}
       <div
         className="absolute left-0 right-0 pointer-events-none"
         style={{
           height: '3px',
-          background: 'linear-gradient(90deg, transparent 0%, #D4AF37 30%, #fff 50%, #D4AF37 70%, transparent 100%)',
-          boxShadow: '0 0 20px rgba(212, 175, 55, 0.8), 0 0 40px rgba(212, 175, 55, 0.3)',
+          background: 'linear-gradient(90deg, transparent 0%, var(--color-primary) 30%, rgba(156,123,172,0.5) 50%, var(--color-primary) 70%, transparent 100%)',
+          boxShadow: '0 0 20px rgba(156, 123, 172, 0.5), 0 0 40px rgba(156, 123, 172, 0.2)',
           animation: 'scanLineLoop 2s ease-in-out infinite',
         }}
       />
 
-      {/* Gold tint overlay */}
+      {/* Primary tint overlay */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.04) 0%, transparent 70%)',
+          background: 'radial-gradient(ellipse at center, rgba(156,123,172,0.06) 0%, transparent 70%)',
         }}
       />
 
@@ -71,14 +71,14 @@ export default function ColdStartLoader() {
         <div className="w-full">
           <div
             className="w-full rounded-full overflow-hidden"
-            style={{ height: '2px', background: '#1a1a1a' }}
+            style={{ height: '2px', background: 'var(--color-bg-sidebar)' }}
           >
             <div
               className="h-full rounded-full transition-all duration-700"
               style={{
                 width: `${current.pct}%`,
-                background: 'linear-gradient(90deg, #B8962E, #D4AF37)',
-                boxShadow: '0 0 8px rgba(212,175,55,0.5)',
+                background: 'linear-gradient(90deg, var(--color-primary), rgba(156,123,172,0.6))',
+                boxShadow: '0 0 8px rgba(156,123,172,0.4)',
               }}
             />
           </div>
@@ -108,7 +108,7 @@ export default function ColdStartLoader() {
               style={{
                 width: '4px',
                 height: '4px',
-                background: '#D4AF37',
+                background: 'var(--color-primary)',
                 animation: `pulse-gold 1.5s ease-in-out ${i * 0.2}s infinite`,
               }}
             />

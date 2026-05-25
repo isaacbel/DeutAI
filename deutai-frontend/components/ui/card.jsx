@@ -3,7 +3,8 @@
 export function Card({ className = '', children }) {
   return (
     <div
-      className={`rounded-2xl border border-white/10 bg-[#0f0f12]/90 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur ${className}`}
+      className={`rounded-2xl border bg-bg-main shadow-[0_4px_24px_rgba(156,123,172,0.08)] backdrop-blur ${className}`}
+      style={{ borderColor: 'var(--color-border)' }}
     >
       {children}
     </div>
@@ -15,11 +16,11 @@ export function CardHeader({ className = '', children }) {
 }
 
 export function CardTitle({ className = '', children }) {
-  return <h3 className={`text-sm font-semibold text-[#e8e8ef] ${className}`}>{children}</h3>;
+  return <h3 className={`text-sm font-semibold text-text-primary ${className}`}>{children}</h3>;
 }
 
 export function CardDescription({ className = '', children }) {
-  return <p className={`text-sm text-[#8b8b98] ${className}`}>{children}</p>;
+  return <p className={`text-sm text-text-muted ${className}`}>{children}</p>;
 }
 
 export function CardContent({ className = '', children }) {

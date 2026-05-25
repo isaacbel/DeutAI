@@ -99,11 +99,11 @@ function PieTooltip({ active, payload }) {
   const pct = total > 0 ? Math.round((val / total) * 100) : 0;
   return (
     <div
-      className="rounded-lg border border-white/10 bg-[#12121a]/95 px-3 py-2 text-sm shadow-xl backdrop-blur-sm"
+      className="rounded-lg border border-var(--color-border) bg-white px-3 py-2 text-sm shadow-xl"
       style={{ fontFamily: 'JetBrains Mono, monospace' }}
     >
-      <p className="font-medium text-[#e8e8ef]">{p.payload.isOther ? p.payload.tName : p.name}</p>
-      <p className="mt-0.5 text-[#d4af37]">
+      <p className="font-medium text-text-primary">{p.payload.isOther ? p.payload.tName : p.name}</p>
+      <p className="mt-0.5 text-primary" style={{ color: 'var(--color-primary)' }}>
         {val} {val !== 1 ? p.payload.tErrorsPlural : p.payload.tErrorSingular} · {pct}%
       </p>
     </div>
@@ -142,30 +142,30 @@ export default function ErrorTypeChart({ data }) {
     <div className="flex flex-col gap-5">
       {/* Summary strip */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-          <p className="text-[14px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+        <div className="rounded-xl border border-var(--color-border) bg-var(--color-bg-sidebar) px-3 py-2.5">
+          <p className="text-[13px] uppercase tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.totalErrorsLabel')}
           </p>
-          <p className="mt-1 font-mono text-xl font-semibold tabular-nums text-[#f0e6d2]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="mt-1 font-mono text-xl font-bold tabular-nums text-text-primary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {totalErrors}
           </p>
         </div>
-        <div className="rounded-xl border border-white/[0.06] bg-white/[0.02] px-3 py-2.5">
-          <p className="text-[14px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+        <div className="rounded-xl border border-var(--color-border) bg-var(--color-bg-sidebar) px-3 py-2.5">
+          <p className="text-[13px] uppercase tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.activeTypesLabel')}
           </p>
-          <p className="mt-1 font-mono text-xl font-semibold tabular-nums text-[#c8b896]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="mt-1 font-mono text-xl font-bold tabular-nums text-text-primary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {rows.length}
           </p>
         </div>
-        <div className="col-span-2 rounded-xl border border-[#453a16]/40 bg-[#d4af37]/[0.06] px-3 py-2.5 sm:col-span-1">
-          <p className="text-[14px] uppercase tracking-wider text-[#8a7820]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+        <div className="col-span-2 rounded-xl border border-[rgba(156,123,172,0.25)] bg-[rgba(156,123,172,0.06)] px-3 py-2.5 sm:col-span-1">
+          <p className="text-[13px] uppercase tracking-wider text-primary" style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--color-primary)' }}>
             {t('stats.mostFrequentLabel')}
           </p>
-          <p className="mt-1 truncate text-sm font-medium text-[#e5c266]" title={top.name}>
+          <p className="mt-1 truncate text-sm font-semibold text-text-primary" title={top.name}>
             {top.name}
           </p>
-          <p className="font-mono text-sm text-[#9a8a50]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="font-mono text-sm text-text-secondary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {top.count} ({top.percent}%)
           </p>
         </div>
@@ -175,17 +175,17 @@ export default function ErrorTypeChart({ data }) {
         {/* Ranked list + bars */}
         <div className="min-h-0 lg:col-span-3">
           <p
-            className="mb-3 text-[15px] uppercase tracking-[0.2em] text-[#5c5c6b]"
+            className="mb-3 text-[14px] uppercase tracking-[0.2em] text-text-muted"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
             {t('stats.ranking')}
           </p>
-          <ul className="max-h-[min(420px,55vh)] space-y-3 overflow-y-auto pr-1 [scrollbar-width:thin] [scrollbar-color:#2a2a38_transparent] lg:max-h-[380px]">
+          <ul className="max-h-[min(420px,55vh)] space-y-3 overflow-y-auto pr-1 [scrollbar-width:thin] lg:max-h-[380px]">
             {rows.map((row, i) => (
-              <li key={row.typeKey} className="rounded-lg border border-white/[0.05] bg-black/20 px-3 py-2.5">
+              <li key={row.typeKey} className="rounded-lg border border-var(--color-border) bg-var(--color-bg-sidebar) px-3 py-2.5">
                 <div className="flex items-start gap-2.5">
                   <span
-                    className="mt-0.5 w-5 shrink-0 text-right text-[14px] tabular-nums text-[#4a4a58]"
+                    className="mt-0.5 w-5 shrink-0 text-right text-[14px] tabular-nums text-text-muted"
                     style={{ fontFamily: 'JetBrains Mono, monospace' }}
                   >
                     {i + 1}
@@ -197,17 +197,17 @@ export default function ErrorTypeChart({ data }) {
                   />
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5">
-                      <span className="text-sm font-medium text-[#d8d8e4]">{row.name}</span>
+                      <span className="text-sm font-medium text-text-primary">{row.name}</span>
                       <span
-                        className="shrink-0 text-sm tabular-nums text-[#9a9aaf]"
+                        className="shrink-0 text-sm tabular-nums text-text-secondary"
                         style={{ fontFamily: 'JetBrains Mono, monospace' }}
                       >
                         {row.count}
-                        <span className="text-[#6b6b7a]"> · </span>
+                        <span className="text-text-muted"> · </span>
                         {row.percent}%
                       </span>
                     </div>
-                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
+                    <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-gray-200">
                       <div
                         className="h-full rounded-full transition-[width] duration-500 ease-out"
                         style={{
@@ -227,7 +227,7 @@ export default function ErrorTypeChart({ data }) {
         {/* Donut */}
         <div className="flex flex-col items-center justify-start lg:col-span-2">
           <p
-            className="mb-2 w-full text-[15px] uppercase tracking-[0.2em] text-[#5c5c6b] lg:text-center"
+            className="mb-2 w-full text-[14px] uppercase tracking-[0.2em] text-text-muted lg:text-center"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
             {t('stats.distribution')}
@@ -259,10 +259,10 @@ export default function ErrorTypeChart({ data }) {
               className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center"
               style={{ marginTop: -8 }}
             >
-              <span className="font-mono text-2xl font-bold tabular-nums text-[#f0e6d2]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <span className="font-mono text-2xl font-bold tabular-nums text-text-primary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                 {totalErrors}
               </span>
-              <span className="text-[14px] uppercase tracking-wider text-[#6b6b7a]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <span className="text-[13px] uppercase tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                 {t('stats.errorsSuffix')}
               </span>
             </div>

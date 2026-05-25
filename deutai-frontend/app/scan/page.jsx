@@ -56,17 +56,17 @@ export default function ScanPage() {
 
   return (
     <AppShell>
-      <div className="min-h-screen bg-black relative">
-        <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
+      <div className="min-h-screen relative" style={{ background: 'var(--color-bg-ice)' }}>
+        <div className="absolute inset-0 grid-scan-bg opacity-100 pointer-events-none" />
 
         {/* Header */}
         <header
           className="sticky top-0 z-30 px-4 py-3 flex items-center gap-3"
-          style={{ background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #1a1a1a' }}
+          style={{ background: 'rgba(242,248,252,0.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--color-border)' }}
         >
-          <Link href="/analyze" className="text-text-muted hover:text-gold transition-colors text-sm">←</Link>
+          <Link href="/analyze" className="text-text-muted hover:text-primary transition-colors text-sm">←</Link>
           <div>
-            <h1 className="text-sm font-bold text-gold font-mono" style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '2px' }}>
+            <h1 className="text-sm font-bold" style={{ color: 'var(--color-primary)', letterSpacing: '2px' }}>
               {t('scan.title')}
             </h1>
             <p className="system-subtitle" style={{ fontSize: '8px', letterSpacing: '2px' }}>{t('scan.subtitle')}</p>
@@ -86,10 +86,10 @@ export default function ScanPage() {
           {status === 'loading' && (
             <div className="flex flex-col items-center gap-4 py-8">
               <div
-                className="w-16 h-16 rounded-full border-2 border-gold/20 flex items-center justify-center"
-                style={{ animation: 'spin-slow 1s linear infinite', borderTopColor: '#D4AF37' }}
+                className="w-16 h-16 rounded-full border-2 flex items-center justify-center"
+                style={{ animation: 'spin-slow 1s linear infinite', borderColor: 'rgba(156,123,172,0.2)', borderTopColor: 'var(--color-primary)' }}
               />
-              <p className="text-sm font-mono text-gold" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <p className="text-sm" style={{ color: 'var(--color-primary)' }}>
                 {t('scan.resolving')}
               </p>
             </div>
@@ -98,21 +98,21 @@ export default function ScanPage() {
           {status === 'success' && unitInfo && (
             <div
               className="rounded-xl p-6 flex flex-col items-center gap-3 text-center"
-              style={{ background: 'rgba(212,175,55,0.05)', border: '1px solid rgba(212,175,55,0.2)', animation: 'fadeInUp 0.4s ease-out' }}
+              style={{ background: 'rgba(124,176,120,0.08)', border: '1px solid rgba(124,176,120,0.3)', animation: 'fadeInUp 0.4s ease-out' }}
             >
               <span className="text-4xl">✓</span>
-              <p className="text-gold font-mono font-bold" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <p className="font-bold" style={{ color: 'var(--color-success)' }}>
                 {t('scan.found')}
               </p>
-              <p className="text-sm text-text-primary" style={{ fontFamily: 'Inter, sans-serif' }}>
+              <p className="text-sm" style={{ color: 'var(--color-text-primary)' }}>
                 {unitInfo.title}
               </p>
               {unitInfo.chapter_number && (
-                <span className="text-sm font-mono text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                <span className="text-sm" style={{ color: 'var(--color-text-muted)' }}>
                   {t('scan.chapter')} {unitInfo.chapter_number}
                 </span>
               )}
-              <p className="text-sm text-text-muted mt-1">{t('scan.redirecting')}</p>
+              <p className="text-sm mt-1" style={{ color: 'var(--color-text-muted)' }}>{t('scan.redirecting')}</p>
             </div>
           )}
 
@@ -120,7 +120,7 @@ export default function ScanPage() {
             <div className="flex flex-col gap-4">
               <div
                 className="rounded-xl p-4 text-center"
-                style={{ background: '#1A0A0A', border: '1px solid #3A1A1A' }}
+                style={{ background: 'rgba(204,85,85,0.06)', border: '1px solid rgba(204,85,85,0.2)' }}
               >
                 <p className="text-error text-sm mb-1">⚠ {error}</p>
               </div>

@@ -33,7 +33,7 @@ function highlightKeywords(text) {
   return text.split(/(\*[^*]+\*|_[^_]+_|«[^»]+»)/g).map((part, i) => {
     if (part.match(/^(\*[^*]+\*|_[^_]+_|«[^»]+»)$/)) {
       return (
-        <span key={i} style={{ color: '#D4AF37', fontWeight: '600' }}>
+        <span key={i} style={{ color: 'var(--color-primary)', fontWeight: '600' }}>
           {part.replace(/[*_«»]/g, '')}
         </span>
       );
@@ -56,14 +56,14 @@ function renderBilingualExplanation(text, language) {
   if (language === 'ar') {
     return (
       <span dir="rtl" style={{ textAlign: 'right', display: 'block' }}>
-        <strong style={{ color: '#c7a1d8' }}>AR:</strong> {parsed.ar}
+        <strong style={{ color: 'var(--color-primary)' }}>AR:</strong> {parsed.ar}
       </span>
     );
   }
 
   return (
     <span dir="ltr" lang="de" style={{ display: 'block', textAlign: 'left' }}>
-      <strong style={{ color: '#9aa3c8' }}>DE:</strong> {parsed.de}
+      <strong style={{ color: 'var(--color-info)' }}>DE:</strong> {parsed.de}
     </span>
   );
 }
@@ -75,17 +75,17 @@ function ExerciseItem({ exercise, index, t, explanationLanguage }) {
     <div
       className="rounded-lg p-4 mt-3 relative overflow-hidden group cursor-default"
       style={{
-        background: 'rgba(212,175,55,0.04)',
-        border: '1px solid rgba(212,175,55,0.1)',
+        background: 'var(--color-bg-sidebar)',
+        border: '1px solid var(--color-border)',
         transition: 'border-color 0.2s, background 0.2s',
       }}
       onMouseEnter={e => {
-        e.currentTarget.style.borderColor = 'rgba(212,175,55,0.2)';
-        e.currentTarget.style.background = 'rgba(212,175,55,0.06)';
+        e.currentTarget.style.borderColor = 'rgba(156,123,172,0.4)';
+        e.currentTarget.style.background = 'rgba(156,123,172,0.04)';
       }}
       onMouseLeave={e => {
-        e.currentTarget.style.borderColor = 'rgba(212,175,55,0.1)';
-        e.currentTarget.style.background = 'rgba(212,175,55,0.04)';
+        e.currentTarget.style.borderColor = 'var(--color-border)';
+        e.currentTarget.style.background = 'var(--color-bg-sidebar)';
       }}
     >
       <div className="flex items-start gap-3">
@@ -93,9 +93,9 @@ function ExerciseItem({ exercise, index, t, explanationLanguage }) {
           className="shrink-0 w-5 h-5 rounded flex items-center justify-center text-[15px] font-mono font-bold mt-0.5"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
-            background: 'rgba(212,175,55,0.1)',
-            border: '1px solid rgba(212,175,55,0.2)',
-            color: '#D4AF37',
+            background: 'rgba(156,123,172,0.08)',
+            border: '1px solid rgba(156,123,172,0.25)',
+            color: 'var(--color-primary)',
           }}
         >
           {index + 1}
@@ -111,17 +111,18 @@ function ExerciseItem({ exercise, index, t, explanationLanguage }) {
               className="text-sm font-medium px-3 py-2 rounded-lg flex items-center gap-2"
               style={{
                 fontFamily: 'Inter, sans-serif',
-                color: '#D4AF37',
-                background: 'rgba(212,175,55,0.1)',
-                border: '1px solid rgba(212,175,55,0.25)',
+                color: 'var(--color-success)',
+                background: 'rgba(124,176,120,0.08)',
+                border: '1px solid rgba(124,176,120,0.25)',
                 animation: 'fadeIn 0.25s ease-out',
               }}
             >
-              <span className="text-[#4A9A4A] text-base">✓</span>
+              <span className="text-var(--color-success) text-base">✓</span>
               <span>{renderBilingualExplanation(exercise.answer, explanationLanguage)}</span>
               <button
                 onClick={() => setRevealed(false)}
-                className="ml-auto text-gold/50 hover:text-gold transition-colors shrink-0"
+                className="ml-auto opacity-60 hover:opacity-100 transition-opacity shrink-0"
+                style={{ color: 'var(--color-success)', background: 'none', border: 'none', cursor: 'pointer' }}
                 title={t('errorCard.hideAnswer')}
               >
                 <EyeOff size={13} />
@@ -130,8 +131,24 @@ function ExerciseItem({ exercise, index, t, explanationLanguage }) {
           ) : (
             <button
               onClick={() => setRevealed(true)}
-              className="flex items-center gap-2 text-[15px] font-mono text-text-muted hover:text-gold transition-all py-1.5 px-3 rounded-md hover:bg-gold/10 border border-transparent hover:border-gold/20"
-              style={{ fontFamily: 'JetBrains Mono, monospace' }}
+              className="flex items-center gap-2 text-[13px] font-mono transition-all py-1.5 px-3 rounded-md"
+              style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                background: 'white',
+                border: '1px solid var(--color-border)',
+                color: 'var(--color-text-muted)',
+                cursor: 'pointer',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = 'rgba(156,123,172,0.06)';
+                e.currentTarget.style.borderColor = 'rgba(156,123,172,0.25)';
+                e.currentTarget.style.color = 'var(--color-primary)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'white';
+                e.currentTarget.style.borderColor = 'var(--color-border)';
+                e.currentTarget.style.color = 'var(--color-text-muted)';
+              }}
             >
               <Eye size={12} />
               {t('errorCard.revealAnswer')}
@@ -151,7 +168,7 @@ function ErrorRuleBlock({ error, index, explanationLanguage }) {
     <div style={{
       borderRadius: '10px',
       border: `1px solid ${color}20`,
-      background: 'rgba(5,5,5,0.6)',
+      background: 'white',
       overflow: 'hidden',
     }}>
       {/* Collapsible header */}
@@ -184,12 +201,12 @@ function ErrorRuleBlock({ error, index, explanationLanguage }) {
       {open && (
         <div style={{ padding: '0 14px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {error.rule && (
-            <p dir="ltr" lang="fr" className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: '#aaa', lineHeight: '1.75', margin: 0, textAlign: 'left' }}>
+            <p dir="ltr" lang="fr" className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: 'var(--color-text-primary)', lineHeight: '1.75', margin: 0, textAlign: 'left' }}>
               📖 {highlightKeywords(error.rule)}
             </p>
           )}
           {error.explanation && error.explanation !== error.rule && (
-            <p className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: '#777', lineHeight: '1.75', margin: 0, fontStyle: 'italic' }}>
+            <p className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: 'var(--color-text-secondary)', lineHeight: '1.75', margin: 0, fontStyle: 'italic' }}>
               💡 {renderBilingualExplanation(error.explanation, explanationLanguage)}
             </p>
           )}
@@ -214,53 +231,55 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
     <div
       className="rounded-xl p-5 relative overflow-hidden"
       style={{
-        background: 'rgba(5,12,5,0.9)',
-        border: '1px solid rgba(74,154,74,0.2)',
+        background: 'var(--color-bg-mint)',
+        border: '1px solid rgba(124, 176, 120, 0.3)',
       }}
     >
       {/* Left accent */}
-      <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl bg-gradient-to-b from-[#4A9A4A]/80 via-[#4A9A4A] to-[#4A9A4A]/40" />
+      <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl bg-gradient-to-b from-[var(--color-success)]/80 via-[var(--color-success)] to-[var(--color-success)]/40" />
 
       {/* Subtle bg glow */}
-      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 0% 0%, rgba(74,154,74,0.05) 0%, transparent 70%)' }} />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 0% 0%, rgba(124,176,120,0.06) 0%, transparent 70%)' }} />
 
       {/* Header */}
       <div className="flex items-center gap-3 mb-4">
         <div
           className="p-1.5 rounded-lg"
-          style={{ background: 'rgba(74,154,74,0.12)', border: '1px solid rgba(74,154,74,0.25)' }}
+          style={{ background: 'rgba(124, 176, 120, 0.08)', border: '1px solid rgba(124, 176, 120, 0.25)' }}
         >
-          <BookOpen size={16} className="text-[#4A9A4A]" />
+          <BookOpen size={16} style={{ color: 'var(--color-success)' }} />
         </div>
         <span
           className="text-sm font-mono tracking-[0.15em] font-bold"
-          style={{ fontFamily: 'JetBrains Mono, monospace', color: '#4A9A4A' }}
+          style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--color-success)' }}
         >
           {t('errorCard.grammarRules')}
         </span>
         {hasBilingualExplanations && (
           <div
             className="ml-auto flex items-center gap-1 rounded-md p-1"
-            style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)' }}
+            style={{ background: 'rgba(255,255,255,0.4)', border: '1px solid var(--color-border)' }}
           >
             <button
               onClick={() => setExplanationLanguage('de')}
-              className="px-3 py-1.5 text-sm rounded"
+              className="px-3 py-1.5 text-sm rounded cursor-pointer"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                background: explanationLanguage === 'de' ? 'rgba(212,175,55,0.16)' : 'transparent',
-                color: explanationLanguage === 'de' ? '#D4AF37' : '#777',
+                background: explanationLanguage === 'de' ? 'rgba(156,123,172,0.12)' : 'transparent',
+                color: explanationLanguage === 'de' ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                border: 'none',
               }}
             >
               DE
             </button>
             <button
               onClick={() => setExplanationLanguage('ar')}
-              className="px-3 py-1.5 text-sm rounded"
+              className="px-3 py-1.5 text-sm rounded cursor-pointer"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                background: explanationLanguage === 'ar' ? 'rgba(212,175,55,0.16)' : 'transparent',
-                color: explanationLanguage === 'ar' ? '#D4AF37' : '#777',
+                background: explanationLanguage === 'ar' ? 'rgba(156,123,172,0.12)' : 'transparent',
+                color: explanationLanguage === 'ar' ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                border: 'none',
               }}
             >
               AR
@@ -297,12 +316,12 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
         <div className="mt-2">
           <button
             onClick={() => setExercisesOpen(o => !o)}
-            className="w-full flex items-center gap-3 group"
+            className="w-full flex items-center gap-3 group bg-transparent border-none cursor-pointer p-0"
           >
             <div className="flex items-center gap-2">
-              <GraduationCap size={14} className="text-[#666] group-hover:text-gold transition-colors" />
+              <GraduationCap size={14} className="text-text-muted group-hover:text-primary transition-colors" />
               <span
-                className="text-sm font-mono tracking-[0.15em] text-[#555] group-hover:text-gold/70 transition-colors"
+                className="text-sm font-mono tracking-[0.15em] text-text-muted group-hover:text-primary transition-colors"
                 style={{ fontFamily: 'JetBrains Mono, monospace' }}
               >
                 {t('errorCard.targetedExercises')}
@@ -311,18 +330,18 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
                 className="text-sm font-mono px-2 py-1 rounded"
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  background: 'rgba(212,175,55,0.08)',
-                  color: '#D4AF37',
-                  border: '1px solid rgba(212,175,55,0.15)',
+                  background: 'rgba(156, 123, 172, 0.06)',
+                  color: 'var(--color-primary)',
+                  border: '1px solid rgba(156, 123, 172, 0.25)',
                 }}
               >
                 {exercises.length}
               </span>
             </div>
-            <div className="flex-1 h-px" style={{ background: 'rgba(74,154,74,0.15)' }} />
+            <div className="flex-1 h-px" style={{ background: 'var(--color-border)' }} />
             {exercisesOpen
-              ? <ChevronUp size={14} className="text-[#555] group-hover:text-gold transition-colors shrink-0" />
-              : <ChevronDown size={14} className="text-[#555] group-hover:text-gold transition-colors shrink-0" />
+              ? <ChevronUp size={14} className="text-text-muted group-hover:text-primary transition-colors shrink-0" />
+              : <ChevronDown size={14} className="text-text-muted group-hover:text-primary transition-colors shrink-0" />
             }
           </button>
 

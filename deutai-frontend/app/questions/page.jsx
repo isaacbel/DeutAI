@@ -61,15 +61,15 @@ export default function QuestionsPage() {
 
   return (
     <AppShell>
-      <div className="min-h-screen relative overflow-hidden" style={{ background: '#0a0a10', color: '#e8e0c8' }} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
+      <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--color-bg-ice)', color: 'var(--color-text-primary)' }} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
         {/* Background blobs */}
         <div
           className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.4) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(156,123,172,0.4) 0%, transparent 70%)' }}
         />
         <div
           className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full blur-[100px] opacity-10 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)' }}
+          style={{ background: 'radial-gradient(circle, rgba(76,177,255,0.3) 0%, transparent 70%)' }}
         />
 
         <div className="max-w-5xl mx-auto px-6 py-12 lg:py-16 relative z-10">
@@ -83,17 +83,17 @@ export default function QuestionsPage() {
           >
             <div
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg mb-4"
-              style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.2)' }}
+              style={{ background: 'rgba(156,123,172,0.1)', border: '1px solid rgba(156,123,172,0.2)' }}
             >
-              <Brain size={14} style={{ color: '#D4AF37' }} />
-              <span className="font-mono text-[15px] tracking-[0.1em] font-semibold uppercase" style={{ color: '#D4AF37' }}>
+              <Brain size={14} style={{ color: 'var(--color-primary)' }} />
+              <span className="text-[15px] tracking-[0.1em] font-semibold uppercase" style={{ color: 'var(--color-primary)' }}>
                 {t('questions.modeTest')}
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', Georgia, serif" }}>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', Georgia, serif", color: 'var(--color-text-primary)' }}>
               {t('questions.title')}
             </h1>
-            <p className="text-lg" style={{ color: '#8890aa', maxWidth: '600px' }}>
+            <p className="text-lg" style={{ color: 'var(--color-text-muted)', maxWidth: '600px' }}>
               {t('questions.subtitle')}
             </p>
           </motion.div>
@@ -113,9 +113,9 @@ export default function QuestionsPage() {
                   whileTap={{ scale: 0.98 }}
                   className={`group relative flex flex-col p-6 lg:p-8 rounded-3xl overflow-hidden ${lang === 'ar' ? 'text-right' : 'text-left'}`}
                   style={{
-                    background: 'rgba(255,255,255,0.03)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.2)',
+                    background: 'white',
+                    border: '1px solid var(--color-border)',
+                    boxShadow: '0 4px 20px rgba(156,123,172,0.08)',
                   }}
                 >
                   {/* Hover Glow */}
@@ -137,16 +137,16 @@ export default function QuestionsPage() {
                     </div>
                     <div
                       className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300"
-                      style={{ background: 'rgba(255,255,255,0.1)', color: '#fff' }}
+                      style={{ background: 'rgba(156,123,172,0.12)', color: 'var(--color-primary)' }}
                     >
                        <ChevronRight size={16} style={lang === 'ar' ? { transform: 'scaleX(-1)' } : {}} /> {/* Fix #16 */}
                     </div>
                   </div>
 
-                  <h3 className="text-2xl font-bold mb-3" style={{ color: '#e8e0c8' }}>
+                  <h3 className="text-2xl font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>
                     {type.title}
                   </h3>
-                  <p className="text-sm leading-relaxed mb-6 flex-grow" style={{ color: '#8890aa' }}>
+                  <p className="text-sm leading-relaxed mb-6 flex-grow" style={{ color: 'var(--color-text-muted)' }}>
                     {type.description}
                   </p>
 

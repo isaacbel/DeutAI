@@ -3,19 +3,19 @@ import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 const CONFIDENCE_STYLES = {
   low: {
-    bg: '#1A0A0A',
-    border: '#3A1A1A',
-    color: '#CC5555',
+    bg: 'rgba(220,100,80,0.06)',
+    border: 'rgba(220,100,80,0.20)',
+    color: 'var(--color-error)',
   },
   medium: {
-    bg: 'rgba(212,175,55,0.08)',
-    border: 'rgba(212,175,55,0.3)',
-    color: '#D4AF37',
+    bg: 'rgba(255,127,45,0.08)',
+    border: 'rgba(255,127,45,0.25)',
+    color: 'var(--color-accent)',
   },
   high: {
-    bg: 'rgba(74,154,74,0.1)',
-    border: 'rgba(74,154,74,0.3)',
-    color: '#4A9A4A',
+    bg: 'rgba(124,176,120,0.10)',
+    border: 'rgba(124,176,120,0.30)',
+    color: 'var(--color-success)',
   },
 };
 
@@ -49,8 +49,8 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
       {/* Low confidence warning */}
       {isLowConfidence && (
         <div
-          className="px-4 py-3 rounded-lg text-sm text-error flex items-start gap-2"
-          style={{ background: '#1A0A0A', border: '1px solid #3A1A1A', animation: 'fadeIn 0.3s ease-out' }}
+          className="px-4 py-3 rounded-lg text-sm flex items-start gap-2"
+          style={{ background: 'rgba(220,100,80,0.06)', border: '1px solid rgba(220,100,80,0.20)', color: 'var(--color-error)', animation: 'fadeIn 0.3s ease-out' }}
         >
           <span>⚠</span>
           <span>{t('notebook.lowConfidenceWarning')}</span>

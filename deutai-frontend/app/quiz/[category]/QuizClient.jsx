@@ -94,22 +94,22 @@ export default function QuizClient({ slug }) {
   return (
     <div
       className="min-h-screen font-sans"
-      style={{ background: '#08080a', color: '#e8e8f0' }}
+      style={{ background: 'var(--color-bg-ice)', color: 'var(--color-text-primary)' }}
       dir={lang === 'ar' ? 'rtl' : 'ltr'}
       lang={lang}
     >
       <div
         className="sticky top-0 z-20 px-4 py-3 flex items-center justify-between gap-3"
         style={{
-          background: 'rgba(8,8,10,0.92)',
-          borderBottom: '1px solid rgba(255,255,255,0.07)',
+          background: 'rgba(242,248,252,0.92)',
+          borderBottom: '1px solid var(--color-border)',
           backdropFilter: 'blur(16px)',
         }}
       >
         <Link
           href="/"
-          className="inline-flex items-center gap-2 font-mono text-[15px] tracking-[0.14em] uppercase"
-          style={{ color: '#8a90a8' }}
+          className="inline-flex items-center gap-2 text-[15px] tracking-[0.14em] uppercase"
+          style={{ color: 'var(--color-text-muted)' }}
         >
           <ArrowLeft size={14} />
           {t('quiz.home')}
@@ -119,7 +119,7 @@ export default function QuizClient({ slug }) {
             <ProgressBar current={currentIndex + 1} total={questions.length} />
           </div>
         )}
-        <span className="font-mono text-[15px] tracking-[0.18em] uppercase" style={{ color: '#c9a227' }}>
+        <span className="text-[15px] tracking-[0.18em] uppercase" style={{ color: 'var(--color-primary)' }}>
           {t('quiz.title')}
         </span>
       </div>
@@ -137,25 +137,25 @@ export default function QuizClient({ slug }) {
             animate={{ opacity: 1, y: 0 }}
             className="rounded-2xl p-6 sm:p-10"
             style={{
-              background: 'rgba(10,10,16,0.98)',
-              border: '1px solid rgba(255,255,255,0.07)',
-              boxShadow: '0 24px 64px rgba(0,0,0,0.45)',
+              background: 'white',
+              border: '1px solid var(--color-border)',
+              boxShadow: '0 8px 32px rgba(156,123,172,0.12)',
             }}
           >
             <div className="flex items-center gap-2 mb-4">
-              <Sparkles className="text-[#c9a227]" size={20} />
-              <span className="font-mono text-[15px] tracking-[0.22em] uppercase" style={{ color: '#c9a227' }}>
+              <Sparkles style={{ color: 'var(--color-primary)' }} size={20} />
+              <span className="text-[15px] tracking-[0.22em] uppercase" style={{ color: 'var(--color-primary)' }}>
                 DeutAI
               </span>
             </div>
-            <h1 className="font-sans text-[24px] sm:text-[28px] font-semibold mb-2" style={{ color: '#f1d98d' }}>
+            <h1 className="font-sans text-[24px] sm:text-[28px] font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
               {title}
             </h1>
-            <p className="text-[14px] leading-relaxed mb-8" style={{ color: '#8a90a8' }}>
+            <p className="text-[14px] leading-relaxed mb-8" style={{ color: 'var(--color-text-muted)' }}>
               {meta?.description}
             </p>
 
-            <p className="font-mono text-[15px] tracking-[0.18em] uppercase mb-3" style={{ color: '#6b7088' }}>
+            <p className="text-[14px] tracking-[0.18em] uppercase mb-3" style={{ color: 'var(--color-text-muted)' }}>
               {t('quiz.difficulty')}
             </p>
             <DifficultySelector value={difficulty} onChange={setDifficulty} />
@@ -164,17 +164,17 @@ export default function QuizClient({ slug }) {
               <div
                 className="mt-6 rounded-xl p-4 text-[15px]"
                 style={{
-                  background: 'rgba(180,60,60,0.12)',
-                  border: '1px solid rgba(180,60,60,0.25)',
-                  color: '#fca5a5',
+                  background: 'rgba(204,85,85,0.07)',
+                  border: '1px solid rgba(204,85,85,0.25)',
+                  color: 'var(--color-error)',
                 }}
               >
                 {genError}
                 <button
                   type="button"
                   onClick={startQuiz}
-                  className="mt-3 block font-mono text-[14px] uppercase tracking-wider underline"
-                  style={{ color: '#f1d98d' }}
+                  className="mt-3 block text-[14px] uppercase tracking-wider underline"
+                  style={{ color: 'var(--color-primary)' }}
                 >
                   {t('quiz.retry')}
                 </button>
@@ -184,12 +184,12 @@ export default function QuizClient({ slug }) {
             <button
               type="button"
               onClick={startQuiz}
-              className="mt-8 w-full sm:w-auto font-mono text-[15px] tracking-[0.16em] uppercase py-3.5 px-10 rounded-xl"
+              className="mt-8 w-full sm:w-auto text-[15px] tracking-[0.16em] uppercase py-3.5 px-10 rounded-xl"
               style={{
-                background: 'linear-gradient(135deg, #c9a227, #e8d48a)',
-                color: '#0a0a0c',
+                background: 'var(--color-primary)',
+                color: '#121212',
                 border: 'none',
-                boxShadow: '0 4px 24px rgba(201,162,39,0.35)',
+                boxShadow: '0 4px 20px rgba(156,123,172,0.35)',
               }}
             >
               {t('quiz.start', { count: QUESTION_COUNT })}

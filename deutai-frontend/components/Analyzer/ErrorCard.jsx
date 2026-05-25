@@ -31,16 +31,16 @@ const ERROR_TYPE_COLORS = {
 };
 
 const SEVERITY_CONFIG = {
-  high:   { color: '#FF5050', bg: 'rgba(255,80,80,0.08)',  border: 'rgba(255,80,80,0.2)' },
-  medium: { color: '#F5A623', bg: 'rgba(245,166,35,0.08)', border: 'rgba(245,166,35,0.2)' },
-  low:    { color: '#60A5FA', bg: 'rgba(96,165,250,0.08)', border: 'rgba(96,165,250,0.2)' },
+  high:   { color: 'var(--color-error)', bg: 'rgba(204,85,85,0.08)',  border: 'rgba(204,85,85,0.2)' },
+  medium: { color: 'var(--color-accent)', bg: 'rgba(255,127,45,0.08)', border: 'rgba(255,127,45,0.2)' },
+  low:    { color: 'var(--color-info)', bg: 'rgba(76,177,255,0.08)', border: 'rgba(76,177,255,0.2)' },
 };
 
 // ─── Highlight specific words inside a sentence ──────────────────────────────
 function HighlightedText({ text, words, highlightColor }) {
   if (!text) return null;
   if (!words || words.length === 0) {
-    return <span style={{ color: '#bbb', fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '1.8' }}>{text}</span>;
+    return <span style={{ color: 'var(--color-text-primary)', fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '1.8' }}>{text}</span>;
   }
 
   const validWords = words.filter(Boolean).sort((a, b) => b.length - a.length);
@@ -52,7 +52,7 @@ function HighlightedText({ text, words, highlightColor }) {
     <span dir="ltr" lang="de" style={{ fontFamily: 'Inter, sans-serif', fontSize: '16px', lineHeight: '1.8', wordBreak: 'break-word' }}>
       {parts.map((part, idx) => {
         const isMatch = validWords.some(w => w.toLowerCase() === part.toLowerCase());
-        if (!isMatch) return <span key={idx} style={{ color: '#bbb' }}>{part}</span>;
+        if (!isMatch) return <span key={idx} style={{ color: 'var(--color-text-primary)' }}>{part}</span>;
         return (
           <mark key={idx} style={{
             background: `${highlightColor}18`,
@@ -94,8 +94,8 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
     <div style={{
       borderRadius: '14px',
       overflow: 'hidden',
-      border: `1px solid ${typeColor}28`,
-      background: 'rgba(20,12,12,0.95)',
+      border: '1px solid var(--color-border)',
+      background: 'white',
     }}>
       {/* ── Header ── */}
       <div style={{
@@ -104,7 +104,7 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
         gap: '10px',
         padding: '12px 18px',
         background: `${typeColor}0C`,
-        borderBottom: `1px solid ${typeColor}20`,
+        borderBottom: `1px solid var(--color-border)`,
         direction: isRtl ? 'rtl' : 'ltr',
       }}>
         {/* Color accent dot */}
@@ -170,27 +170,27 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
               fontSize: '15px',
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
-              color: '#FF6B6B',
+              color: 'var(--color-error)',
               opacity: 0.85,
               marginBottom: '8px',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
             }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#FF6B6B', flexShrink: 0 }} />
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-error)', flexShrink: 0 }} />
               {t('errorCard.before')}
             </div>
             <div style={{
               padding: '14px 16px',
               borderRadius: '10px',
-              background: 'rgba(255,107,107,0.04)',
-              border: '1px solid rgba(255,107,107,0.12)',
+              background: 'rgba(204,85,85,0.04)',
+              border: '1px solid rgba(204,85,85,0.12)',
               minHeight: '60px',
             }}>
               <HighlightedText
                 text={originalSentence}
                 words={errorWords}
-                highlightColor="#FF6B6B"
+                highlightColor="var(--color-error)"
               />
             </div>
           </div>
@@ -202,27 +202,27 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
               fontSize: '15px',
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
-              color: '#4ADE80',
+              color: 'var(--color-success)',
               opacity: 0.85,
               marginBottom: '8px',
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
             }}>
-              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#4ADE80', flexShrink: 0 }} />
+              <span style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--color-success)', flexShrink: 0 }} />
               {t('errorCard.after')}
             </div>
             <div style={{
               padding: '14px 16px',
               borderRadius: '10px',
-              background: 'rgba(74,222,128,0.04)',
-              border: '1px solid rgba(74,222,128,0.12)',
+              background: 'rgba(124,176,120,0.04)',
+              border: '1px solid rgba(124,176,120,0.12)',
               minHeight: '60px',
             }}>
               <HighlightedText
                 text={correctedSentence}
                 words={correctionWords}
-                highlightColor="#4ADE80"
+                highlightColor="var(--color-success)"
               />
             </div>
           </div>
@@ -237,9 +237,9 @@ function GroupedErrorCard({ errorType, groupErrors, originalSentence, correctedS
                 fontSize: '15px',
                 padding: '6px 14px',
                 borderRadius: '8px',
-                background: 'rgba(74,222,128,0.07)',
-                border: '1px solid rgba(74,222,128,0.18)',
-                color: '#4ADE80',
+                background: 'rgba(124,176,120,0.07)',
+                border: '1px solid rgba(124,176,120,0.18)',
+                color: 'var(--color-success)',
                 fontWeight: 600,
               }}>
                 {s}
@@ -269,8 +269,8 @@ export default function ErrorCard({ result }) {
   if (!hasAnyError || errors.length === 0) {
     return (
       <div style={{
-        background: 'rgba(5,18,5,0.85)',
-        border: '1px solid rgba(74,154,74,0.2)',
+        background: 'var(--color-bg-success-tint)',
+        border: '1px solid rgba(124,176,120,0.3)',
         borderRadius: '14px',
         padding: '20px',
         display: 'flex',
@@ -279,24 +279,24 @@ export default function ErrorCard({ result }) {
       }}>
         <div style={{
           padding: '10px', borderRadius: '10px', flexShrink: 0,
-          background: 'rgba(74,154,74,0.1)', border: '1px solid rgba(74,154,74,0.2)',
+          background: 'rgba(124,176,120,0.08)', border: '1px solid rgba(124,176,120,0.2)',
         }}>
-          <CheckCircle2 size={20} style={{ color: '#4A9A4A', display: 'block' }} />
+          <CheckCircle2 size={20} style={{ color: 'var(--color-success)', display: 'block' }} />
         </div>
         <div>
           <p style={{
             fontFamily: 'JetBrains Mono, monospace', fontSize: '15px',
-            letterSpacing: '2px', color: '#4A9A4A', fontWeight: 700,
+            letterSpacing: '2px', color: 'var(--color-success)', fontWeight: 700,
             textTransform: 'uppercase', marginBottom: '6px',
           }}>
             {t('errorCard.noError')}
           </p>
-          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px', color: '#666', lineHeight: '1.6', margin: 0 }}>
+          <p style={{ fontFamily: 'Inter, sans-serif', fontSize: '15px', color: 'var(--color-text-muted)', lineHeight: '1.6', margin: 0 }}>
             {t('errorCard.noErrorMessage')}
           </p>
           {sentence && (
             <p style={{
-              fontFamily: 'Inter, sans-serif', fontSize: '14px', color: '#4A9A4A',
+              fontFamily: 'Inter, sans-serif', fontSize: '14px', color: 'var(--color-success)',
               fontStyle: 'italic', marginTop: '10px', marginBottom: 0,
             }} dir="ltr" lang="de">
               &ldquo;{sentence}&rdquo;
@@ -322,8 +322,8 @@ export default function ErrorCard({ result }) {
 
       {/* ── Summary header ── */}
       <div style={{
-        background: 'rgba(28,8,8,0.95)',
-        border: '1px solid rgba(255,80,80,0.2)',
+        background: 'rgba(204,85,85,0.05)',
+        border: '1px solid rgba(204,85,85,0.2)',
         borderRadius: '14px',
         padding: '14px 20px',
         display: 'flex',
@@ -331,13 +331,13 @@ export default function ErrorCard({ result }) {
         gap: '12px',
         flexWrap: 'wrap',
       }}>
-        <ShieldAlert size={18} style={{ color: '#FF5050', flexShrink: 0 }} />
+        <ShieldAlert size={18} style={{ color: 'var(--color-error)', flexShrink: 0 }} />
         <span style={{
           fontFamily: 'JetBrains Mono, monospace',
           fontSize: '14px',
           letterSpacing: '1.5px',
           fontWeight: 700,
-          color: '#FF5050',
+          color: 'var(--color-error)',
           textTransform: 'uppercase',
           flex: 1,
         }}>

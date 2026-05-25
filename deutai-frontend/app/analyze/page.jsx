@@ -115,12 +115,12 @@ function AnalyzeContent() {
   if (authLoading) return null;
 
   return (
-    <div className="min-h-screen bg-[#08080a] relative" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
+    <div className="min-h-screen relative" style={{ background: 'var(--color-bg-ice)' }} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
       {/* Background accents */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
-          backgroundImage: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(212,175,55,0.04) 0%, transparent 60%)',
+          backgroundImage: 'radial-gradient(ellipse 80% 40% at 50% 0%, rgba(156,123,172,0.07) 0%, transparent 60%)',
         }}
       />
 
@@ -128,24 +128,24 @@ function AnalyzeContent() {
       <header
         className="sticky top-0 z-30 px-4 sm:px-6 py-3.5 flex items-center justify-between"
         style={{
-          background: 'rgba(8,8,12,0.88)',
+          background: 'rgba(242,248,252,0.92)',
           backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(255,255,255,0.07)',
+          borderBottom: '1px solid var(--color-border)',
           minHeight: '60px',
         }}
       >
         <div className={lang === 'ar' ? 'pr-12 sm:pr-14' : 'pl-12 sm:pl-14'}>
           <h1
-            className="text-[18px] font-bold font-mono tracking-[.16em] flex items-center gap-2"
-            style={{ color: '#D4AF37', fontFamily: 'JetBrains Mono, monospace' }}
+            className="text-[18px] font-bold tracking-[.16em] flex items-center gap-2"
+            style={{ color: 'var(--color-primary)', fontFamily: 'inherit' }}
           >
             <span
-              className="w-1.5 h-1.5 rounded-full bg-[#D4AF37] animate-pulse"
-              style={{ boxShadow: '0 0 8px rgba(212,175,55,0.8)' }}
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ background: 'var(--color-primary)', boxShadow: '0 0 8px rgba(156,123,172,0.6)' }}
             />
             DeutAI
           </h1>
-          <p className="text-[15px] text-[#4a4a58] tracking-[.26em] uppercase mt-0.5">{t('app.system404')}</p>
+          <p className="text-[13px] tracking-[.26em] uppercase mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{t('app.system404')}</p>
         </div>
 
         <div className={`flex items-center gap-2 ${lang === 'ar' ? 'pl-12 sm:pl-0' : 'pr-12 sm:pr-0'}`}>
@@ -156,15 +156,14 @@ function AnalyzeContent() {
             <Link
               key={href}
               href={href}
-              className="flex items-center gap-1.5 px-2.5 py-[7px] rounded-lg text-[14px] font-mono transition-all"
+              className="flex items-center gap-1.5 px-2.5 py-[7px] rounded-lg text-[14px] transition-all"
               style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                border: '1px solid rgba(255,255,255,0.08)',
-                background: 'rgba(255,255,255,0.03)',
-                color: '#8a8aaa',
+                border: '1px solid var(--color-border)',
+                background: 'rgba(156,123,172,0.06)',
+                color: 'var(--color-text-muted)',
               }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(212,175,55,0.35)'; e.currentTarget.style.color='#D4AF37'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.08)'; e.currentTarget.style.color='#8a8aaa'; }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(156,123,172,0.4)'; e.currentTarget.style.color='var(--color-primary)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--color-border)'; e.currentTarget.style.color='var(--color-text-muted)'; }}
             >
               <Icon size={14} />
               <span className="hidden sm:inline">{label}</span>
@@ -177,16 +176,17 @@ function AnalyzeContent() {
       {unitId && (
         <div
           className="mx-4 mt-4 px-4 py-2.5 rounded-xl flex items-center gap-2.5 relative overflow-hidden"
-          style={{ background: 'rgba(212,175,55,0.1)', border: '1px solid rgba(212,175,55,0.22)' }}
+          style={{ background: 'rgba(76,177,255,0.08)', border: '1px solid rgba(76,177,255,0.25)' }}
         >
-          <span className={`absolute top-0 bottom-0 w-1 bg-[#D4AF37]/50 ${lang === 'ar' ? 'right-0 rounded-r-xl' : 'left-0 rounded-l-xl'}`} />
-          <Crosshair size={13} className="text-[#D4AF37] flex-shrink-0" />
-          <span className="text-[14px] font-mono text-[#D4AF37]/95 tracking-wide flex-1" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <span className={`absolute top-0 bottom-0 w-1 ${lang === 'ar' ? 'right-0 rounded-r-xl' : 'left-0 rounded-l-xl'}`} style={{ background: 'var(--color-info)' }} />
+          <Crosshair size={13} style={{ color: 'var(--color-info)' }} className="flex-shrink-0" />
+          <span className="text-[14px] tracking-wide flex-1" style={{ color: 'var(--color-info)' }}>
             {t('analyze.activeUnit', { unit: unitId })}
           </span>
           <Link
             href="/analyze"
-            className="text-[#7a7a90] hover:text-[#e05252] transition-colors p-1 hover:bg-[rgba(204,85,85,0.1)] rounded-md text-sm"
+            className="transition-colors p-1 rounded-md text-sm"
+            style={{ color: 'var(--color-text-muted)' }}
             aria-label={t('analyze.removeUnit')}
           >
             ✕
@@ -201,7 +201,7 @@ function AnalyzeContent() {
         {offline && (
           <div
             className="mb-5 px-4 py-3 rounded-xl flex items-center gap-2.5 text-[15px]"
-            style={{ background: 'rgba(204,85,85,0.07)', border: '1px solid rgba(204,85,85,0.2)', color: '#e05252' }}
+            style={{ background: 'rgba(204,85,85,0.07)', border: '1px solid rgba(204,85,85,0.25)', color: 'var(--color-error)' }}
           >
             <WifiOff size={16} className="flex-shrink-0" />
             <span className="font-medium">{t('analyze.offline')}</span>
@@ -211,10 +211,10 @@ function AnalyzeContent() {
         {/* Input area */}
         <div className="mb-5">
           <div className="flex items-center gap-2 mb-2.5">
-            <span className="w-[3px] h-[11px] bg-[#C9A227] rounded-full" style={{ opacity: 0.6 }} />
+            <span className="w-[3px] h-[11px] rounded-full" style={{ background: 'var(--color-primary)', opacity: 0.7 }} />
             <label
-              className="text-[14px] font-mono tracking-[.18em] font-semibold uppercase"
-              style={{ fontFamily: 'JetBrains Mono, monospace', color: '#b8a878' }}
+              className="text-[14px] tracking-[.18em] font-semibold uppercase"
+              style={{ color: 'var(--color-text-secondary)' }}
             >
               {t('analyze.sentenceToAnalyze')}
             </label>
@@ -231,7 +231,7 @@ function AnalyzeContent() {
         {error && !scanning && (
           <div
             className="mb-5 p-4 rounded-xl text-[15px] flex flex-col gap-3"
-            style={{ background: '#140a0a', border: '1px solid rgba(204,85,85,0.2)', color: '#e05252' }}
+            style={{ background: 'rgba(204,85,85,0.06)', border: '1px solid rgba(204,85,85,0.2)', color: 'var(--color-error)' }}
           >
             <div className="flex items-start justify-between gap-3">
               <div className="flex items-start gap-2.5">
@@ -240,8 +240,8 @@ function AnalyzeContent() {
               </div>
               {retryAfter > 0 && (
                 <span
-                  className="font-mono text-sm flex-shrink-0 px-2 py-0.5 rounded"
-                  style={{ fontFamily: 'JetBrains Mono, monospace', background: 'rgba(204,85,85,0.1)' }}
+                  className="text-sm flex-shrink-0 px-2 py-0.5 rounded"
+                  style={{ background: 'rgba(204,85,85,0.12)', color: 'var(--color-error)' }}
                 >
                   {retryAfter}s
                 </span>
@@ -250,9 +250,9 @@ function AnalyzeContent() {
             {(error.includes('unavailable') || error.includes('server') || error.includes('متاح') || error.includes('Dienst') || error.includes('erreichbar')) && (
               <button
                 onClick={handleAnalyze}
-                className="flex items-center gap-1.5 self-start text-[14px] font-mono px-2 py-1 -ml-1 rounded transition-all"
-                style={{ fontFamily: 'JetBrains Mono, monospace', color: '#D4AF37' }}
-                onMouseEnter={e => { e.currentTarget.style.background='rgba(212,175,55,0.08)'; }}
+                className="flex items-center gap-1.5 self-start text-[14px] px-2 py-1 -ml-1 rounded transition-all"
+                style={{ color: 'var(--color-primary)' }}
+                onMouseEnter={e => { e.currentTarget.style.background='rgba(156,123,172,0.1)'; }}
                 onMouseLeave={e => { e.currentTarget.style.background='transparent'; }}
               >
                 <RefreshCw size={13} />
@@ -270,16 +270,14 @@ function AnalyzeContent() {
           {(result || text) && !scanning && (
             <button
               onClick={handleReset}
-              className="w-full sm:w-auto px-5 py-[14px] rounded-xl text-[15px] font-mono transition-all whitespace-nowrap"
+              className="w-full sm:w-auto px-5 py-[14px] rounded-xl text-[15px] transition-all whitespace-nowrap"
               style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                border: '1px solid rgba(255,255,255,0.1)',
-                background: 'rgba(255,255,255,0.03)',
-                color: '#8a8aaa',
-                letterSpacing: '.06em',
+                border: '1px solid var(--color-border)',
+                background: 'white',
+                color: 'var(--color-text-muted)',
               }}
-              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.15)'; e.currentTarget.style.color='#c0c0d0'; }}
-              onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; e.currentTarget.style.color='#8a8aaa'; }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(156,123,172,0.4)'; e.currentTarget.style.color='var(--color-primary)'; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor='var(--color-border)'; e.currentTarget.style.color='var(--color-text-muted)'; }}
             >
               {t('analyze.newAnalyze')}
             </button>
@@ -291,10 +289,9 @@ function AnalyzeContent() {
 
         {/* Empty state */}
         {!scanning && !result && !error && (
-          <div className="mt-14 flex flex-col items-center justify-center" style={{ opacity: 0.6 }} aria-hidden="true">
-            <div className="w-px h-10 mb-4" style={{ background: 'linear-gradient(to bottom, transparent, #C9A22760)' }} />
-            <p className="text-[14px] font-mono tracking-[.2em] flex items-center gap-1.5"
-               style={{ fontFamily: 'JetBrains Mono, monospace', color: '#9a8a5a' }}>
+          <div className="mt-14 flex flex-col items-center justify-center" style={{ opacity: 0.5 }} aria-hidden="true">
+            <div className="w-px h-10 mb-4" style={{ background: 'linear-gradient(to bottom, transparent, rgba(156,123,172,0.5))' }} />
+            <p className="text-[14px] tracking-[.2em] flex items-center gap-1.5" style={{ color: 'var(--color-text-muted)' }}>
               <ChevronRight size={13} />
               {t('analyze.waiting')}
             </p>

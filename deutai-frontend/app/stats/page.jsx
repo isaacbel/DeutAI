@@ -20,7 +20,7 @@ function PeriodSelector({ period, onChange, t }) {
   return (
     <div
       className="flex flex-wrap items-center gap-2 p-3 rounded-xl mb-4"
-      style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+      style={{ background: 'white', border: '1px solid var(--color-border)' }}
     >
       {PERIOD_OPTIONS.map(opt => {
         const active = opt.key === period;
@@ -28,16 +28,14 @@ function PeriodSelector({ period, onChange, t }) {
           <button
             key={opt.key}
             onClick={() => onChange(opt.key)}
-            className="px-3.5 py-[7px] rounded-lg text-[14px] font-mono transition-all"
+            className="px-3.5 py-[7px] rounded-lg text-[14px] transition-all"
             style={{
-              fontFamily: 'JetBrains Mono, monospace',
-              background: active ? '#201a0c' : 'rgba(255,255,255,0.02)',
-              border: `1px solid ${active ? 'rgba(111,90,31,0.7)' : 'transparent'}`,
-              color: active ? '#e5c266' : '#6a6a80',
-              letterSpacing: '.06em',
+              background: active ? 'rgba(156,123,172,0.15)' : 'transparent',
+              border: `1px solid ${active ? 'rgba(156,123,172,0.5)' : 'transparent'}`,
+              color: active ? 'var(--color-primary)' : 'var(--color-text-muted)',
             }}
-            onMouseEnter={e => { if (!active) { e.currentTarget.style.color='#b0b0c8'; e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; }}}
-            onMouseLeave={e => { if (!active) { e.currentTarget.style.color='#6a6a80'; e.currentTarget.style.borderColor='transparent'; }}}
+            onMouseEnter={e => { if (!active) { e.currentTarget.style.color='var(--color-text-primary)'; e.currentTarget.style.borderColor='var(--color-border)'; }}}
+            onMouseLeave={e => { if (!active) { e.currentTarget.style.color='var(--color-text-muted)'; e.currentTarget.style.borderColor='transparent'; }}}
           >
             {opt.label}
           </button>
@@ -52,7 +50,7 @@ function Skeleton({ h = 'h-72' }) {
     <div
       className={`${h} rounded-xl`}
       style={{
-        background: 'linear-gradient(90deg, #0f0f14 25%, #14141a 50%, #0f0f14 75%)',
+        background: 'linear-gradient(90deg, #e8eef4 25%, #f0f5f9 50%, #e8eef4 75%)',
         backgroundSize: '200% 100%',
         animation: 'shimmer 1.4s infinite',
       }}
@@ -102,13 +100,13 @@ export default function StatsPage() {
 
   return (
     <AppShell>
-      <div className="relative min-h-screen" style={{ background: '#08080a' }}>
+      <div className="relative min-h-screen" style={{ background: 'var(--color-bg-ice)' }}>
 
         {/* Background glow */}
         <div
           className="pointer-events-none absolute inset-0"
           style={{
-            background: 'radial-gradient(ellipse 70% 30% at 50% 0%, rgba(212,175,55,0.06) 0%, transparent 60%)',
+            background: 'radial-gradient(ellipse 70% 30% at 50% 0%, rgba(156,123,172,0.07) 0%, transparent 60%)',
           }}
         />
 
@@ -116,38 +114,38 @@ export default function StatsPage() {
         <header
           className="sticky top-0 z-30 px-4 sm:px-6 py-4"
           style={{
-            background: 'rgba(8,8,12,0.9)',
+            background: 'rgba(242,248,252,0.92)',
             backdropFilter: 'blur(20px)',
-            borderBottom: '1px solid rgba(255,255,255,0.07)',
+            borderBottom: '1px solid var(--color-border)',
           }}
         >
           <div className="mx-auto max-w-6xl flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span
-                  className="text-[15px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
-                  style={{ fontFamily: 'JetBrains Mono, monospace', background: '#171306', border: '1px solid #453a16', color: '#d6b354' }}
+                  className="text-[13px] font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
+                  style={{ background: 'rgba(156,123,172,0.12)', border: '1px solid rgba(156,123,172,0.3)', color: 'var(--color-primary)' }}
                 >
                   {t('stats.dashboard')}
                 </span>
                 <span
-                  className="text-[15px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
-                  style={{ fontFamily: 'JetBrains Mono, monospace', background: '#131318', border: '1px solid rgba(255,255,255,0.1)', color: '#7a7a90' }}
+                  className="text-[13px] font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
+                  style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid var(--color-border)', color: 'var(--color-text-muted)' }}
                 >
                   {PERIOD_OPTIONS.find(o => o.key === period)?.label}
                 </span>
               </div>
               <h1
-                className="font-mono text-[17px] font-bold tracking-[.18em] text-[#f0f0f8]"
-                style={{ fontFamily: 'JetBrains Mono, monospace' }}
+                className="text-[17px] font-bold tracking-[.18em]"
+                style={{ color: 'var(--color-text-primary)' }}
               >
                 {t('stats.title')}
               </h1>
-              <p className="text-[15px] uppercase tracking-[.22em] mt-1" style={{ color: '#8a8a9c' }}>
+              <p className="text-[14px] uppercase tracking-[.22em] mt-1" style={{ color: 'var(--color-text-muted)' }}>
                 {t('stats.subtitle')}
               </p>
             </div>
-            <BarChart3 size={26} className="hidden sm:block text-[#D4AF37] opacity-80" />
+            <BarChart3 size={26} className="hidden sm:block opacity-70" style={{ color: 'var(--color-primary)' }} />
           </div>
         </header>
 
@@ -162,13 +160,13 @@ export default function StatsPage() {
           {error && (
             <div
               className="flex items-center justify-between p-4 rounded-xl text-[15px]"
-              style={{ background: 'rgba(23,13,13,0.9)', border: '1px solid rgba(77,34,34,0.7)', color: '#f08e8e' }}
+              style={{ background: 'rgba(204,85,85,0.06)', border: '1px solid rgba(204,85,85,0.2)', color: 'var(--color-error)' }}
             >
               <span>⚠ {error}</span>
               <button
                 onClick={() => loadStats()}
-                className="flex items-center gap-1.5 text-[14px] font-mono px-3 py-1.5 rounded-lg transition-all"
-                style={{ fontFamily: 'JetBrains Mono, monospace', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#c0c0d0' }}
+                className="flex items-center gap-1.5 text-[14px] px-3 py-1.5 rounded-lg transition-all"
+                style={{ background: 'white', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
               >
                 <RefreshCw size={13} />
                 {t('stats.retry')}
@@ -191,13 +189,13 @@ export default function StatsPage() {
           ) : !hasData ? (
             <div
               className="flex flex-col items-center justify-center gap-4 py-16 text-center rounded-xl"
-              style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)' }}
+              style={{ background: 'white', border: '1px solid var(--color-border)' }}
             >
-              <Sparkles size={34} className="text-[#D4AF37] opacity-60" />
-              <p className="font-mono text-[15px] text-[#c8c8d8]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+              <Sparkles size={34} className="opacity-60" style={{ color: 'var(--color-primary)' }} />
+              <p className="text-[15px]" style={{ color: 'var(--color-text-primary)' }}>
                 {t('stats.noAnalysis')}
               </p>
-              <p className="text-[14px] text-[#5a5a70]">{t('stats.startAnalysisPrompt')}</p>
+              <p className="text-[14px]" style={{ color: 'var(--color-text-muted)' }}>{t('stats.startAnalysisPrompt')}</p>
             </div>
           ) : (
             <>
@@ -209,18 +207,18 @@ export default function StatsPage() {
                 {/* Error type chart */}
                 <div
                   className="xl:col-span-3 rounded-xl overflow-hidden"
-                  style={{ background: '#0d0d12', border: '1px solid rgba(255,255,255,0.07)' }}
+                  style={{ background: 'white', border: '1px solid var(--color-border)' }}
                 >
-                  <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid var(--color-border)' }}>
                     <div>
-                      <p className="font-mono text-[15px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                      <p className="text-[15px] font-semibold" style={{ color: 'var(--color-text-primary)' }}>
                         {t('stats.errorsByType')}
                       </p>
-                      <p className="text-[14px] text-[#5a5a70] mt-0.5 tracking-wide">{t('stats.errorsByTypeMethod')}</p>
+                      <p className="text-[13px] mt-0.5 tracking-wide" style={{ color: 'var(--color-text-muted)' }}>{t('stats.errorsByTypeMethod')}</p>
                     </div>
                     <span
-                      className="text-[15px] font-mono font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
-                      style={{ fontFamily: 'JetBrains Mono, monospace', background: '#131318', border: '1px solid rgba(255,255,255,0.1)', color: '#7a7a90' }}
+                      className="text-[12px] font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
+                      style={{ background: 'rgba(0,0,0,0.04)', border: '1px solid var(--color-border)', color: 'var(--color-text-muted)' }}
                     >
                       {t('stats.typesLabel')}
                     </span>
@@ -233,18 +231,18 @@ export default function StatsPage() {
                 {/* Evolution chart */}
                 <div
                   className="xl:col-span-2 rounded-xl overflow-hidden"
-                  style={{ background: '#0d0d12', border: '1px solid rgba(255,255,255,0.07)' }}
+                  style={{ background: 'white', border: '1px solid var(--color-border)' }}
                 >
-                  <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid var(--color-border)' }}>
                     <div>
-                      <p className="font-mono text-[15px] font-semibold text-[#e0e0ec]" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                      <p className="text-[15px] font-semibold" style={{ color: 'var(--color-text-primary)' }}>
                         {t('stats.analysisActivity')}
                       </p>
-                      <p className="text-[14px] text-[#5a5a70] mt-0.5 tracking-wide">
+                      <p className="text-[13px] mt-0.5 tracking-wide" style={{ color: 'var(--color-text-muted)' }}>
                         {t('stats.dailyVolume', { period: PERIOD_OPTIONS.find(o => o.key === period)?.label })}
                       </p>
                     </div>
-                    <TrendingUp size={17} className="text-[#D4AF37] opacity-70 flex-shrink-0" />
+                    <TrendingUp size={17} className="opacity-70 flex-shrink-0" style={{ color: 'var(--color-primary)' }} />
                   </div>
                   <div className="p-5">
                     <EvolutionChart data={stats.evolution} period={period} />

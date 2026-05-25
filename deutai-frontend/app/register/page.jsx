@@ -30,15 +30,14 @@ export default function RegisterPage() {
   if (!ready) return null;
 
   return (
-    <div className="min-h-screen bg-black flex flex-col justify-center px-4 py-12 relative overflow-hidden" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
+    <div className="min-h-screen flex flex-col justify-center px-4 py-12 relative overflow-hidden" style={{ background: 'var(--color-bg-ice)' }} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
       <div className={`absolute top-4 z-20 ${lang === 'ar' ? 'left-4' : 'right-4'}`}>
         <LanguageSwitcher isMobile={true} />
       </div>
-      {/* Background patterns */}
-      <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black pointer-events-none" />
+      {/* Background pattern */}
+      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(156,123,172,0.12) 0%, transparent 70%)' }} />
       {/* Fix #20 — blob position mirrors correctly in RTL */}
-      <div className={`absolute top-[-100px] ${lang === 'ar' ? 'left-[-100px]' : 'right-[-100px]'} w-64 h-64 bg-gold opacity-10 blur-3xl rounded-full`} />
+      <div className={`absolute top-[-100px] ${lang === 'ar' ? 'left-[-100px]' : 'right-[-100px]'} w-64 h-64 rounded-full blur-3xl`} style={{ background: 'rgba(156,123,172,0.15)' }} />
 
       <div className="w-full max-w-sm mx-auto relative z-10">
         <div className="text-center mb-10">

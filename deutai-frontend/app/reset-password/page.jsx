@@ -62,8 +62,8 @@ function ResetPasswordForm() {
     return (
       <div className="flex flex-col gap-4 text-center">
         <div
-          className="px-4 py-4 rounded-lg text-sm text-error flex flex-col items-center gap-2"
-          style={{ background: '#1A0A0A', border: '1px solid #3A1A1A' }}
+          className="px-4 py-4 rounded-lg text-sm flex flex-col items-center gap-2"
+          style={{ background: 'rgba(220,100,80,0.06)', border: '1px solid rgba(220,100,80,0.20)', color: 'var(--color-error)' }}
         >
           <span className="text-2xl">⚠</span>
           <span>{t('resetPassword.missingLink')}</span>
@@ -90,8 +90,8 @@ function ResetPasswordForm() {
 
       {status === 'error' && (
         <div
-          className="px-4 py-3 rounded-lg text-sm text-error flex items-start gap-2"
-          style={{ background: '#1A0A0A', border: '1px solid #3A1A1A' }}
+          className="px-4 py-3 rounded-lg text-sm flex items-start gap-2"
+          style={{ background: 'rgba(220,100,80,0.06)', border: '1px solid rgba(220,100,80,0.20)', color: 'var(--color-error)' }}
         >
           <span>⚠</span>
           <span>{message}</span>
@@ -152,7 +152,7 @@ function ResetPasswordForm() {
         </>
       )}
 
-      <Link href="/login" className="text-sm text-center text-text-muted hover:text-gold transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
+      <Link href="/login" className="text-sm text-center transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif', color: 'var(--color-text-muted)' }}>
         {t('resetPassword.backToLogin')}
       </Link>
     </form>
@@ -162,7 +162,7 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
   const { t } = useLanguage();
   return (
-    <div className="min-h-screen bg-black flex flex-col justify-center px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col justify-center px-4 py-12 relative overflow-hidden" style={{ background: 'var(--color-bg-ice)' }}>
       <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
       <div className="w-full max-w-sm mx-auto relative z-10">
         <div className="text-center mb-10">

@@ -56,8 +56,8 @@ export default function RegisterForm() {
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       {error && (
         <div
-          className="px-4 py-3 rounded-lg text-sm text-error"
-          style={{ background: '#1A0A0A', border: '1px solid #3A1A1A', animation: 'fadeIn 0.3s ease-out' }}
+          className="px-4 py-3 rounded-lg text-sm flex items-start gap-2"
+          style={{ background: 'rgba(220,100,80,0.06)', border: '1px solid rgba(220,100,80,0.20)', color: 'var(--color-error)', animation: 'fadeIn 0.3s ease-out' }}
         >
           ⚠ {error}
         </div>
@@ -118,7 +118,7 @@ export default function RegisterForm() {
           className="input-dark px-4 py-3 text-sm"
           style={{
             fontFamily: 'Inter, sans-serif',
-            borderColor: confirm && password !== confirm ? '#CC5555' : undefined,
+            borderColor: confirm && password !== confirm ? 'var(--color-error)' : undefined,
           }}
         />
       </div>
@@ -144,7 +144,7 @@ export default function RegisterForm() {
 
       <p className="text-sm text-center text-text-muted" style={{ fontFamily: 'Inter, sans-serif' }}>
         {t('auth.alreadyRegistered')}{' '}
-        <Link href="/login" className="text-gold hover:underline">
+        <Link href="/login" className="hover:underline" style={{ color: 'var(--color-primary)' }}>
           {t('landing.signIn')}
         </Link>
       </p>

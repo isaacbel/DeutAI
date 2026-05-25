@@ -93,9 +93,9 @@ export default function QRScanner({ onDetected, onError }) {
     return (
       <div
         className="rounded-xl p-6 text-center"
-        style={{ background: '#1A0A0A', border: '1px solid #3A1A1A' }}
+        style={{ background: 'rgba(220,100,80,0.06)', border: '1px solid rgba(220,100,80,0.20)' }}
       >
-        <p className="text-sm text-error mb-4">⚠ {permissionError}</p>
+        <p className="text-sm mb-4" style={{ color: 'var(--color-error)' }}>⚠ {permissionError}</p>
         <button onClick={startScanner} className="btn-gold px-6 py-2 text-sm">
           ↺ {t('scanner.retry')}
         </button>
@@ -107,7 +107,7 @@ export default function QRScanner({ onDetected, onError }) {
     <div className="flex flex-col gap-4">
       <div
         className="relative rounded-xl overflow-hidden"
-        style={{ border: '1px solid #2a2a2a', aspectRatio: '1 / 1' }}
+        style={{ border: '1px solid var(--color-border)', aspectRatio: '1 / 1' }}
       >
         <video
           ref={videoRef}
@@ -130,7 +130,7 @@ export default function QRScanner({ onDetected, onError }) {
               <div
                 key={i}
                 className={`absolute w-8 h-8 border-gold ${cls}`}
-                style={{ borderColor: '#D4AF37' }}
+                style={{ borderColor: 'var(--color-primary)' }}
               />
             ))}
             {/* Scan line */}
@@ -140,8 +140,8 @@ export default function QRScanner({ onDetected, onError }) {
                 left: 0,
                 right: 0,
                 height: '2px',
-                background: 'linear-gradient(90deg, transparent, #D4AF37, transparent)',
-                boxShadow: '0 0 10px rgba(212,175,55,0.6)',
+                background: 'linear-gradient(90deg, transparent, var(--color-primary), transparent)',
+                boxShadow: '0 0 10px rgba(156,123,172,0.4)',
                 animation: 'scanLineLoop 2s ease-in-out infinite',
               }}
             />

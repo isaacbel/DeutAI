@@ -110,19 +110,19 @@ export default function NotebookPage() {
 
   return (
     <AppShell>
-      <div className="min-h-screen bg-black relative" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
-        <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
+      <div className="min-h-screen relative" style={{ background: 'var(--color-bg-ice)' }} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
+        <div className="absolute inset-0 grid-scan-bg opacity-100 pointer-events-none" />
 
         {/* Header */}
         <header
           className="sticky top-0 z-30 px-4 py-3 flex items-center gap-3"
-          style={{ background: 'rgba(0,0,0,0.9)', backdropFilter: 'blur(12px)', borderBottom: '1px solid #1a1a1a' }}
+          style={{ background: 'rgba(242,248,252,0.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--color-border)' }}
         >
-          <Link href="/analyze" className="text-text-muted hover:text-gold transition-colors text-sm">
+          <Link href="/analyze" className="text-text-muted hover:text-primary transition-colors text-sm">
             ←
           </Link>
           <div>
-            <h1 className="text-sm font-bold text-gold font-mono" style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '2px' }}>
+            <h1 className="text-sm font-bold" style={{ color: 'var(--color-primary)', letterSpacing: '2px' }}>
               {t('notebook.title')}
             </h1>
             <p className="system-subtitle" style={{ fontSize: '8px', letterSpacing: '2px' }}>{t('notebook.subtitle')}</p>
@@ -140,13 +140,12 @@ export default function NotebookPage() {
               <div key={s.key} className="flex-1 text-center">
                 <div
                   className="h-0.5 rounded-full mb-1 transition-all duration-500"
-                  style={{ background: isDone ? '#D4AF37' : isActive ? '#D4AF37' : '#2a2a2a' }}
+                  style={{ background: isDone ? 'var(--color-primary)' : isActive ? 'var(--color-primary)' : 'var(--color-border)' }}
                 />
                 <span
-                  className="text-[15px] font-mono tracking-wider"
+                  className="text-[11px] tracking-wider"
                   style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    color: isActive || isDone ? '#D4AF37' : '#444',
+                    color: isActive || isDone ? 'var(--color-primary)' : 'var(--color-text-muted)',
                   }}
                 >
                   {s.label}
@@ -159,7 +158,7 @@ export default function NotebookPage() {
         {/* Content */}
         <div className="px-4 py-4 max-w-2xl mx-auto">
           {error && (
-            <div className="mb-4 px-4 py-3 rounded-lg text-sm text-error" style={{ background: '#1A0A0A', border: '1px solid #3A1A1A' }}>
+            <div className="mb-4 px-4 py-3 rounded-lg text-sm text-error" style={{ background: 'rgba(204,85,85,0.06)', border: '1px solid rgba(204,85,85,0.2)' }}>
               ⚠ {error}
             </div>
           )}
@@ -193,15 +192,15 @@ export default function NotebookPage() {
             <div className="flex flex-col gap-5">
               <div className="mb-2">
                 <div className="flex items-center gap-2 mb-2.5">
-                  <span className="w-[3px] h-[11px] bg-[#4a4a60] rounded-full" />
+                  <span className="w-[3px] h-[11px] rounded-full" style={{ background: 'var(--color-primary)', opacity: 0.7 }} />
                   <label
-                    className="text-[15px] font-mono text-[#6a6a80] tracking-[.18em] font-semibold uppercase"
-                    style={{ fontFamily: 'JetBrains Mono, monospace' }}
+                    className="text-[14px] tracking-[.18em] font-semibold uppercase"
+                    style={{ color: 'var(--color-text-secondary)' }}
                   >
                     {t('analyze.sentenceToAnalyze')}
                   </label>
                 </div>
-                <div className="px-4 py-3 text-sm rounded-xl" style={{ fontFamily: 'Inter, sans-serif', background: 'rgba(20,20,20,0.5)', border: '1px solid rgba(255,255,255,0.05)', color: '#a0a0b0' }}>
+                <div className="px-4 py-3 text-sm rounded-xl" style={{ background: 'white', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)' }}>
                   {result.input}
                 </div>
               </div>
@@ -209,16 +208,14 @@ export default function NotebookPage() {
               <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={handleReset}
-                  className="px-4 py-[14px] rounded-xl text-[14px] font-mono transition-all whitespace-nowrap sm:w-auto w-full text-center"
+                  className="px-4 py-[14px] rounded-xl text-[14px] transition-all whitespace-nowrap sm:w-auto w-full text-center"
                   style={{
-                    fontFamily: 'JetBrains Mono, monospace',
-                    border: '1px solid rgba(255,255,255,0.1)',
-                    background: 'rgba(255,255,255,0.03)',
-                    color: '#8a8aaa',
-                    letterSpacing: '.06em',
+                    border: '1px solid var(--color-border)',
+                    background: 'white',
+                    color: 'var(--color-text-muted)',
                   }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.15)'; e.currentTarget.style.color='#c0c0d0'; }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor='rgba(255,255,255,0.1)'; e.currentTarget.style.color='#8a8aaa'; }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor='rgba(156,123,172,0.4)'; e.currentTarget.style.color='var(--color-primary)'; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor='var(--color-border)'; e.currentTarget.style.color='var(--color-text-muted)'; }}
                 >
                   {t('analyze.newAnalyze')}
                 </button>

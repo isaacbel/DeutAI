@@ -20,7 +20,7 @@ export default function TextInput({ value, onChange, disabled }) {
         style={{
           background: isOver
             ? 'rgba(204,85,85,0.12)'
-            : 'rgba(212,175,55,0.07)',
+            : 'rgba(156,123,172,0.08)',
           borderRadius: 'inherit',
           filter: 'blur(6px)',
         }}
@@ -38,19 +38,19 @@ export default function TextInput({ value, onChange, disabled }) {
           rows={5}
           className="w-full px-5 py-4 text-[15px] resize-none rounded-xl outline-none transition-all duration-200"
           style={{
-            background: '#131318',
-            border: `1px solid ${isOver ? 'rgba(204,85,85,0.5)' : 'rgba(52,52,72,0.9)'}`,
-            color: '#e8e8f4',
+            background: 'white',
+            border: `1px solid ${isOver ? 'rgba(204,85,85,0.5)' : 'var(--color-border)'}`,
+            color: 'var(--color-text-primary)',
             fontFamily: 'Inter, sans-serif',
             lineHeight: 1.75,
-            caretColor: '#D4AF37',
+            caretColor: 'var(--color-primary)',
             textAlign: 'left',
           }}
           onFocus={e => {
-            if (!isOver) e.target.style.borderColor = 'rgba(212,175,55,0.4)';
+            if (!isOver) e.target.style.borderColor = 'var(--color-primary)';
           }}
           onBlur={e => {
-            e.target.style.borderColor = isOver ? 'rgba(204,85,85,0.5)' : 'rgba(52,52,72,0.9)';
+            e.target.style.borderColor = isOver ? 'rgba(204,85,85,0.5)' : 'var(--color-border)';
           }}
         />
 
@@ -58,7 +58,7 @@ export default function TextInput({ value, onChange, disabled }) {
         <PenLine
           size={15}
           className="absolute right-4 top-4 pointer-events-none transition-colors duration-200"
-          style={{ color: 'rgba(212,175,55,0.2)' }}
+          style={{ color: 'rgba(156,123,172,0.25)' }}
         />
       </div>
 
@@ -68,7 +68,7 @@ export default function TextInput({ value, onChange, disabled }) {
           className="text-[15px] font-mono transition-all"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
-            color: isOver ? '#CC5555' : 'transparent',
+            color: isOver ? 'var(--color-error)' : 'transparent',
             userSelect: 'none',
           }}
         >
@@ -78,8 +78,8 @@ export default function TextInput({ value, onChange, disabled }) {
           className="text-[15px] font-mono tabular-nums tracking-wider px-2 py-0.5 rounded transition-all"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
-            color: isOver ? '#CC5555' : isWarn ? '#D4AF37' : '#a0a0b8',
-            background: isOver ? 'rgba(204,85,85,0.08)' : isWarn ? 'rgba(212,175,55,0.08)' : 'transparent',
+            color: isOver ? 'var(--color-error)' : isWarn ? 'var(--color-accent)' : 'var(--color-text-muted)',
+            background: isOver ? 'rgba(204,85,85,0.08)' : isWarn ? 'rgba(255,127,45,0.08)' : 'transparent',
           }}
         >
           {count} / {MAX_CHARS}

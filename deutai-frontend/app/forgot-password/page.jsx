@@ -36,8 +36,8 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col justify-center px-4 py-12 relative overflow-hidden">
-      <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
+    <div className="min-h-screen flex flex-col justify-center px-4 py-12 relative overflow-hidden" style={{ background: 'var(--color-bg-ice)' }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'radial-gradient(ellipse 70% 50% at 50% 0%, rgba(156,123,172,0.12) 0%, transparent 70%)' }} />
       <div className="w-full max-w-sm mx-auto relative z-10">
         <div className="text-center mb-10">
           <h1
@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
             {status === 'success' && (
               <div
                 className="px-4 py-3 rounded-lg text-sm flex items-start gap-2"
-                style={{ background: 'rgba(74,154,74,0.1)', border: '1px solid rgba(74,154,74,0.3)', color: '#4A9A4A' }}
+                style={{ background: 'rgba(124,176,120,0.10)', border: '1px solid rgba(124,176,120,0.30)', color: 'var(--color-success)' }}
               >
                 <span>✓</span>
                 <span>{message}</span>
@@ -66,7 +66,7 @@ export default function ForgotPasswordPage() {
             {status === 'error' && (
               <div
                 className="px-4 py-3 rounded-lg text-sm text-error flex items-start gap-2"
-                style={{ background: '#1A0A0A', border: '1px solid #3A1A1A' }}
+                style={{ background: 'rgba(204,85,85,0.06)', border: '1px solid rgba(204,85,85,0.2)' }}
               >
                 <span>⚠</span>
                 <span>{message}</span>
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
               {loading ? t('auth.sending') : t('auth.sendLink')}
             </button>
 
-            <Link href="/login" className="text-sm text-center text-text-muted hover:text-gold transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif' }}>
+            <Link href="/login" className="text-sm text-center text-text-muted hover:text-primary transition-colors mt-2">
               {t('auth.backToLogin')}
             </Link>
           </form>

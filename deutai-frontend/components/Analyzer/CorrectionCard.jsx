@@ -28,7 +28,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
 
     if (!tokens.length) {
       return (
-        <p className="text-lg md:text-2xl" dir="ltr" lang="de" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)', textAlign: isRtl ? 'left' : undefined }}>
+        <p className="text-lg md:text-2xl" dir="ltr" lang="de" style={{ ...paragraphStyle, color: 'var(--color-text-primary)', textAlign: isRtl ? 'left' : undefined }}>
           {originalSentence}
         </p>
       );
@@ -38,7 +38,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
     const parts = originalSentence.split(pattern);
 
     return (
-      <p className="text-lg md:text-2xl" dir="ltr" lang="de" style={{ ...paragraphStyle, color: 'rgba(234,234,234,0.72)', textAlign: isRtl ? 'left' : undefined }}>
+      <p className="text-lg md:text-2xl" dir="ltr" lang="de" style={{ ...paragraphStyle, color: 'var(--color-text-primary)', textAlign: isRtl ? 'left' : undefined }}>
         {parts.map((part, idx) => {
           const isError = errors.some((err) => err?.errorText?.toLowerCase() === part.toLowerCase());
           if (!isError) return <span key={idx}>{part}</span>;
@@ -47,9 +47,9 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
             <span
               key={idx}
               style={{
-                color: '#FF8080',
+                color: 'var(--color-error)',
                 textDecoration: 'line-through',
-                textDecorationColor: 'rgba(255,128,128,0.8)',
+                textDecorationColor: 'rgba(204,85,85,0.8)',
                 textDecorationThickness: '2px',
               }}
             >
@@ -65,42 +65,24 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
     <div
       className="relative overflow-hidden"
       style={{
-        background: 'linear-gradient(150deg, rgba(24,24,24,0.94), rgba(18,18,18,0.94))',
-        border: '1px solid rgba(212,175,55,0.22)',
+        background: 'white',
+        border: '1px solid var(--color-border)',
         borderRadius: '24px',
         padding: '28px',
-        boxShadow: '0 10px 36px rgba(0,0,0,0.42), 0 0 0 1px rgba(212,175,55,0.03) inset',
+        boxShadow: '0 4px 24px rgba(156, 123, 172, 0.06)',
         backdropFilter: 'blur(10px)',
       }}
     >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'linear-gradient(130deg, rgba(212,175,55,0.13), transparent 42%, transparent 70%, rgba(255,255,255,0.03))',
-          borderRadius: '24px',
-        }}
-      />
-
-      <div
-        className="absolute inset-0 pointer-events-none opacity-20"
-        style={{
-          borderRadius: '24px',
-          backgroundImage: 'repeating-radial-gradient(circle at 0 0, rgba(255,255,255,0.08) 0 0.8px, transparent 0.8px 2px)',
-          backgroundSize: '3px 3px',
-          mixBlendMode: 'soft-light',
-        }}
-      />
-
       <div className="flex items-center gap-3 mb-6 relative z-10">
         <div
           className="p-1.5 rounded-lg"
-          style={{ background: 'rgba(212,175,55,0.12)', border: '1px solid rgba(212,175,55,0.25)' }}
+          style={{ background: 'rgba(156, 123, 172, 0.08)', border: '1px solid rgba(156, 123, 172, 0.25)' }}
         >
-          <Sparkles size={16} className="text-gold" />
+          <Sparkles size={16} style={{ color: 'var(--color-primary)' }} />
         </div>
         <span
           className="text-base uppercase font-semibold"
-          style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.2em', color: '#E3C66F' }}
+          style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.2em', color: 'var(--color-primary)' }}
         >
           {t('errorCard.correction')}
         </span>
@@ -115,9 +97,9 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
               textTransform: 'uppercase',
               padding: '5px 11px',
               borderRadius: '999px',
-              color: '#E3C66F',
-              border: '1px solid rgba(212,175,55,0.32)',
-              background: 'rgba(212,175,55,0.14)',
+              color: 'var(--color-primary)',
+              border: '1px solid rgba(156, 123, 172, 0.25)',
+              background: 'rgba(156, 123, 172, 0.06)',
             }}
           >
             {t('errorCard.fixCount', { count: errors.length })}
@@ -139,7 +121,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
                 fontSize: '15px',
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
-                color: '#FF6B6B',
+                color: 'var(--color-error)',
                 marginBottom: '10px',
               }}
             >
@@ -148,8 +130,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
             <div
               style={{
                 borderRadius: '16px',
-                background: 'rgba(255,107,107,0.12)',
-                border: '1px solid rgba(255,107,107,0.25)',
+                background: 'rgba(204, 85, 85, 0.04)',
+                border: '1px solid rgba(204, 85, 85, 0.12)',
                 padding: '16px 18px',
                 height: '100%',
               }}
@@ -167,7 +149,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
                 fontSize: '15px',
                 letterSpacing: '0.18em',
                 textTransform: 'uppercase',
-                color: '#4ADE80',
+                color: 'var(--color-success)',
                 marginBottom: '10px',
               }}
             >
@@ -176,8 +158,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
             <div
               style={{
                 borderRadius: '16px',
-                background: 'rgba(74,222,128,0.12)',
-                border: '1px solid rgba(74,222,128,0.25)',
+                background: 'rgba(124, 176, 120, 0.04)',
+                border: '1px solid rgba(124, 176, 120, 0.12)',
                 padding: '16px 18px',
                 height: '100%',
               }}
@@ -189,8 +171,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
                 dir="ltr"
                 style={{
                   ...paragraphStyle,
-                  color: '#86EFAC',
-                  textShadow: '0 0 22px rgba(74,222,128,0.15)',
+                  color: 'var(--color-success)',
                   textAlign: isRtl ? 'left' : undefined,
                 }}
               >
@@ -206,7 +187,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
           className="relative z-10"
           style={{
             marginTop: '4px',
-            borderTop: '1px solid rgba(212,175,55,0.14)',
+            borderTop: '1px solid var(--color-border)',
             paddingTop: '14px',
             display: 'grid',
             gap: '8px',
@@ -230,25 +211,25 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
               <span
                 style={{
                   fontSize: '16px',
-                  color: '#FF6B6B',
+                  color: 'var(--color-error)',
                   textDecoration: 'line-through',
-                  textDecorationColor: 'rgba(255,107,107,0.8)',
+                  textDecorationColor: 'rgba(204, 85, 85, 0.8)',
                   textDecorationThickness: '2px',
-                  background: 'rgba(255,107,107,0.12)',
-                  border: '1px solid rgba(255,107,107,0.25)',
+                  background: 'rgba(204, 85, 85, 0.04)',
+                  border: '1px solid rgba(204, 85, 85, 0.15)',
                   padding: '6px 12px',
                   borderRadius: '8px',
                 }}
               >
                 {err.errorText}
               </span>
-              <span style={{ color: 'rgba(212,175,55,0.55)', fontSize: '18px' }}>→</span>
+              <span style={{ color: 'var(--color-primary)', fontSize: '18px' }}>→</span>
               <span
                 style={{
                   fontSize: '16px',
-                  color: '#4ADE80',
-                  background: 'rgba(74,222,128,0.12)',
-                  border: '1px solid rgba(74,222,128,0.25)',
+                  color: 'var(--color-success)',
+                  background: 'rgba(124, 176, 120, 0.07)',
+                  border: '1px solid rgba(124, 176, 120, 0.18)',
                   padding: '6px 12px',
                   borderRadius: '8px',
                   fontWeight: 600,
