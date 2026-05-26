@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { flushSync } from 'react-dom';
-import { register } from '@/lib/api';
+import { register, login as apiLogin } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
@@ -16,6 +16,7 @@ export default function RegisterForm() {
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -28,6 +29,7 @@ export default function RegisterForm() {
       return;
     }
     setError('');
+    setSuccess('');
     setLoading(true);
     try {
       const res = await register(email, password);
@@ -36,15 +38,30 @@ export default function RegisterForm() {
         setError(data.message || t('auth.errorUnableToCreateAccount'));
         return;
       }
-      if (data.access_token) {
-        flushSync(() => {
-          login(data.access_token, data.refresh_token);
-        });
-        router.replace('/analyze');
-      } else {
-        // Auto-login not provided — redirect to login
-        router.replace('/login');
+
+      // Show success notification
+      setSuccess(t('auth.successAccountCreated') || 'Account created successfully! Logging in...');
+
+      // Attempt auto-login
+      try {
+        const loginRes = await apiLogin(email, password);
+        const loginData = await loginRes.json().catch(() => ({}));
+        if (loginRes.ok && loginData.access_token) {
+          // Stagger slightly so they see the success message
+          await new Promise((resolve) => setTimeout(resolve, 1200));
+          flushSync(() => {
+            login(loginData.access_token, loginData.refresh_token);
+          });
+          router.replace('/analyze');
+          return;
+        }
+      } catch (loginErr) {
+        console.error('Auto-login failed:', loginErr);
       }
+
+      // Fallback: if auto-login fails, redirect to login page after 1.5s
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      router.replace('/login');
     } catch {
       setError(t('auth.errorCannotReachServer'));
     } finally {
@@ -60,6 +77,15 @@ export default function RegisterForm() {
           style={{ background: 'rgba(220,100,80,0.06)', border: '1px solid rgba(220,100,80,0.20)', color: 'var(--color-error)', animation: 'fadeIn 0.3s ease-out' }}
         >
           ⚠ {error}
+        </div>
+      )}
+
+      {success && (
+        <div
+          className="px-4 py-3 rounded-lg text-sm flex items-start gap-2"
+          style={{ background: 'rgba(74,184,112,0.06)', border: '1px solid rgba(74,184,112,0.20)', color: 'var(--color-success, #7CB078)', animation: 'fadeIn 0.3s ease-out' }}
+        >
+          ✓ {success}
         </div>
       )}
 
