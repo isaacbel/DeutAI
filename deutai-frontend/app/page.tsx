@@ -524,6 +524,33 @@ export default function RootPage() {
           fontSize: '22px',
         }}>✨</div>
 
+        {/* Up / Above Logo: Headphones (Audio / Listening AI) */}
+        <div className="orbit-icon" style={{
+          top: 'calc(50% - 460px)', left: 'calc(50% - 28px)',
+          width: '56px', height: '56px',
+          background: 'rgba(76,177,255,0.1)', border: '1px solid rgba(76,177,255,0.2)',
+          animation: 'float-b 5s ease-in-out infinite 0.2s',
+          fontSize: '24px',
+        }}>🎧</div>
+
+        {/* Close Left of Logo: Lightning (Speed / Efficiency) */}
+        <div className="orbit-icon" style={{
+          top: 'calc(50% - 260px)', left: 'calc(50% - 220px)',
+          width: '52px', height: '52px',
+          background: 'rgba(255,127,45,0.1)', border: '1px solid rgba(255,127,45,0.2)',
+          animation: 'float-pulse 3.5s ease-in-out infinite 0.1s',
+          fontSize: '22px',
+        }}>⚡</div>
+
+        {/* Close Right of Logo: Pencil/Notebook (Writing / Practice) */}
+        <div className="orbit-icon" style={{
+          top: 'calc(50% - 270px)', left: 'calc(50% + 170px)',
+          width: '54px', height: '54px',
+          background: 'rgba(74,184,112,0.1)', border: '1px solid rgba(74,184,112,0.2)',
+          animation: 'float-c 5.5s ease-in-out infinite 0.6s',
+          fontSize: '24px',
+        }}>📝</div>
+
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
           {/* marginBottom reduced from 28px → 12px; logo size reduced from 400px → 280px */}
           <div className="hero-1" style={{ marginBottom: '12px', filter: 'drop-shadow(0 0 60px rgba(156,123,172,0.18))' }}>
