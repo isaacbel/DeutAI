@@ -4,8 +4,8 @@
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
-// Fix #27 — wrap fetch with a configurable timeout
-function fetchWithTimeout(url, options = {}, ms = 15000) {
+// Fix #27 — wrap fetch with a configurable timeout. Set to 60000 to handle Render cold starts.
+function fetchWithTimeout(url, options = {}, ms = 60000) {
   const ctrl = new AbortController();
   const id = setTimeout(() => ctrl.abort(), ms);
   return fetch(url, { ...options, signal: ctrl.signal }).finally(() => clearTimeout(id));

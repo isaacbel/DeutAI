@@ -38,6 +38,9 @@ export function AuthProvider({ children }) {
   const router = useRouter();
 
   useEffect(() => {
+    // Wake up Render backend immediately on app load
+    fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001') + '/ping').catch(() => {});
+
     const token = localStorage.getItem('access_token');
     if (!token || !isTokenValid(token)) {
       if (token) localStorage.removeItem('access_token');
@@ -105,6 +108,9 @@ export function useAuthStandalone(redirectIfUnauthenticated = true) {
   const routerRef = useRef(router);
 
   useEffect(() => {
+    // Wake up Render backend immediately
+    fetch((process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001') + '/ping').catch(() => {});
+
     const token = localStorage.getItem('access_token');
     if (!token || !isTokenValid(token)) {
       if (token) localStorage.removeItem('access_token');
