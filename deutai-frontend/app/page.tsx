@@ -28,7 +28,7 @@ const FEATURES_DE = [
   {
     icon: '📊',
     title: 'Persönliche Statistiken',
-    desc: 'Verfolgen Sie Ihren Fortschritt über 30 Tage und identifizieren Sie Ihre häufigsten Fehler.',
+    desc: 'Verfolgen Sie Ihren Fortschritt und identifizieren Sie Ihre häufigsten Fehler.',
     color: '#B95DE0',
   },
   {
@@ -55,7 +55,7 @@ const FEATURES_AR = [
   { icon: '⚡', title: 'تحليل فوري', desc: 'اكتشاف الأخطاء النحوية مباشرة عبر سلسلة مزودي الذكاء الاصطناعي.', color: '#C9A227' },
   { icon: '🔬', title: '27 نوعا من الأخطاء', desc: 'تصنيف شامل: التصريف، الإعراب، ترتيب الكلمات، والأفعال المنفصلة وغيرها.', color: '#55C4E0' },
   { icon: '🃏', title: 'بطاقات مراجعة تلقائية', desc: 'كل خطأ ينتج بطاقة مراجعة مع التصحيح والقاعدة وصياغات طبيعية.', color: '#4AB870' },
-  { icon: '📊', title: 'إحصاءات شخصية', desc: 'تابع تقدمك خلال 30 يوما وحدد أخطاءك الأكثر تكرارا.', color: '#B95DE0' },
+  { icon: '📊', title: 'إحصاءات شخصية', desc: 'تابع تقدمك وحدد أخطاءك الأكثر تكرارا.', color: '#B95DE0' },
   { icon: '📷', title: 'تحليل الصور', desc: 'صوّر نصك المكتوب بخط اليد ليتم استخراجه وتحليله تلقائيا.', color: '#E09955' },
   { icon: '📚', title: 'تمارين موجهة', desc: 'يتم إنشاء تمرينين تعليميين لكل تحليل بما يناسب مستوى A2-B2.', color: '#E05252' },
 ];
