@@ -352,6 +352,35 @@ export default function RootPage() {
           to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ── Floating orbit icons ── */
+        @keyframes float-a {
+          0%,100% { transform: translateY(0px) rotate(0deg); }
+          33%     { transform: translateY(-14px) rotate(6deg); }
+          66%     { transform: translateY(8px) rotate(-4deg); }
+        }
+        @keyframes float-b {
+          0%,100% { transform: translateY(0px) rotate(0deg); }
+          40%     { transform: translateY(12px) rotate(-8deg); }
+          70%     { transform: translateY(-10px) rotate(5deg); }
+        }
+        @keyframes float-c {
+          0%,100% { transform: translateY(0px) scale(1); }
+          50%     { transform: translateY(-16px) scale(1.08); }
+        }
+        @keyframes float-pulse {
+          0%,100% { opacity: 0.75; transform: scale(1); }
+          50%     { opacity: 1; transform: scale(1.12); }
+        }
+        .orbit-icon {
+          position: absolute;
+          display: flex; align-items: center; justify-content: center;
+          border-radius: 16px;
+          backdrop-filter: blur(8px);
+          pointer-events: none;
+          z-index: 2;
+        }
+        @media (max-width: 640px) { .orbit-icon { display: none; } }
+
         /* ══════════════════════════════════════
            RESPONSIVE BREAKPOINTS
         ══════════════════════════════════════ */
@@ -439,6 +468,61 @@ export default function RootPage() {
         background: 'var(--color-bg-main)',
       }}>
         <div className="lp-blob" style={{ width: '700px', height: '700px', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }} />
+
+        {/* ── Floating orbit icons ── */}
+        {/* Top-left: Brain / AI */}
+        <div className="orbit-icon" style={{
+          top: 'calc(50% - 230px)', left: 'calc(50% - 310px)',
+          width: '64px', height: '64px',
+          background: 'rgba(156,123,172,0.1)', border: '1px solid rgba(156,123,172,0.2)',
+          animation: 'float-a 5.2s ease-in-out infinite',
+          fontSize: '28px',
+        }}>🧠</div>
+
+        {/* Top-right: Globe */}
+        <div className="orbit-icon" style={{
+          top: 'calc(50% - 260px)', left: 'calc(50% + 240px)',
+          width: '58px', height: '58px',
+          background: 'rgba(76,177,255,0.1)', border: '1px solid rgba(76,177,255,0.2)',
+          animation: 'float-b 6.1s ease-in-out infinite',
+          fontSize: '24px',
+        }}>🌍</div>
+
+        {/* Right: Flashcard */}
+        <div className="orbit-icon" style={{
+          top: 'calc(50% - 30px)', left: 'calc(50% + 300px)',
+          width: '68px', height: '68px',
+          background: 'rgba(74,184,112,0.1)', border: '1px solid rgba(74,184,112,0.2)',
+          animation: 'float-c 4.8s ease-in-out infinite 0.4s',
+          fontSize: '28px',
+        }}>🃏</div>
+
+        {/* Bottom-right: Chart */}
+        <div className="orbit-icon" style={{
+          top: 'calc(50% + 180px)', left: 'calc(50% + 240px)',
+          width: '56px', height: '56px',
+          background: 'rgba(185,93,224,0.1)', border: '1px solid rgba(185,93,224,0.2)',
+          animation: 'float-a 7s ease-in-out infinite 1s',
+          fontSize: '22px',
+        }}>📊</div>
+
+        {/* Bottom-left: Camera */}
+        <div className="orbit-icon" style={{
+          top: 'calc(50% + 170px)', left: 'calc(50% - 300px)',
+          width: '60px', height: '60px',
+          background: 'rgba(224,153,85,0.1)', border: '1px solid rgba(224,153,85,0.2)',
+          animation: 'float-b 5.6s ease-in-out infinite 0.8s',
+          fontSize: '24px',
+        }}>📷</div>
+
+        {/* Left: Sparkle / AI correction */}
+        <div className="orbit-icon" style={{
+          top: 'calc(50% - 60px)', left: 'calc(50% - 320px)',
+          width: '54px', height: '54px',
+          background: 'rgba(255,127,45,0.1)', border: '1px solid rgba(255,127,45,0.2)',
+          animation: 'float-pulse 4s ease-in-out infinite 0.3s',
+          fontSize: '22px',
+        }}>✨</div>
 
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
           {/* marginBottom reduced from 28px → 12px; logo size reduced from 400px → 280px */}
