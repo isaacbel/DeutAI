@@ -390,15 +390,7 @@ export default function RootPage() {
           </div>
         </div>
 
-        {/* scroll hint */}
-        <div style={{
-          position: 'absolute', bottom: '28px', left: '50%', transform: 'translateX(-50%)',
-          display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px',
-          animation: 'hero-rise 1s ease 1s both',
-        }}>
-          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '14px', color: 'var(--color-text-muted)', letterSpacing: '3px' }}>{t('landing.scroll')}</span>
-          <div style={{ width: '1px', height: '32px', background: 'linear-gradient(to bottom, var(--color-border), transparent)' }} />
-        </div>
+
       </section>
 
       {/* ── FEATURES ── */}
