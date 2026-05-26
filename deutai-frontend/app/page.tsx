@@ -524,15 +524,6 @@ export default function RootPage() {
           fontSize: '22px',
         }}>✨</div>
 
-        {/* Up / Above Logo: Headphones (Audio / Listening AI) */}
-        <div className="orbit-icon" style={{
-          top: 'calc(50% - 460px)', left: 'calc(50% - 28px)',
-          width: '56px', height: '56px',
-          background: 'rgba(76,177,255,0.1)', border: '1px solid rgba(76,177,255,0.2)',
-          animation: 'float-b 5s ease-in-out infinite 0.2s',
-          fontSize: '24px',
-        }}>🎧</div>
-
         {/* Close Left of Logo: Lightning (Speed / Efficiency) */}
         <div className="orbit-icon" style={{
           top: 'calc(50% - 260px)', left: 'calc(50% - 220px)',
