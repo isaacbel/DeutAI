@@ -66,6 +66,55 @@ const HOW_IT_WORKS_AR = [
   { step: '03', title: 'ثبّت المعلومة', desc: 'تُنشأ بطاقات مراجعة تلقائيا لترسيخ كل تصحيح في الذاكرة طويلة المدى.' },
 ];
 
+const DEMO_EXAMPLES = {
+  de: [
+    {
+      original: "Gestern ich habe Deutsch gelernen.",
+      corrected: "Gestern habe ich Deutsch gelernt.",
+      errorType: "Wortstellung & Partizip II",
+      explanation: "Das Verb 'habe' muss an Position 2 stehen (Inversion nach Adverb). Das Partizip II von 'lernen' ist 'gelernt'.",
+      badge: "Grammatikfehler",
+    },
+    {
+      original: "Weil ich bin müde, ich gehe schlafen.",
+      corrected: "Weil ich müde bin, gehe ich schlafen.",
+      errorType: "Nebensatz-Wortstellung",
+      explanation: "In Nebensätzen mit 'weil' steht das konjugierte Verb 'bin' am Ende des Satzes. Der Hauptsatz beginnt mit Inversion.",
+      badge: "Syntaxfehler",
+    },
+    {
+      original: "Er hat ein großes Haus gekaufte.",
+      corrected: "Er hat ein großes Haus gekauft.",
+      errorType: "Verbkonjugation",
+      explanation: "Das Partizip II endet bei regelmäßigen Verben auf '-t', nicht '-te' (gekauft).",
+      badge: "Konjugation",
+    }
+  ],
+  ar: [
+    {
+      original: "Gestern ich habe Deutsch gelernen.",
+      corrected: "Gestern habe ich Deutsch gelernt.",
+      errorType: "ترتيب الكلمات وتصريف الفعل",
+      explanation: "يجب أن يكون الفعل المساعد 'habe' في الموقع الثاني للجملة (بعد ظرف الزمان). التصريف الصحيح هو 'gelernt'.",
+      badge: "خطأ قواعدي",
+    },
+    {
+      original: "Weil ich bin müde, ich gehe schlafen.",
+      corrected: "Weil ich müde bin, gehe ich schlafen.",
+      errorType: "ترتيب الجملة الفرعية",
+      explanation: "في الجمل الفرعية التي تبدأ بـ 'weil'، يوضع الفعل المصرف 'bin' في نهاية الجملة تماماً.",
+      badge: "تركيب الجملة",
+    },
+    {
+      original: "Er hat ein großes Haus gekaufte.",
+      corrected: "Er hat ein großes Haus gekauft.",
+      errorType: "تصريف الفعل",
+      explanation: "ينتهي اسم المفعول للأفعال القياسية بحرف '-t' وليس '-te' (gekauft).",
+      badge: "تصريف الفعل",
+    }
+  ]
+};
+
 export default function RootPage() {
   const router = useRouter();
   const { t, lang } = useLanguage() as { t: (key: string, params?: any) => string, lang: string };
@@ -73,6 +122,34 @@ export default function RootPage() {
 
   const localizedFeatures = lang === 'ar' ? FEATURES_AR : FEATURES_DE;
   const localizedHowItWorks = lang === 'ar' ? HOW_IT_WORKS_AR : HOW_IT_WORKS_DE;
+
+  const [demoIndex, setDemoIndex] = useState(0);
+  const [isScanning, setIsScanning] = useState(false);
+  const [showCorrection, setShowCorrection] = useState(true);
+
+  const triggerDemo = (index: number) => {
+    setDemoIndex(index);
+    setIsScanning(true);
+    setShowCorrection(false);
+    setTimeout(() => {
+      setIsScanning(false);
+      setShowCorrection(true);
+    }, 900);
+  };
+
+  const tabStyle = (active: boolean) => ({
+    padding: '6px 12px',
+    borderRadius: '10px',
+    fontSize: '12px',
+    fontFamily: 'JetBrains Mono, monospace',
+    fontWeight: active ? 'bold' : 'normal',
+    color: active ? 'white' : 'var(--color-text-secondary)',
+    background: active ? 'var(--color-primary)' : 'transparent',
+    border: active ? '1px solid var(--color-primary)' : '1px solid transparent',
+    transition: 'all 0.3s ease',
+    cursor: 'pointer',
+    outline: 'none',
+  });
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -264,6 +341,17 @@ export default function RootPage() {
         .hero-3 { animation: hero-rise 0.7s ease 0.30s both; }
         .hero-4 { animation: hero-rise 0.7s ease 0.45s both; }
 
+        @keyframes scanLineDemo {
+          0% { top: 0%; opacity: 0.1; }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { top: 100%; opacity: 0.1; }
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(6px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+
         /* ══════════════════════════════════════
            RESPONSIVE BREAKPOINTS
         ══════════════════════════════════════ */
@@ -387,6 +475,205 @@ export default function RootPage() {
             <Link href="/login" className="lp-cta-secondary">
               {t('landing.signIn')}
             </Link>
+          </div>
+
+          {/* Interactive Demo Widget */}
+          <div className="hero-4" style={{ marginTop: '48px', width: '100%', maxWidth: '640px', textAlign: 'left', animation: 'hero-rise 0.7s ease 0.6s both' }}>
+            <div style={{
+              background: 'white',
+              border: '1px solid var(--color-border)',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 40px rgba(156, 123, 172, 0.08), 0 1px 3px rgba(156, 123, 172, 0.02)',
+              position: 'relative'
+            }}>
+              {/* macOS Style Window header */}
+              <div style={{
+                background: 'var(--color-bg-sidebar)',
+                padding: '12px 18px',
+                borderBottom: '1px solid var(--color-rule-border)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexDirection: lang === 'ar' ? 'row-reverse' : 'row'
+              }}>
+                <div style={{ display: 'flex', gap: '6px' }}>
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
+                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }} />
+                </div>
+                <span style={{
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: '11px',
+                  fontWeight: 600,
+                  color: 'var(--color-text-secondary)',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase'
+                }}>
+                  {lang === 'ar' ? 'مختبر الذكاء الاصطناعي التفاعلي' : 'DEUTAI PLAYGROUND'}
+                </span>
+                <div style={{ width: '42px' }} />
+              </div>
+
+              {/* Tabs / Examples selection */}
+              <div style={{
+                padding: '16px',
+                borderBottom: '1px solid var(--color-rule-border)',
+                display: 'flex',
+                gap: '8px',
+                flexWrap: 'wrap',
+                justifyContent: 'center',
+                background: '#fafbfc'
+              }}>
+                {lang === 'ar' ? (
+                  <>
+                    <button onClick={() => triggerDemo(0)} style={tabStyle(demoIndex === 0)}>مثال ١: ترتيب الكلمات</button>
+                    <button onClick={() => triggerDemo(1)} style={tabStyle(demoIndex === 1)}>مثال ٢: الجملة الفرعية</button>
+                    <button onClick={() => triggerDemo(2)} style={tabStyle(demoIndex === 2)}>مثال ٣: اسم المفعول</button>
+                  </>
+                ) : (
+                  <>
+                    <button onClick={() => triggerDemo(0)} style={tabStyle(demoIndex === 0)}>Beispiel 1: Wortstellung</button>
+                    <button onClick={() => triggerDemo(1)} style={tabStyle(demoIndex === 1)}>Beispiel 2: Nebensatz</button>
+                    <button onClick={() => triggerDemo(2)} style={tabStyle(demoIndex === 2)}>Beispiel 3: Partizip II</button>
+                  </>
+                )}
+              </div>
+
+              {/* Input Area */}
+              <div style={{ padding: '24px', position: 'relative' }}>
+                {/* Glowing scanline animation */}
+                {isScanning && (
+                  <div style={{
+                    position: 'absolute',
+                    top: 0, left: 0, right: 0, height: '4px',
+                    background: 'linear-gradient(to right, transparent, var(--color-primary), transparent)',
+                    boxShadow: '0 0 12px var(--color-primary), 0 0 20px var(--color-primary)',
+                    animation: 'scanLineDemo 1.2s ease-in-out infinite',
+                    zIndex: 10
+                  }} />
+                )}
+
+                <div style={{ marginBottom: '16px', direction: 'ltr', textAlign: 'left' }}>
+                  <p style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '13px',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-text-secondary)',
+                    letterSpacing: '1px',
+                    margin: '0 0 6px 0'
+                  }}>
+                    {lang === 'ar' ? 'النص الأصلي (مع أخطاء):' : 'Originaler Text (mit Fehlern):'}
+                  </p>
+                  <div style={{
+                    background: '#fcf8f8',
+                    border: '1px dashed #eed5d5',
+                    borderRadius: '12px',
+                    padding: '14px 18px',
+                    fontSize: '17px',
+                    fontFamily: 'var(--font-sans), sans-serif',
+                    color: '#c55'
+                  }}>
+                    {demoIndex === 0 && (
+                      <span>Gestern <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich habe</span> Deutsch <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>gelernen</span>.</span>
+                    )}
+                    {demoIndex === 1 && (
+                      <span>Weil <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich bin</span> müde, <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich gehe</span> schlafen.</span>
+                    )}
+                    {demoIndex === 2 && (
+                      <span>Er hat ein großes Haus <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>gekaufte</span>.</span>
+                    )}
+                  </div>
+                </div>
+
+                {/* AI Correction Area */}
+                {showCorrection && !isScanning && (
+                  <div style={{
+                    animation: 'fadeIn 0.4s ease-out',
+                    border: '1px solid rgba(124, 176, 120, 0.25)',
+                    background: 'rgba(124, 176, 120, 0.05)',
+                    borderRadius: '12px',
+                    padding: '18px',
+                    direction: 'ltr',
+                    textAlign: 'left'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                      <span style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '11px',
+                        fontWeight: 'bold',
+                        color: 'var(--color-success)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1.5px',
+                        background: 'rgba(124, 176, 120, 0.15)',
+                        padding: '3px 8px',
+                        borderRadius: '6px'
+                      }}>
+                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][demoIndex].badge}
+                      </span>
+                      <span style={{ fontSize: '12px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
+                        Confidence: 99%
+                      </span>
+                    </div>
+
+                    <p style={{
+                      fontSize: '18px',
+                      fontWeight: 600,
+                      color: '#2a5a2a',
+                      margin: '0 0 10px 0',
+                      fontFamily: 'var(--font-sans), sans-serif'
+                    }}>
+                      {demoIndex === 0 && (
+                        <span>Gestern <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>habe ich</span> Deutsch <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gelernt</span>.</span>
+                      )}
+                      {demoIndex === 1 && (
+                        <span>Weil ich müde <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>bin</span>, <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gehe ich</span> schlafen.</span>
+                      )}
+                      {demoIndex === 2 && (
+                        <span>Er hat ein großes Haus <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gekauft</span>.</span>
+                      )}
+                    </p>
+
+                    <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '10px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
+                      <p style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '12px',
+                        fontWeight: 600,
+                        color: 'var(--color-text-secondary)',
+                        margin: '0 0 4px 0'
+                      }}>
+                        {lang === 'ar' ? 'شرح القاعدة:' : 'Regelerklärung:'}
+                      </p>
+                      <p style={{
+                        fontSize: '14px',
+                        color: 'var(--color-text-muted)',
+                        margin: 0,
+                        lineHeight: 1.6
+                      }}>
+                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][demoIndex].explanation}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                {isScanning && (
+                  <div style={{
+                    height: '148px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '12px',
+                    color: 'var(--color-primary)'
+                  }}>
+                    <div className="w-6 h-6 rounded-full border-2 border-primary/20" style={{ animation: 'spin-slow 0.8s linear infinite', borderTopColor: 'var(--color-primary)' }} />
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', letterSpacing: '2px', fontWeight: 600 }}>
+                      {lang === 'ar' ? 'جاري الفحص بالذكاء الاصطناعي...' : 'KI-ANALYSE LÄUFT...'}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
 
