@@ -197,7 +197,7 @@ export default function RootPage() {
         /* ── Nav ── */
         .lp-nav {
           position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-          height: 60px;
+          height: 70px;
           background: rgba(242,248,252,0.9);
           backdrop-filter: blur(20px) saturate(1.5);
           border-bottom: 1px solid var(--color-border);
@@ -443,8 +443,8 @@ export default function RootPage() {
       {/* ── Nav ── */}
       <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
         <div className="lp-nav-left">
-          <Image src="/hero-image.png" alt="DeutAI" width={45} height={45} style={{ objectFit: 'contain' }} />
-          <span className="lp-nav-brand">
+          <Image src="/hero-image.png" alt="DeutAI" width={65} height={65} style={{ objectFit: 'contain' }} />
+          <span className="lp-nav-brand" style={{ fontSize: '15px' }}>
             DEUTAI
           </span>
         </div>
