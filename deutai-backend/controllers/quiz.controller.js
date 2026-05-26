@@ -151,6 +151,7 @@ exports.generateQuiz = async (req, res) => {
         { role: 'user', content: buildUserPrompt(category, difficulty, count, pointsPerQuestion) },
       ],
       temperature: 0.2,
+      max_tokens: 3000,
     });
 
     const textContent = completion.choices?.[0]?.message?.content;

@@ -29,6 +29,7 @@ async function analyzeText(text) {
       { role: 'user', content: ANALYZE_USER_MSG(text) },
     ],
     temperature: 0,
+    max_tokens: 2500,
   });
 
   return {
@@ -60,6 +61,7 @@ async function extractTextFromImage(base64Image) {
       },
     ],
     temperature: 0,
+    max_tokens: 2500,
   });
 
   return {
