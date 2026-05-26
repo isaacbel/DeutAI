@@ -145,7 +145,7 @@ exports.generateQuiz = async (req, res) => {
     const openai = getOpenRouterClient(apiKey);
 
     const completion = await openai.chat.completions.create({
-      model: 'openai/gpt-4o-mini',
+      model: 'google/gemini-2.5-flash',
       messages: [
         { role: 'system', content: buildSystemPrompt(lang) },
         { role: 'user', content: buildUserPrompt(category, difficulty, count, pointsPerQuestion) },

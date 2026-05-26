@@ -23,7 +23,7 @@ async function analyzeText(text) {
   const client = getClient();
 
   const response = await client.chat.completions.create({
-    model: 'meta-llama/llama-3.1-8b-instruct',
+    model: 'google/gemini-2.5-flash',
     messages: [
       { role: 'system', content: ANALYZE_SYSTEM_PROMPT },
       { role: 'user', content: ANALYZE_USER_MSG(text) },
@@ -44,7 +44,7 @@ async function extractTextFromImage(base64Image) {
   const client = getClient();
 
   const response = await client.chat.completions.create({
-    model: 'openai/gpt-4o-mini',
+    model: 'google/gemini-2.5-flash',
     messages: [
       {
         role: 'user',
