@@ -244,9 +244,9 @@ export default function RootPage() {
         }
 
         /* ── Hero logo ── */
-        .hero-logo { width: 380px; height: 380px; }
+        .hero-logo { width: 520px; height: 520px; }
         @media (max-width: 640px) {
-          .hero-logo { width: 240px; height: 240px; }
+          .hero-logo { width: 320px; height: 320px; }
           .hero-section { padding-top: 72px !important; padding-bottom: 40px !important; }
         }
 
@@ -355,7 +355,7 @@ export default function RootPage() {
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
           {/* marginBottom reduced from 28px → 12px; logo size reduced from 400px → 280px */}
           <div className="hero-1" style={{ marginBottom: '12px', filter: 'drop-shadow(0 0 60px rgba(156,123,172,0.18))' }}>
-            <Image src="/hero-image.png" className="hero-logo" alt="DeutAI" width={380} height={380} style={{ objectFit: 'contain' }} priority />
+            <Image src="/hero-image.png" className="hero-logo" alt="DeutAI" width={520} height={520} style={{ objectFit: 'contain' }} priority />
           </div>
 
           {/* margin-bottom reduced from 20px → 16px */}
