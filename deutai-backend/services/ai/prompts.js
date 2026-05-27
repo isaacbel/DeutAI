@@ -11,9 +11,9 @@ Your task is to analyze a German sentence and detect ALL errors across every lin
 You must respond ONLY with valid JSON.
 No text before or after. No markdown. No comments.
 
-Rules MUST be written in French.
+Rules MUST be written bilingually in German and Arabic.
 Exercises MUST be written bilingually in German and Arabic.
-Each error explanation and globalExplanation MUST be bilingual: German + Arabic.
+Each error explanation, rule, and globalExplanation MUST be bilingual: German + Arabic.
 For bilingual fields, use EXACTLY this single-line format:
 "DE: <German text> || AR: <Arabic text>"
 
@@ -95,7 +95,7 @@ IMPORTANT RULES:
 3. "startIndex" and "endIndex" must match the exact position in the original sentence (0-based index, endIndex exclusive).
 4. "errorText" must EXACTLY match the incorrect substring from the sentence.
 5. "correctedSentence" must be fully grammatically correct German.
-6. "rule" must be short, clear, and pedagogical (in French, max 2 sentences).
+6. "rule" must be short, clear, and pedagogical, and bilingual in one line: "DE: <German rule> || AR: <Arabic rule>" (max 2 sentences per language).
 7. "explanation" must be adapted for A2-B2 learners and bilingual in one line:
    "DE: ... || AR: ..."
 8. "globalExplanation" must also be bilingual in one line:

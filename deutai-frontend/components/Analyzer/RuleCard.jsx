@@ -51,19 +51,19 @@ function parseBilingualExplanation(text) {
 
 function renderBilingualExplanation(text, language) {
   const parsed = parseBilingualExplanation(text);
-  if (!parsed) return text;
+  if (!parsed) return highlightKeywords(text);
 
   if (language === 'ar') {
     return (
       <span dir="rtl" style={{ textAlign: 'right', display: 'block' }}>
-        <strong style={{ color: 'var(--color-primary)' }}>AR:</strong> {parsed.ar}
+        <strong style={{ color: 'var(--color-primary)' }}>AR:</strong> {highlightKeywords(parsed.ar)}
       </span>
     );
   }
 
   return (
     <span dir="ltr" lang="de" style={{ display: 'block', textAlign: 'left' }}>
-      <strong style={{ color: 'var(--color-info)' }}>DE:</strong> {parsed.de}
+      <strong style={{ color: 'var(--color-info)' }}>DE:</strong> {highlightKeywords(parsed.de)}
     </span>
   );
 }
@@ -201,14 +201,20 @@ function ErrorRuleBlock({ error, index, explanationLanguage }) {
       {open && (
         <div style={{ padding: '0 14px 14px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {error.rule && (
-            <p dir="ltr" lang="fr" className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: 'var(--color-text-primary)', lineHeight: '1.75', margin: 0, textAlign: 'left' }}>
-              📖 {highlightKeywords(error.rule)}
-            </p>
+            <div className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: 'var(--color-text-primary)', lineHeight: '1.75', margin: 0 }}>
+              <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}>
+                <span>📖</span>
+                <div style={{ flex: 1 }}>{renderBilingualExplanation(error.rule, explanationLanguage)}</div>
+              </div>
+            </div>
           )}
           {error.explanation && error.explanation !== error.rule && (
-            <p className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: 'var(--color-text-secondary)', lineHeight: '1.75', margin: 0, fontStyle: 'italic' }}>
-              💡 {renderBilingualExplanation(error.explanation, explanationLanguage)}
-            </p>
+            <div className="text-sm leading-relaxed" style={{ fontFamily: 'Inter, sans-serif', color: 'var(--color-text-secondary)', lineHeight: '1.75', margin: 0, fontStyle: 'italic' }}>
+              <div style={{ display: 'flex', gap: '6px', alignItems: 'flex-start' }}>
+                <span>💡</span>
+                <div style={{ flex: 1 }}>{renderBilingualExplanation(error.explanation, explanationLanguage)}</div>
+              </div>
+            </div>
           )}
         </div>
       )}
@@ -224,7 +230,8 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
   const hasMultiErrors = errors.length > 0;
   const hasBilingualExplanations = Boolean(
     parseBilingualExplanation(globalExplanation) ||
-    errors.some((err) => parseBilingualExplanation(err?.explanation))
+    parseBilingualExplanation(rule) ||
+    errors.some((err) => parseBilingualExplanation(err?.explanation) || parseBilingualExplanation(err?.rule))
   );
 
   return (
@@ -303,12 +310,12 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
           ))}
         </div>
       ) : rule ? (
-        <p
+        <div
           className="text-sm leading-relaxed text-text-muted pl-0.5 mb-4"
           style={{ fontFamily: 'Inter, sans-serif', lineHeight: '1.75' }}
         >
-          {highlightKeywords(rule)}
-        </p>
+          {renderBilingualExplanation(rule, explanationLanguage)}
+        </div>
       ) : null}
 
       {/* Exercises section */}
