@@ -22,7 +22,10 @@ const ocrLimiter = rateLimit({
   max: 10,                // max 10 OCR calls per minute per IP
   standardHeaders: true,  // return RateLimit-* headers
   legacyHeaders: false,
-  message: { error: 'RATE_LIMIT', message: 'Too many OCR requests. Please wait a moment.' },
+  handler: (req, res) => res.status(429).json({
+    error: 'RATE_LIMIT',
+    message: 'Too many OCR requests. Please wait a moment.',
+  }),
 });
 
 // /analyze is cheaper (text only) — still rate-limited but more generous
@@ -31,7 +34,10 @@ const analyzeLimiter = rateLimit({
   max: 30,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: 'RATE_LIMIT', message: 'Too many requests. Please wait a moment.' },
+  handler: (req, res) => res.status(429).json({
+    error: 'RATE_LIMIT',
+    message: 'Too many requests. Please wait a moment.',
+  }),
 });
 
 router.post('/ocr',     auth, ocrLimiter,     requireJson, ocr);

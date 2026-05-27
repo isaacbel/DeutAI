@@ -116,9 +116,7 @@ async function clearHistory(req, res, next) {
   const userId = req.user.userId;
   try {
     await pool.query('DELETE FROM analyses WHERE user_id = $1', [userId]);
-    // Bug fix: 204 No Content is the correct REST response for a successful
-    // bulk delete that returns no body.
-    return res.status(204).send();
+    return res.status(200).json({ message: 'History cleared.' });
   } catch (err) {
     console.error('[HistoryController] clearHistory:', err.message);
     next(err);

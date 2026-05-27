@@ -43,8 +43,13 @@ npm run dev
 |----------------------|-------------------------------------------|
 | `PORT`               | Port du serveur (défaut : 3001)           |
 | `DATABASE_URL`       | URL de connexion PostgreSQL               |
+| `DATABASE_SSL`       | `0` pour desactiver SSL en local seulement |
+| `PG_POOL_MAX`        | Taille max du pool PostgreSQL (defaut 10) |
 | `JWT_SECRET`         | Secret pour les access tokens (min 32c)  |
 | `JWT_REFRESH_SECRET` | Secret pour les refresh tokens (min 32c) |
+| `JWT_ACCESS_EXPIRES_IN` | Duree access token (defaut `15m`)      |
+| `JWT_REFRESH_EXPIRES_IN` | Duree refresh token (defaut `7d`)    |
+| `BCRYPT_SALT_ROUNDS` | Rounds bcrypt (defaut 10)                 |
 | `ANTHROPIC_API_KEY`  | Clé API Anthropic                         |
 | `EMAIL_HOST`         | Hôte SMTP pour les emails                 |
 | `EMAIL_PORT`         | Port SMTP (587 recommandé)                |
@@ -100,4 +105,7 @@ npm run dev
 4. Start command : `npm start`
 5. Ajouter toutes les variables d'environnement dans le dashboard Render
 6. Ajouter une base de données PostgreSQL sur Render et copier l'URL dans `DATABASE_URL`
-7. Exécuter le schéma SQL via la console Render ou pgAdmin
+7. Verifier que la base accepte les connexions externes depuis Render (Render DB, Supabase/Atlas allowlist `0.0.0.0/0` ou IP sortantes Render)
+8. Exécuter le schéma SQL via la console Render ou pgAdmin
+
+Le serveur valide les variables critiques au demarrage, teste `DATABASE_URL` avant `app.listen`, puis ecoute toujours `process.env.PORT` quand Render l'injecte.

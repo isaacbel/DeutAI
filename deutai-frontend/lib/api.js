@@ -25,9 +25,10 @@ async function _doRefresh() {
     });
     if (!res.ok) return false;
     const data = await res.json();
-    if (data.access_token) {
-      localStorage.setItem('access_token', data.access_token);
-      if (data.refresh_token) localStorage.setItem('refresh_token', data.refresh_token);
+    const payload = data.data || data;
+    if (payload.access_token) {
+      localStorage.setItem('access_token', payload.access_token);
+      if (payload.refresh_token) localStorage.setItem('refresh_token', payload.refresh_token);
       return true;
     }
     return false;
@@ -171,8 +172,6 @@ export function deleteHistoryItem(id) {
 }
 
 export function clearHistory() {
-  // NOTE: server returns 204 No Content on success — callers must check
-  // res.ok rather than calling res.json() to avoid a parse error.
   return authFetch(`${API_URL}/history/all`, { method: 'DELETE' });
 }
 

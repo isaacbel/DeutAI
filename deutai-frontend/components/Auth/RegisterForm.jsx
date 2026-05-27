@@ -50,11 +50,12 @@ export default function RegisterForm() {
       try {
         const loginRes = await apiLogin(email, password);
         const loginData = await loginRes.json().catch(() => ({}));
-        if (loginRes.ok && loginData.access_token) {
+        const loginPayload = loginData.data || loginData;
+        if (loginRes.ok && loginPayload.access_token) {
           // Stagger slightly so they see the success message
           await new Promise((resolve) => setTimeout(resolve, 1200));
           flushSync(() => {
-            login(loginData.access_token, loginData.refresh_token);
+            login(loginPayload.access_token, loginPayload.refresh_token);
           });
           router.replace('/analyze');
           return;

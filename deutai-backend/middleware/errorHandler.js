@@ -1,35 +1,63 @@
 function errorHandler(err, req, res, next) {
-  // Fix #37 — only expose stack traces outside production
+  const statusCode = err.statusCode || err.status || 500;
+  const code = err.code || 'INTERNAL_SERVER_ERROR';
+  const message = statusCode >= 500
+    ? 'Internal server error.'
+    : err.message || 'Request failed.';
+
   if (process.env.NODE_ENV !== 'production') {
-    console.error('[ErrorHandler]', err.message, err.stack);
+    console.error('[ErrorHandler]', code, err.message, err.stack);
   } else {
-    console.error('[ErrorHandler]', err.message);
+    console.error('[ErrorHandler]', code, err.message);
   }
 
-  if (err.code === 'AI_PARSE_ERROR' || err.code === 'CLAUDE_PARSE_ERROR') {
-    return res.status(422).json({ error: 'AI_PARSE_ERROR' });
+  if (code === 'AI_PARSE_ERROR' || code === 'CLAUDE_PARSE_ERROR') {
+    return res.status(422).json({
+      error: 'AI_PARSE_ERROR',
+      message: 'AI response could not be parsed.',
+    });
   }
 
-  if (err.code === 'AI_SERVICE_UNAVAILABLE' || err.code === 'AI_ALL_PROVIDERS_FAILED') {
-    return res.status(503).json({ error: 'AI_SERVICE_UNAVAILABLE' });
+  if (code === 'AI_SERVICE_UNAVAILABLE' || code === 'AI_ALL_PROVIDERS_FAILED') {
+    return res.status(503).json({
+      error: 'AI_SERVICE_UNAVAILABLE',
+      message: 'AI service is currently unavailable.',
+    });
   }
 
-  if (err.code === 'RATE_LIMIT') {
+  if (code === 'RATE_LIMIT') {
     return res.status(429).json({
       error: 'RATE_LIMIT',
+      message: 'Too many requests. Please try again later.',
       retryAfter: err.retryAfter || null,
     });
   }
 
-  if (err.code === 'NOT_FOUND') {
-    return res.status(404).json({ error: 'NOT_FOUND' });
+  if (code === 'NOT_FOUND') {
+    return res.status(404).json({
+      error: 'NOT_FOUND',
+      message: 'Resource not found.',
+    });
   }
 
-  if (err.code === 'FORBIDDEN') {
-    return res.status(403).json({ error: 'FORBIDDEN' });
+  if (code === 'FORBIDDEN') {
+    return res.status(403).json({
+      error: 'FORBIDDEN',
+      message: 'Forbidden.',
+    });
   }
 
-  return res.status(500).json({ error: 'INTERNAL_SERVER_ERROR' });
+  if (code === 'CORS_NOT_ALLOWED') {
+    return res.status(403).json({
+      error: 'CORS_NOT_ALLOWED',
+      message,
+    });
+  }
+
+  return res.status(statusCode).json({
+    error: code,
+    message,
+  });
 }
 
 module.exports = errorHandler;

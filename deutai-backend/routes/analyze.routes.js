@@ -10,7 +10,10 @@ const textLimiter = rateLimit({
   max: 20,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: 'RATE_LIMIT', message: 'Too many analysis requests. Please wait a moment.' },
+  handler: (req, res) => res.status(429).json({
+    error: 'RATE_LIMIT',
+    message: 'Too many analysis requests. Please wait a moment.',
+  }),
 });
 
 // Rate-limit: image analysis is even more expensive — 6/min per IP
@@ -19,7 +22,10 @@ const imageLimiter = rateLimit({
   max: 6,
   standardHeaders: true,
   legacyHeaders: false,
-  message: { error: 'RATE_LIMIT', message: 'Too many image analysis requests. Please wait a moment.' },
+  handler: (req, res) => res.status(429).json({
+    error: 'RATE_LIMIT',
+    message: 'Too many image analysis requests. Please wait a moment.',
+  }),
 });
 
 // POST /analyze        — text grammar analysis

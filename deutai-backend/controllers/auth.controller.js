@@ -5,11 +5,23 @@ const Joi = require('joi');
 const pool = require('../config/db');
 const { sendPasswordResetEmail } = require('../services/email.service');
 
-const SALT_ROUNDS = 10; // 12 rounds is too slow for Render free tier (~10s), 10 is still secure
+const SALT_ROUNDS = Number(process.env.BCRYPT_SALT_ROUNDS) || 10;
+const ACCESS_TOKEN_EXPIRES_IN = process.env.JWT_ACCESS_EXPIRES_IN || '15m';
+const REFRESH_TOKEN_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
+
+const passwordRule = Joi.string()
+  .min(8)
+  .pattern(/[A-Za-z]/, 'at least one letter')
+  .pattern(/[0-9]/, 'at least one number')
+  .required()
+  .messages({
+    'string.min': 'Password must be at least 8 characters.',
+    'string.pattern.name': 'Password must contain at least one letter and one number.',
+  });
 
 const registerSchema = Joi.object({
   email: Joi.string().email().required(),
-  password: Joi.string().min(8).required(),
+  password: passwordRule,
 });
 
 const loginSchema = Joi.object({
@@ -23,113 +35,138 @@ const forgotPasswordSchema = Joi.object({
 
 const resetPasswordSchema = Joi.object({
   token: Joi.string().required(),
-  password: Joi.string().min(8).required(),
+  password: passwordRule,
 });
 
+function validationResponse(res, error) {
+  return res.status(400).json({
+    error: 'VALIDATION_ERROR',
+    message: 'Invalid request body.',
+    details: error.details.map((detail) => detail.message),
+  });
+}
+
 function generateAccessToken(payload) {
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '15m' });
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRES_IN });
 }
 
 function generateRefreshToken(payload) {
-  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+  return jwt.sign(payload, process.env.JWT_REFRESH_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRES_IN });
 }
 
 async function register(req, res, next) {
-  const { error, value } = registerSchema.validate(req.body);
-  if (error) {
-    return res.status(400).json({
-      error: 'VALIDATION_ERROR',
-      message: error.details.map((d) => d.message).join(', '),
-      details: error.details.map((d) => d.message),
-    });
-  }
+  const { error, value } = registerSchema.validate(req.body, { abortEarly: false });
+  if (error) return validationResponse(res, error);
 
-  const { email, password } = value;
+  const email = value.email.toLowerCase();
 
   try {
-    const existing = await pool.query(
-      'SELECT id FROM users WHERE email = $1',
-      [email.toLowerCase()]
-    );
+    const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
 
     if (existing.rows.length > 0) {
-      return res.status(409).json({ error: 'EMAIL_EXISTS', message: 'Cette adresse e-mail est déjà utilisée.' });
+      console.warn(`[Auth] Register blocked: duplicate email ${email}`);
+      return res.status(409).json({
+        error: 'EMAIL_EXISTS',
+        message: 'This email is already registered.',
+      });
     }
 
-    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+    const passwordHash = await bcrypt.hash(value.password, SALT_ROUNDS);
 
-    await pool.query(
-      'INSERT INTO users (email, password_hash) VALUES ($1, $2)',
-      [email.toLowerCase(), passwordHash]
+    const result = await pool.query(
+      'INSERT INTO users (email, password_hash) VALUES ($1, $2) RETURNING id, email, created_at',
+      [email, passwordHash]
     );
 
-    return res.status(201).json({ message: 'Compte créé avec succès' });
+    return res.status(201).json({
+      message: 'Account created successfully.',
+      user: result.rows[0],
+    });
   } catch (err) {
-    console.error('[AuthController] register :', err.message);
-    next(err);
+    if (err.code === '23505') {
+      console.warn(`[Auth] Register blocked by unique constraint: duplicate email ${email}`);
+      return res.status(409).json({
+        error: 'EMAIL_EXISTS',
+        message: 'This email is already registered.',
+      });
+    }
+
+    console.error('[Auth] Register failed:', err.message);
+    return next(err);
   }
 }
 
 async function login(req, res, next) {
-  const { error, value } = loginSchema.validate(req.body);
-  if (error) {
-    return res.status(400).json({
-      error: 'VALIDATION_ERROR',
-      details: error.details.map((d) => d.message),
-    });
-  }
+  const { error, value } = loginSchema.validate(req.body, { abortEarly: false });
+  if (error) return validationResponse(res, error);
 
-  const { email, password } = value;
+  const email = value.email.toLowerCase();
 
   try {
     const result = await pool.query(
       'SELECT id, email, password_hash FROM users WHERE email = $1',
-      [email.toLowerCase()]
+      [email]
     );
 
     if (result.rows.length === 0) {
-      return res.status(401).json({ error: 'INVALID_CREDENTIALS' });
+      console.warn(`[Auth] Login failed: user not found ${email}`);
+      return res.status(404).json({
+        error: 'USER_NOT_FOUND',
+        message: 'No account exists for this email.',
+      });
     }
 
     const user = result.rows[0];
-    const passwordMatch = await bcrypt.compare(password, user.password_hash);
+    const passwordMatch = await bcrypt.compare(value.password, user.password_hash);
 
     if (!passwordMatch) {
-      return res.status(401).json({ error: 'INVALID_CREDENTIALS' });
+      console.warn(`[Auth] Login failed: wrong password for ${email}`);
+      return res.status(401).json({
+        error: 'INVALID_PASSWORD',
+        message: 'Password is incorrect.',
+      });
     }
 
     const payload = { userId: user.id, email: user.email };
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
+    console.log(`[Auth] Login succeeded for ${email}`);
+
     return res.status(200).json({
+      message: 'Login successful.',
       access_token: accessToken,
       refresh_token: refreshToken,
+      token_type: 'Bearer',
+      expires_in: ACCESS_TOKEN_EXPIRES_IN,
       user: { id: user.id, email: user.email },
     });
   } catch (err) {
-    console.error('[AuthController] login :', err.message);
-    next(err);
+    console.error('[Auth] Login failed:', err.message);
+    return next(err);
   }
 }
 
-async function refresh(req, res, next) {
-  const { refresh_token } = req.body;
+async function refresh(req, res) {
+  const { refresh_token: refreshToken } = req.body;
 
-  // Bug fix: validate type and presence before passing to jwt.verify
-  if (!refresh_token || typeof refresh_token !== 'string') {
+  if (!refreshToken || typeof refreshToken !== 'string') {
     return res.status(400).json({
       error: 'VALIDATION_ERROR',
-      details: ['refresh_token est requis et doit être une chaîne de caractères'],
+      message: 'refresh_token is required.',
+      details: ['refresh_token must be a string.'],
     });
   }
 
   try {
-    const decoded = jwt.verify(refresh_token, process.env.JWT_REFRESH_SECRET);
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
-    // Guard: decoded payload must carry userId
     if (!decoded.userId) {
-      return res.status(401).json({ error: 'TOKEN_INVALID' });
+      console.warn('[Auth] Refresh failed: token missing userId.');
+      return res.status(401).json({
+        error: 'TOKEN_INVALID',
+        message: 'Refresh token is invalid.',
+      });
     }
 
     const accessToken = generateAccessToken({
@@ -137,36 +174,43 @@ async function refresh(req, res, next) {
       email: decoded.email,
     });
 
-    return res.status(200).json({ access_token: accessToken });
+    return res.status(200).json({
+      message: 'Access token refreshed.',
+      access_token: accessToken,
+      token_type: 'Bearer',
+      expires_in: ACCESS_TOKEN_EXPIRES_IN,
+    });
   } catch (err) {
     if (err.name === 'TokenExpiredError') {
-      return res.status(401).json({ error: 'TOKEN_EXPIRED' });
+      console.warn('[Auth] Refresh failed: token expired.');
+      return res.status(401).json({
+        error: 'TOKEN_EXPIRED',
+        message: 'Refresh token has expired.',
+      });
     }
-    return res.status(401).json({ error: 'TOKEN_INVALID' });
+
+    console.warn('[Auth] Refresh failed: invalid token.');
+    return res.status(401).json({
+      error: 'TOKEN_INVALID',
+      message: 'Refresh token is invalid.',
+    });
   }
 }
 
-async function forgotPassword(req, res, next) {
-  const { error, value } = forgotPasswordSchema.validate(req.body);
-  if (error) {
-    return res.status(400).json({
-      error: 'VALIDATION_ERROR',
-      details: error.details.map((d) => d.message),
-    });
-  }
+async function forgotPassword(req, res) {
+  const { error, value } = forgotPasswordSchema.validate(req.body, { abortEarly: false });
+  if (error) return validationResponse(res, error);
 
-  const { email } = value;
+  const email = value.email.toLowerCase();
   const genericResponse = {
-    message: 'Si cet email existe, un lien de réinitialisation a été envoyé.',
+    message: 'If this email exists, a reset link has been sent.',
   };
 
   try {
-    const result = await pool.query(
-      'SELECT id FROM users WHERE email = $1',
-      [email.toLowerCase()]
-    );
+    const result = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
 
     if (result.rows.length === 0) {
+      console.warn(`[Auth] Password reset requested for unknown email ${email}`);
       return res.status(200).json(genericResponse);
     }
 
@@ -180,28 +224,23 @@ async function forgotPassword(req, res, next) {
       [userId, tokenHash]
     );
 
-    await sendPasswordResetEmail(email.toLowerCase(), rawToken);
+    await sendPasswordResetEmail(email, rawToken);
 
+    console.log(`[Auth] Password reset email queued for ${email}`);
     return res.status(200).json(genericResponse);
   } catch (err) {
-    console.error('[AuthController] forgotPassword :', err.message);
+    console.error('[Auth] Password reset failed:', err.message);
     return res.status(200).json(genericResponse);
   }
 }
 
 async function resetPassword(req, res, next) {
-  const { error, value } = resetPasswordSchema.validate(req.body);
-  if (error) {
-    return res.status(400).json({
-      error: 'VALIDATION_ERROR',
-      details: error.details.map((d) => d.message),
-    });
-  }
+  const { error, value } = resetPasswordSchema.validate(req.body, { abortEarly: false });
+  if (error) return validationResponse(res, error);
 
-  const { token, password } = value;
-  const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-
+  const tokenHash = crypto.createHash('sha256').update(value.token).digest('hex');
   const client = await pool.connect();
+
   try {
     const result = await client.query(
       `SELECT id, user_id FROM password_resets
@@ -212,31 +251,27 @@ async function resetPassword(req, res, next) {
     );
 
     if (result.rows.length === 0) {
-      return res.status(400).json({ error: 'TOKEN_INVALID_OR_EXPIRED' });
+      console.warn('[Auth] Password reset failed: token invalid or expired.');
+      return res.status(400).json({
+        error: 'TOKEN_INVALID_OR_EXPIRED',
+        message: 'Reset token is invalid or expired.',
+      });
     }
 
     const { id: resetId, user_id: userId } = result.rows[0];
-    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+    const passwordHash = await bcrypt.hash(value.password, SALT_ROUNDS);
 
-    // Bug fix: wrap both UPDATEs in a transaction so they are atomic.
-    // If the password update succeeds but used=true fails, the token
-    // stays reusable — this prevents that race condition.
     await client.query('BEGIN');
-    await client.query(
-      'UPDATE users SET password_hash = $1 WHERE id = $2',
-      [passwordHash, userId]
-    );
-    await client.query(
-      'UPDATE password_resets SET used = true WHERE id = $1',
-      [resetId]
-    );
+    await client.query('UPDATE users SET password_hash = $1 WHERE id = $2', [passwordHash, userId]);
+    await client.query('UPDATE password_resets SET used = true WHERE id = $1', [resetId]);
     await client.query('COMMIT');
 
-    return res.status(200).json({ message: 'Mot de passe réinitialisé avec succès' });
+    console.log(`[Auth] Password reset succeeded for user ${userId}`);
+    return res.status(200).json({ message: 'Password reset successfully.' });
   } catch (err) {
     await client.query('ROLLBACK').catch(() => {});
-    console.error('[AuthController] resetPassword :', err.message);
-    next(err);
+    console.error('[Auth] Password reset failed:', err.message);
+    return next(err);
   } finally {
     client.release();
   }

@@ -28,12 +28,13 @@ export default function LoginForm() {
         setError(data.message || t('auth.errorInvalidCredentials'));
         return;
       }
-      if (data.access_token) {
+      const payload = data.data || data;
+      if (payload.access_token) {
         // flushSync forces the setUser() inside login() to complete synchronously
         // BEFORE router.replace fires — preventing the race condition where
         // the protected page renders with user=null and redirects back to /login
         flushSync(() => {
-          login(data.access_token, data.refresh_token);
+          login(payload.access_token, payload.refresh_token);
         });
         router.replace('/analyze');
       } else {

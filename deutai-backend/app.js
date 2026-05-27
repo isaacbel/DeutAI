@@ -2,79 +2,87 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const helmet = require('helmet'); // Fix #33 — HTTP security headers
+const helmet = require('helmet');
 
-const authRoutes     = require('./routes/auth.routes');
-const analyzeRoutes  = require('./routes/analyze.routes');
+const authRoutes = require('./routes/auth.routes');
+const analyzeRoutes = require('./routes/analyze.routes');
 const notebookRoutes = require('./routes/notebook.routes');
 const flashcardsRoutes = require('./routes/flashcards.routes');
-const statsRoutes    = require('./routes/stats.routes');
-const unitsRoutes    = require('./routes/units.routes');
-const historyRoutes  = require('./routes/history.routes');
-const quizRoutes     = require('./routes/quiz.routes');
+const statsRoutes = require('./routes/stats.routes');
+const unitsRoutes = require('./routes/units.routes');
+const historyRoutes = require('./routes/history.routes');
+const quizRoutes = require('./routes/quiz.routes');
 const errorHandler = require('./middleware/errorHandler');
+const jsonResponse = require('./middleware/jsonResponse');
+const requestLogger = require('./middleware/requestLogger');
 
 const app = express();
 
-// ─── CORS ────────────────────────────────────────────────────────────────────
-const ALLOWED_ORIGINS = [
+const configuredOrigins = [
   'https://deut-ai.vercel.app',
   'http://localhost:3000',
   process.env.FRONTEND_URL,
-].filter(Boolean);
+]
+  .filter(Boolean)
+  .map((origin) => origin.replace(/\/$/, ''));
 
-// Also allow all Vercel preview deployments for this project
 const VERCEL_PREVIEW_RE = /^https:\/\/deut-[a-z0-9-]+-isaacbels-projects\.vercel\.app$/;
 
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      // Allow server-to-server requests (no origin)
-      if (!origin) return callback(null, true);
-      if (ALLOWED_ORIGINS.includes(origin) || VERCEL_PREVIEW_RE.test(origin)) {
-        return callback(null, true);
-      }
-      return callback(new Error(`CORS: origin ${origin} not allowed`));
-    },
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-  })
-);
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true);
 
-// ─── Security headers ─────────────────────────────────────────────────────────
-app.use(helmet()); // Fix #33
+    const normalizedOrigin = origin.replace(/\/$/, '');
+    if (configuredOrigins.includes(normalizedOrigin) || VERCEL_PREVIEW_RE.test(normalizedOrigin)) {
+      return callback(null, true);
+    }
 
-// ─── Body parsing ─────────────────────────────────────────────────────────────
-// Images base64 peuvent être volumineuses (~5MB) → limite augmentée
+    const err = new Error(`CORS origin not allowed: ${origin}`);
+    err.statusCode = 403;
+    err.code = 'CORS_NOT_ALLOWED';
+    return callback(err);
+  },
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(requestLogger);
+app.use(jsonResponse);
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+app.use(helmet());
 app.use(express.json({ limit: '10mb' }));
-// Fix #34 — urlencoded removed: all routes use JSON bodies only
 
-// ─── Ping — cold start Render.com ─────────────────────────────────────────────
 app.get('/', (req, res) => {
-  res.status(200).json({ message: 'DeutAI Backend API is running successfully!' });
+  res.status(200).json({
+    message: 'DeutAI Backend API is running successfully.',
+    status: 'ok',
+  });
 });
 
 app.get('/ping', (req, res) => {
   res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// ─── Routes API ───────────────────────────────────────────────────────────────
-app.use('/auth',       authRoutes);
-app.use('/analyze',    analyzeRoutes);
-app.use('/notebook',   notebookRoutes);
+app.use('/auth', authRoutes);
+app.use('/analyze', analyzeRoutes);
+app.use('/notebook', notebookRoutes);
 app.use('/flashcards', flashcardsRoutes);
-app.use('/stats',      statsRoutes);
-app.use('/units',      unitsRoutes);
-app.use('/history',    historyRoutes);
-app.use('/quiz',       quizRoutes);
+app.use('/stats', statsRoutes);
+app.use('/units', unitsRoutes);
+app.use('/history', historyRoutes);
+app.use('/quiz', quizRoutes);
 
-// ─── 404 pour les routes inconnues ───────────────────────────────────────────
 app.use((req, res) => {
-  res.status(404).json({ error: 'NOT_FOUND' });
+  res.status(404).json({
+    error: 'NOT_FOUND',
+    message: 'Route not found.',
+  });
 });
 
-// ─── Gestionnaire d'erreurs global ───────────────────────────────────────────
 app.use(errorHandler);
 
 module.exports = app;
