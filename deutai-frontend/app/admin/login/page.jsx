@@ -45,7 +45,7 @@ function AdminLoginForm() {
       style={{ background: '#08080a', color: '#e8e8f0' }}
     >
       <div
-        className="w-full max-w-sm rounded-2xl p-8"
+        className="w-full max-w-sm rounded-2xl p-5 sm:p-8"
         style={{
           background: 'rgba(10,10,16,0.98)',
           border: '1px solid rgba(255,255,255,0.07)',
@@ -67,7 +67,7 @@ function AdminLoginForm() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-xl px-4 py-3 font-sans text-[14px] outline-none"
+              className="w-full rounded-xl px-4 py-3 font-sans text-base outline-none"
               style={{
                 background: 'rgba(0,0,0,0.35)',
                 border: '1px solid rgba(255,255,255,0.1)',
@@ -85,7 +85,7 @@ function AdminLoginForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full font-mono text-[15px] tracking-[0.14em] uppercase py-3 rounded-xl disabled:opacity-40"
+            className="w-full min-h-12 font-mono text-[15px] tracking-[0.14em] uppercase py-3 rounded-xl disabled:opacity-40"
             style={{
               background: 'linear-gradient(135deg, #c9a227, #e8d48a)',
               color: '#0a0a0c',
@@ -95,7 +95,7 @@ function AdminLoginForm() {
             {loading ? '…' : t('admin.enter')}
           </button>
         </form>
-        <Link href="/" className="mt-6 block text-center font-mono text-[14px] uppercase" style={{ color: '#6b7088' }}>
+        <Link href="/" className="mt-6 inline-flex min-h-11 w-full items-center justify-center text-center font-mono text-[14px] uppercase" style={{ color: '#6b7088' }}>
           {t('admin.home')}
         </Link>
       </div>

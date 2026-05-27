@@ -112,9 +112,9 @@ export default function EvolutionChart({ data, period = '30d' }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+      <div className="grid grid-cols-1 min-[360px]:grid-cols-2 gap-2 sm:grid-cols-4">
         <div className="rounded-lg border border-var(--color-border) bg-var(--color-bg-sidebar) px-2.5 py-2">
-          <p className="text-[13px] uppercase tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[14px] uppercase tracking-normal sm:tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.labelAnalyses')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-bold tabular-nums text-text-primary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -122,7 +122,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
           </p>
         </div>
         <div className="rounded-lg border border-var(--color-border) bg-var(--color-bg-sidebar) px-2.5 py-2">
-          <p className="text-[13px] uppercase tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[14px] uppercase tracking-normal sm:tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.labelActiveDays')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-bold tabular-nums text-text-primary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -130,7 +130,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
           </p>
         </div>
         <div className="rounded-lg border border-[rgba(255,127,45,0.25)] bg-[rgba(255,127,45,0.06)] px-2.5 py-2">
-          <p className="text-[13px] uppercase tracking-wider text-accent" style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--color-accent)' }}>
+          <p className="text-[14px] uppercase tracking-normal sm:tracking-wider text-accent" style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--color-accent)' }}>
             {t('stats.labelPeak')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-bold tabular-nums text-text-primary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -141,7 +141,7 @@ export default function EvolutionChart({ data, period = '30d' }) {
           </p>
         </div>
         <div className="rounded-lg border border-var(--color-border) bg-var(--color-bg-sidebar) px-2.5 py-2">
-          <p className="text-[13px] uppercase tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[14px] uppercase tracking-normal sm:tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.labelAvgPerDay')}
           </p>
           <p className="mt-0.5 font-mono text-lg font-bold tabular-nums text-text-primary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>

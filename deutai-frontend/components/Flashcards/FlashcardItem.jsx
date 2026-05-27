@@ -102,6 +102,17 @@ const CARD_STYLES = `
     .fc-back-main {
       padding: 16px !important;
     }
+    .fc-front-main p[lang="de"] {
+      font-size: 22px !important;
+      line-height: 1.55 !important;
+    }
+    .fc-back-main p[lang="de"] {
+      font-size: 20px !important;
+    }
+    .fc-back-main > div {
+      flex-direction: column !important;
+      gap: 6px !important;
+    }
     .fc-right-rail {
       width: 100% !important;
       min-height: 46px;
@@ -116,6 +127,10 @@ const CARD_STYLES = `
       text-orientation: initial !important;
       transform: none !important;
       font-size: 11px !important;
+    }
+    .fc-del {
+      min-height: 44px;
+      min-width: 56px;
     }
   }
 `;
@@ -286,7 +301,8 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                 letterSpacing: '0.3px',
                 color: confirmDelete ? meta.hue : 'var(--color-text-muted)',
                 transition: 'all 0.18s',
-                minWidth: '44px',
+                minWidth: '56px',
+                minHeight: '44px',
                 textAlign: 'center',
               }}
               title={confirmDelete ? t('history.confirmDelete') : 'DEL'}
@@ -471,7 +487,7 @@ export default function FlashcardItem({ flashcard, onDelete }) {
                   {suggestions.map((s, i) => (
                     <span key={i} dir="ltr" lang="de" style={{
                       fontFamily: 'JetBrains Mono, monospace', fontSize: '15px',
-                      padding: '4px 10px', rounded: '6px',
+                      padding: '6px 10px', borderRadius: '6px',
                       background: 'rgba(124,176,120,0.07)',
                       border: '1px solid rgba(124,176,120,0.18)',
                       color: 'var(--color-success)',

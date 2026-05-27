@@ -78,7 +78,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -28 }}
       transition={{ type: 'spring', stiffness: 320, damping: 28 }}
-      className="rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto"
+      className="rounded-2xl p-5 sm:p-8 max-w-2xl mx-auto"
       style={{
         background: 'white',
         border: '1px solid var(--color-border)',
@@ -92,7 +92,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
         </span>
         <div className="flex items-center gap-2">
           <span
-            className="text-[13px] tracking-[0.18em] uppercase px-2 py-1 rounded-md"
+            className="text-[14px] tracking-[0.12em] sm:tracking-[0.18em] uppercase px-2 py-1 rounded-md"
             style={{
               background: 'rgba(156,123,172,0.1)',
               border: '1px solid rgba(156,123,172,0.22)',
@@ -123,7 +123,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
                 key={i}
                 type="button"
                 onClick={() => setChoice(opt)}
-                className="text-left rounded-xl px-4 py-3 text-[14px] font-sans transition-all duration-150"
+                className="text-left rounded-xl px-4 py-3 min-h-14 text-base font-sans transition-all duration-150"
                 style={{
                   background: active ? 'rgba(156,123,172,0.1)' : 'white',
                   border: active ? '1px solid rgba(156,123,172,0.4)' : '1px solid var(--color-border)',
@@ -146,7 +146,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
                 key={v.id}
                 type="button"
                 onClick={() => setChoice(v.id)}
-                className="flex-1 rounded-xl py-3 font-mono text-[14px] tracking-[0.12em] uppercase"
+                className="flex-1 rounded-xl py-3 px-3 min-h-14 font-mono text-[14px] tracking-[0.12em] uppercase"
                 style={{
                   background: active ? 'rgba(156,123,172,0.1)' : 'white',
                   border: active ? '1px solid rgba(156,123,172,0.4)' : '1px solid var(--color-border)',
@@ -166,7 +166,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
           onChange={(e) => setTextValue(e.target.value)}
           rows={question.type === 'translation' ? 4 : 2}
           placeholder={t('quiz.yourAnswerGerman')}
-          className="w-full rounded-xl px-4 py-3 font-sans text-[14px] outline-none resize-none"
+          className="w-full rounded-xl px-4 py-3 font-sans text-base outline-none resize-none"
           style={{
             background: 'var(--color-bg-sidebar)',
             border: '1px solid var(--color-border)',
@@ -184,7 +184,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
               ? !choice
               : !textValue.trim()
           }
-          className="mt-6 w-full sm:w-auto text-[15px] tracking-[0.16em] uppercase py-3 px-8 rounded-xl disabled:opacity-35 disabled:cursor-not-allowed"
+          className="mt-6 w-full sm:w-auto min-h-12 text-[15px] tracking-[0.12em] uppercase py-3 px-8 rounded-xl disabled:opacity-35 disabled:cursor-not-allowed"
           style={{
             background: 'var(--color-primary)',
             color: 'white',
@@ -232,7 +232,7 @@ export default function QuestionCard({ question, onAdvance, questionNumber, tota
             <button
               type="button"
               onClick={handleContinue}
-              className="mt-4 w-full sm:w-auto flex items-center justify-center gap-2 text-[15px] tracking-[0.12em] uppercase py-2.5 px-6 rounded-lg"
+              className="mt-4 w-full sm:w-auto min-h-12 flex items-center justify-center gap-2 text-[15px] tracking-[0.12em] uppercase py-2.5 px-6 rounded-lg"
               style={{
                 background: 'rgba(156,123,172,0.08)',
                 border: '1px solid var(--color-border)',

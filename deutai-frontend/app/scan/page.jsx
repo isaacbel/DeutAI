@@ -64,7 +64,7 @@ export default function ScanPage() {
           className="sticky top-0 z-30 px-4 py-3 flex items-center gap-3"
           style={{ background: 'rgba(242,248,252,0.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--color-border)' }}
         >
-          <Link href="/analyze" className="text-text-muted hover:text-primary transition-colors text-sm">←</Link>
+          <Link href="/analyze" className="inline-flex min-h-11 min-w-11 items-center justify-center text-text-muted hover:text-primary transition-colors text-sm">←</Link>
           <div>
             <h1 className="text-sm font-bold" style={{ color: 'var(--color-primary)', letterSpacing: '2px' }}>
               {t('scan.title')}
@@ -73,7 +73,7 @@ export default function ScanPage() {
           </div>
         </header>
 
-        <div className="px-4 py-8 max-w-sm mx-auto flex flex-col gap-6">
+        <div className="px-3 sm:px-4 py-6 sm:py-8 max-w-sm mx-auto flex flex-col gap-6">
           {status === 'scanning' && (
             <>
               <p className="text-sm font-mono text-text-muted text-center" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -126,11 +126,11 @@ export default function ScanPage() {
               </div>
               <button
                 onClick={() => { setStatus('scanning'); setError(''); }}
-                className="btn-gold w-full py-3 text-sm"
+                className="btn-gold w-full py-3 text-sm min-h-12"
               >
                 {t('scan.retry')}
               </button>
-              <Link href="/analyze" className="btn-outline w-full py-3 text-sm text-center block">
+              <Link href="/analyze" className="btn-outline w-full py-3 text-sm text-center">
                 {t('scan.back')}
               </Link>
             </div>

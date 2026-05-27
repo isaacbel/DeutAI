@@ -34,7 +34,7 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
       {/* Confidence indicator */}
       <div className="flex items-center gap-2">
         <span
-          className="text-[14px] font-mono tracking-wider px-2 py-1 rounded"
+          className="text-[14px] font-mono tracking-wider px-3 py-2 rounded"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
             background: styles.bg,
@@ -66,7 +66,7 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
           value={text}
           onChange={e => onChange(e.target.value)}
           rows={6}
-          className="input-dark px-4 py-3 text-sm resize-none w-full"
+          className="input-dark px-4 py-3 text-base resize-none w-full"
           style={{ fontFamily: 'Inter, sans-serif', direction: 'ltr', textAlign: 'left' }}
           placeholder={t('notebook.ocrPlaceholder')}
           maxLength={1000}
@@ -82,7 +82,7 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
         <button
           onClick={onConfirm}
           disabled={loading || !hasValidText}
-          className="btn-gold w-full py-3 text-sm"
+          className="btn-gold w-full py-3 text-sm min-h-12"
         >
           {loading ? (
             <span className="flex items-center justify-center gap-2">
@@ -99,7 +99,7 @@ export default function OcrConfirmation({ text, onChange, confidence, onConfirm,
         <button
           onClick={onRetake}
           disabled={loading}
-          className="btn-outline w-full py-3 text-sm"
+          className="btn-outline w-full py-3 text-sm min-h-12"
         >
           {t('notebook.retakePhoto')}
         </button>

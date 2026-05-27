@@ -36,7 +36,7 @@ export default function AdminQrGrid({ items }) {
   }
 
   return (
-    <div className="min-h-screen px-4 py-10" style={{ background: '#08080a', color: '#e8e8f0' }}>
+    <div className="min-h-screen px-3 sm:px-4 py-8 sm:py-10" style={{ background: '#08080a', color: '#e8e8f0' }}>
       <div className="max-w-5xl mx-auto">
 
         {/* ── Header ── */}
@@ -58,7 +58,7 @@ export default function AdminQrGrid({ items }) {
             type="button"
             onClick={downloadAll}
             disabled={downloading}
-            className="inline-flex items-center gap-2 font-mono text-[15px] tracking-[0.12em] uppercase py-3 px-6 rounded-xl shrink-0 disabled:opacity-60 disabled:cursor-wait"
+            className="inline-flex min-h-12 items-center justify-center gap-2 font-mono text-[15px] tracking-[0.12em] uppercase py-3 px-6 rounded-xl shrink-0 disabled:opacity-60 disabled:cursor-wait"
             style={{
               background: 'linear-gradient(135deg, #c9a227, #e8d48a)',
               color: '#0a0a0c',
@@ -115,7 +115,7 @@ export default function AdminQrGrid({ items }) {
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-8 h-8 rounded-lg flex items-center justify-center transition-colors"
+                    className="w-11 h-11 rounded-lg flex items-center justify-center transition-colors"
                     style={{
                       background: `${color}12`,
                       border: `1px solid ${color}30`,
@@ -142,7 +142,7 @@ export default function AdminQrGrid({ items }) {
                       alt={`QR code — ${item.title}`}
                       width={200}
                       height={200}
-                      style={{ display: 'block', borderRadius: '8px' }}
+                      style={{ display: 'block', borderRadius: '8px', maxWidth: '100%', height: 'auto' }}
                     />
                   </div>
 
@@ -152,7 +152,7 @@ export default function AdminQrGrid({ items }) {
                   <button
                     type="button"
                     onClick={() => downloadPng(item.dataUrl, item.slug)}
-                    className="inline-flex items-center gap-2 font-mono text-[15px] tracking-[0.12em] uppercase py-2.5 px-6 rounded-xl w-full justify-center transition-all"
+                    className="inline-flex min-h-12 items-center gap-2 font-mono text-[15px] tracking-[0.08em] sm:tracking-[0.12em] uppercase py-2.5 px-4 sm:px-6 rounded-xl w-full justify-center transition-all"
                     style={{
                       background: `${color}15`,
                       border: `1px solid ${color}40`,

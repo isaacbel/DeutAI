@@ -121,12 +121,12 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: '100%', opacity: 0 }}
               transition={{ type: 'spring', stiffness: 380, damping: 36, mass: 0.8 }}
-              className="fixed bottom-0 left-0 right-0 z-[100] rounded-t-3xl flex flex-col pb-safe"
-              style={{ ...sidebarStyle, maxHeight: '80vh' }}
+              className="fixed bottom-0 left-0 right-0 z-[100] rounded-t-2xl flex flex-col pb-safe"
+              style={{ ...sidebarStyle, maxHeight: 'min(82vh, 620px)', paddingBottom: 'max(1rem, env(safe-area-inset-bottom))' }}
               aria-label={t('sidebar.mainNavigation')}
             >
               {/* Handle bar */}
-              <div className="flex justify-center pt-3 pb-1">
+              <div className="flex justify-center pt-3 pb-1" aria-hidden="true">
                 <div
                   className="w-10 h-1 rounded-full"
                   style={{ background: 'rgba(0,0,0,0.15)' }}
@@ -140,7 +140,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-10 h-10 rounded-lg flex items-center justify-center"
                     style={{
                       background: 'linear-gradient(135deg, var(--color-primary), #b59dbf)',
                       boxShadow: '0 3px 12px rgba(156,123,172,0.3)',
@@ -160,7 +160,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                   whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.88 }}
                   onClick={() => setIsOpen(false)}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  className="w-11 h-11 rounded-lg flex items-center justify-center"
                   style={{
                     background: 'rgba(0,0,0,0.03)',
                     border: '1px solid var(--color-border)',
@@ -187,7 +187,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                     >
                       <Link
                         href={item.href}
-                        className="flex items-center gap-4 px-4 py-3.5 rounded-2xl relative overflow-hidden"
+                        className="flex items-center gap-4 px-4 py-3.5 min-h-14 rounded-xl relative overflow-hidden"
                         style={isActive ? {
                           background: 'linear-gradient(90deg,rgba(156,123,172,0.15),rgba(156,123,172,0.04))',
                           border: '1px solid rgba(156,123,172,0.28)',
@@ -241,7 +241,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                 <LanguageSwitcher isMobile={true} />
                 <button
                   onClick={logout}
-                  className="flex-1 flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-150"
+                  className="flex-1 flex items-center gap-2 px-4 py-2 rounded-xl transition-all duration-150 min-h-12"
                   style={{
                     background: 'rgba(204,85,85,0.08)',
                     border: '1px solid rgba(204,85,85,0.25)',
@@ -298,7 +298,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                 onClick={() => setIsOpen(false)}
                 whileHover={{ scale: 1.1, rotate: 90 }}
                 whileTap={{ scale: 0.88 }}
-                className="w-10 h-10 rounded-xl flex items-center justify-center mb-4 flex-shrink-0"
+                className="w-11 h-11 rounded-xl flex items-center justify-center mb-4 flex-shrink-0"
                 style={{
                   background: 'rgba(0,0,0,0.03)',
                   border: '1px solid var(--color-border)',

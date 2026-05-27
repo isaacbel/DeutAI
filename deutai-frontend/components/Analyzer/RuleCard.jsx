@@ -121,7 +121,7 @@ function ExerciseItem({ exercise, index, t, explanationLanguage }) {
               <span>{renderBilingualExplanation(exercise.answer, explanationLanguage)}</span>
               <button
                 onClick={() => setRevealed(false)}
-                className="ml-auto opacity-60 hover:opacity-100 transition-opacity shrink-0"
+                className="ml-auto min-h-11 min-w-11 inline-flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity shrink-0"
                 style={{ color: 'var(--color-success)', background: 'none', border: 'none', cursor: 'pointer' }}
                 title={t('errorCard.hideAnswer')}
               >
@@ -131,7 +131,7 @@ function ExerciseItem({ exercise, index, t, explanationLanguage }) {
           ) : (
             <button
               onClick={() => setRevealed(true)}
-              className="flex items-center gap-2 text-[13px] font-mono transition-all py-1.5 px-3 rounded-md"
+              className="flex min-h-11 items-center gap-2 text-[14px] font-mono transition-all py-2 px-3 rounded-md"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 background: 'white',
@@ -249,7 +249,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
       <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse at 0% 0%, rgba(124,176,120,0.06) 0%, transparent 70%)' }} />
 
       {/* Header */}
-      <div className="flex items-center gap-3 mb-4">
+      <div className="flex flex-wrap items-center gap-3 mb-4">
         <div
           className="p-1.5 rounded-lg"
           style={{ background: 'rgba(124, 176, 120, 0.08)', border: '1px solid rgba(124, 176, 120, 0.25)' }}
@@ -269,7 +269,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
           >
             <button
               onClick={() => setExplanationLanguage('de')}
-              className="px-3 py-1.5 text-sm rounded cursor-pointer"
+              className="px-3 py-1.5 min-h-11 text-sm rounded cursor-pointer"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 background: explanationLanguage === 'de' ? 'rgba(156,123,172,0.12)' : 'transparent',
@@ -281,7 +281,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
             </button>
             <button
               onClick={() => setExplanationLanguage('ar')}
-              className="px-3 py-1.5 text-sm rounded cursor-pointer"
+              className="px-3 py-1.5 min-h-11 text-sm rounded cursor-pointer"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 background: explanationLanguage === 'ar' ? 'rgba(156,123,172,0.12)' : 'transparent',
@@ -323,7 +323,7 @@ export default function RuleCard({ rule, exercises, errors = [], globalExplanati
         <div className="mt-2">
           <button
             onClick={() => setExercisesOpen(o => !o)}
-            className="w-full flex items-center gap-3 group bg-transparent border-none cursor-pointer p-0"
+            className="w-full min-h-11 flex items-center gap-3 group bg-transparent border-none cursor-pointer p-0"
           >
             <div className="flex items-center gap-2">
               <GraduationCap size={14} className="text-text-muted group-hover:text-primary transition-colors" />

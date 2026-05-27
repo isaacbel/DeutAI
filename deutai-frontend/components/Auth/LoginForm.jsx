@@ -72,7 +72,7 @@ export default function LoginForm() {
           placeholder="you@example.com"
           required
           disabled={loading}
-          className="input-dark px-4 py-3 text-sm"
+          className="input-dark px-4 py-3 text-base"
           style={{ fontFamily: 'Inter, sans-serif' }}
         />
       </div>
@@ -91,7 +91,7 @@ export default function LoginForm() {
           placeholder="••••••••"
           required
           disabled={loading}
-          className="input-dark px-4 py-3 text-sm"
+          className="input-dark px-4 py-3 text-base"
           style={{ fontFamily: 'Inter, sans-serif' }}
         />
       </div>
@@ -118,14 +118,14 @@ export default function LoginForm() {
       <div className="flex flex-col items-center gap-3 mt-2">
         <Link
           href="/forgot-password"
-          className="text-sm font-mono transition-colors"
+          className="inline-flex min-h-11 items-center justify-center text-sm font-mono transition-colors"
           style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--color-text-muted)' }}
         >
           {t('auth.forgotPassword')}
         </Link>
         <p className="text-sm text-text-muted" style={{ fontFamily: 'Inter, sans-serif' }}>
           {t('auth.noAccount')}{' '}
-          <Link href="/register" className="hover:underline" style={{ color: 'var(--color-primary)' }}>
+          <Link href="/register" className="inline-flex min-h-11 items-center hover:underline" style={{ color: 'var(--color-primary)' }}>
             {t('auth.signUp')}
           </Link>
         </p>

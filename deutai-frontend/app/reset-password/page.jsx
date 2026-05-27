@@ -68,7 +68,7 @@ function ResetPasswordForm() {
           <span className="text-2xl">⚠</span>
           <span>{t('resetPassword.missingLink')}</span>
         </div>
-        <Link href="/forgot-password" className="btn-outline w-full py-3">
+        <Link href="/forgot-password" className="btn-outline w-full py-3 text-center">
           {t('resetPassword.requestNew')}
         </Link>
       </div>
@@ -114,7 +114,7 @@ function ResetPasswordForm() {
               placeholder="Min. 8 caractères"
               required
               disabled={loading}
-              className="input-dark px-4 py-3 text-sm"
+              className="input-dark px-4 py-3 text-base"
               style={{ fontFamily: 'Inter, sans-serif' }}
             />
           </div>
@@ -133,7 +133,7 @@ function ResetPasswordForm() {
               placeholder="••••••••"
               required
               disabled={loading}
-              className="input-dark px-4 py-3 text-sm"
+              className="input-dark px-4 py-3 text-base"
               style={{
                 fontFamily: 'Inter, sans-serif',
                 borderColor: confirm && password !== confirm ? '#CC5555' : undefined,
@@ -152,7 +152,7 @@ function ResetPasswordForm() {
         </>
       )}
 
-      <Link href="/login" className="text-sm text-center transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif', color: 'var(--color-text-muted)' }}>
+      <Link href="/login" className="inline-flex min-h-11 items-center justify-center text-sm text-center transition-colors mt-2" style={{ fontFamily: 'Inter, sans-serif', color: 'var(--color-text-muted)' }}>
         {t('resetPassword.backToLogin')}
       </Link>
     </form>
@@ -162,13 +162,13 @@ function ResetPasswordForm() {
 export default function ResetPasswordPage() {
   const { t } = useLanguage();
   return (
-    <div className="min-h-screen flex flex-col justify-center px-4 py-12 relative overflow-hidden" style={{ background: 'var(--color-bg-ice)' }}>
+    <div className="min-h-[100svh] flex flex-col justify-center px-4 py-8 sm:py-12 relative overflow-hidden" style={{ background: 'var(--color-bg-ice)' }}>
       <div className="absolute inset-0 grid-scan-bg opacity-10 pointer-events-none" />
       <div className="w-full max-w-sm mx-auto relative z-10">
-        <div className="text-center mb-10">
+        <div className="text-center mb-6 sm:mb-10">
           <h1
-            className="text-3xl font-bold text-gold"
-            style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '4px' }}
+            className="text-2xl sm:text-3xl font-bold text-gold"
+            style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '3px' }}
           >
             DeutAI
           </h1>
@@ -177,7 +177,7 @@ export default function ResetPasswordPage() {
           </p>
         </div>
 
-        <div className="auth-card p-6">
+        <div className="auth-card p-5 sm:p-6">
           <Suspense fallback={<div className="h-40 shimmer rounded-xl" />}>
             <ResetPasswordForm />
           </Suspense>

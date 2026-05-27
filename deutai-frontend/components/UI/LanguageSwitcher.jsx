@@ -16,7 +16,7 @@ export default function LanguageSwitcher({ isMobile = false }) {
         onClick={toggleLang}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="flex items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300 cursor-pointer"
+        className="flex min-h-12 items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300 cursor-pointer"
         style={{
           background: hovered ? 'rgba(156, 123, 172, 0.12)' : 'rgba(255, 255, 255, 0.8)',
           border: '1px solid ' + (hovered ? 'rgba(156, 123, 172, 0.35)' : 'rgba(156, 123, 172, 0.18)'),
@@ -69,7 +69,7 @@ export default function LanguageSwitcher({ isMobile = false }) {
           transform: hovered ? 'rotate(180deg)' : 'rotate(0deg)' 
         }} 
       />
-      <span className="font-mono text-[13px] font-extrabold tracking-wider">
+      <span className="font-mono text-[14px] font-extrabold tracking-wider">
         {lang === 'ar' ? 'AR' : 'DE'}
       </span>
     </button>

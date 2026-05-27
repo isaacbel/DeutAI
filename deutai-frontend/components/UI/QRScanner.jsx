@@ -96,7 +96,7 @@ export default function QRScanner({ onDetected, onError }) {
         style={{ background: 'rgba(220,100,80,0.06)', border: '1px solid rgba(220,100,80,0.20)' }}
       >
         <p className="text-sm mb-4" style={{ color: 'var(--color-error)' }}>⚠ {permissionError}</p>
-        <button onClick={startScanner} className="btn-gold px-6 py-2 text-sm">
+        <button onClick={startScanner} className="btn-gold px-6 py-2 text-sm min-h-12">
           ↺ {t('scanner.retry')}
         </button>
       </div>

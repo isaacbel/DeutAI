@@ -126,7 +126,7 @@ function AnalyzeContent() {
 
       {/* ── Header ── */}
       <header
-        className="sticky top-0 z-30 px-4 sm:px-6 py-3.5 flex items-center justify-between"
+        className="sticky top-0 z-30 px-3 sm:px-6 py-3.5 flex items-center justify-between gap-2"
         style={{
           background: 'rgba(242,248,252,0.92)',
           backdropFilter: 'blur(20px)',
@@ -134,9 +134,9 @@ function AnalyzeContent() {
           minHeight: '60px',
         }}
       >
-        <div className={lang === 'ar' ? 'pr-12 sm:pr-14' : 'pl-12 sm:pl-14'}>
+        <div className={`min-w-0 ${lang === 'ar' ? 'pr-12 sm:pr-14' : 'pl-12 sm:pl-14'}`}>
           <h1
-            className="text-[18px] font-bold tracking-[.16em] flex items-center gap-2"
+            className="text-[16px] sm:text-[18px] font-bold tracking-[.12em] sm:tracking-[.16em] flex items-center gap-2"
             style={{ color: 'var(--color-primary)', fontFamily: 'inherit' }}
           >
             <span
@@ -145,7 +145,7 @@ function AnalyzeContent() {
             />
             DeutAI
           </h1>
-          <p className="text-[13px] tracking-[.26em] uppercase mt-0.5" style={{ color: 'var(--color-text-muted)' }}>{t('app.system404')}</p>
+          <p className="hidden sm:block text-[13px] tracking-[.26em] uppercase mt-0.5 truncate" style={{ color: 'var(--color-text-muted)' }}>{t('app.system404')}</p>
         </div>
 
         <div className={`flex items-center gap-2 ${lang === 'ar' ? 'pl-12 sm:pl-0' : 'pr-12 sm:pr-0'}`}>
@@ -156,7 +156,7 @@ function AnalyzeContent() {
             <Link
               key={href}
               href={href}
-              className="flex items-center gap-1.5 px-2.5 py-[7px] rounded-lg text-[14px] transition-all"
+              className="flex min-h-11 min-w-11 items-center justify-center gap-1.5 px-3 py-2 rounded-lg text-[14px] transition-all"
               style={{
                 border: '1px solid var(--color-border)',
                 background: 'rgba(156,123,172,0.06)',
@@ -185,7 +185,7 @@ function AnalyzeContent() {
           </span>
           <Link
             href="/analyze"
-            className="transition-colors p-1 rounded-md text-sm"
+            className="transition-colors min-h-11 min-w-11 inline-flex items-center justify-center rounded-md text-sm"
             style={{ color: 'var(--color-text-muted)' }}
             aria-label={t('analyze.removeUnit')}
           >
@@ -250,7 +250,7 @@ function AnalyzeContent() {
             {(error.includes('unavailable') || error.includes('server') || error.includes('متاح') || error.includes('Dienst') || error.includes('erreichbar')) && (
               <button
                 onClick={handleAnalyze}
-                className="flex items-center gap-1.5 self-start text-[14px] px-2 py-1 -ml-1 rounded transition-all"
+                className="flex min-h-11 items-center gap-1.5 self-start text-[14px] px-3 py-2 -ml-1 rounded transition-all"
                 style={{ color: 'var(--color-primary)' }}
                 onMouseEnter={e => { e.currentTarget.style.background='rgba(156,123,172,0.1)'; }}
                 onMouseLeave={e => { e.currentTarget.style.background='transparent'; }}

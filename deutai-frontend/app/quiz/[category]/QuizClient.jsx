@@ -99,7 +99,7 @@ export default function QuizClient({ slug }) {
       lang={lang}
     >
       <div
-        className="sticky top-0 z-20 px-4 py-3 flex items-center justify-between gap-3"
+        className="sticky top-0 z-20 px-3 sm:px-4 py-3 flex items-center justify-between gap-3"
         style={{
           background: 'rgba(242,248,252,0.92)',
           borderBottom: '1px solid var(--color-border)',
@@ -108,7 +108,7 @@ export default function QuizClient({ slug }) {
       >
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-[15px] tracking-[0.14em] uppercase"
+          className="inline-flex min-h-11 items-center gap-2 text-[15px] tracking-[0.1em] sm:tracking-[0.14em] uppercase"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ArrowLeft size={14} />
@@ -119,7 +119,7 @@ export default function QuizClient({ slug }) {
             <ProgressBar current={currentIndex + 1} total={questions.length} />
           </div>
         )}
-        <span className="text-[15px] tracking-[0.18em] uppercase" style={{ color: 'var(--color-primary)' }}>
+        <span className="text-[15px] tracking-[0.12em] sm:tracking-[0.18em] uppercase" style={{ color: 'var(--color-primary)' }}>
           {t('quiz.title')}
         </span>
       </div>
@@ -130,12 +130,12 @@ export default function QuizClient({ slug }) {
         </div>
       )}
 
-      <div className="px-4 py-8 max-w-3xl mx-auto">
+      <div className="px-3 sm:px-4 py-6 sm:py-8 max-w-3xl mx-auto">
         {phase === 'welcome' && (
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl p-6 sm:p-10"
+            className="rounded-2xl p-5 sm:p-10"
             style={{
               background: 'white',
               border: '1px solid var(--color-border)',
@@ -173,7 +173,7 @@ export default function QuizClient({ slug }) {
                 <button
                   type="button"
                   onClick={startQuiz}
-                  className="mt-3 block text-[14px] uppercase tracking-wider underline"
+                  className="mt-3 inline-flex min-h-11 items-center text-[14px] uppercase tracking-wider underline"
                   style={{ color: 'var(--color-primary)' }}
                 >
                   {t('quiz.retry')}
@@ -184,7 +184,7 @@ export default function QuizClient({ slug }) {
             <button
               type="button"
               onClick={startQuiz}
-              className="mt-8 w-full sm:w-auto text-[15px] tracking-[0.16em] uppercase py-3.5 px-10 rounded-xl"
+              className="mt-8 w-full sm:w-auto min-h-12 text-[15px] tracking-[0.12em] uppercase py-3.5 px-10 rounded-xl"
               style={{
                 background: 'var(--color-primary)',
                 color: '#121212',

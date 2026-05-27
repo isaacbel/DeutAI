@@ -141,9 +141,9 @@ export default function ErrorTypeChart({ data }) {
   return (
     <div className="flex flex-col gap-5">
       {/* Summary strip */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 min-[360px]:grid-cols-2 sm:grid-cols-3">
         <div className="rounded-xl border border-var(--color-border) bg-var(--color-bg-sidebar) px-3 py-2.5">
-          <p className="text-[13px] uppercase tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[14px] uppercase tracking-normal sm:tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.totalErrorsLabel')}
           </p>
           <p className="mt-1 font-mono text-xl font-bold tabular-nums text-text-primary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
@@ -151,15 +151,15 @@ export default function ErrorTypeChart({ data }) {
           </p>
         </div>
         <div className="rounded-xl border border-var(--color-border) bg-var(--color-bg-sidebar) px-3 py-2.5">
-          <p className="text-[13px] uppercase tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+          <p className="text-[14px] uppercase tracking-normal sm:tracking-wider text-text-muted" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {t('stats.activeTypesLabel')}
           </p>
           <p className="mt-1 font-mono text-xl font-bold tabular-nums text-text-primary" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
             {rows.length}
           </p>
         </div>
-        <div className="col-span-2 rounded-xl border border-[rgba(156,123,172,0.25)] bg-[rgba(156,123,172,0.06)] px-3 py-2.5 sm:col-span-1">
-          <p className="text-[13px] uppercase tracking-wider text-primary" style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--color-primary)' }}>
+        <div className="rounded-xl border border-[rgba(156,123,172,0.25)] bg-[rgba(156,123,172,0.06)] px-3 py-2.5 sm:col-span-1">
+          <p className="text-[14px] uppercase tracking-normal sm:tracking-wider text-primary" style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--color-primary)' }}>
             {t('stats.mostFrequentLabel')}
           </p>
           <p className="mt-1 truncate text-sm font-semibold text-text-primary" title={top.name}>
@@ -175,7 +175,7 @@ export default function ErrorTypeChart({ data }) {
         {/* Ranked list + bars */}
         <div className="min-h-0 lg:col-span-3">
           <p
-            className="mb-3 text-[14px] uppercase tracking-[0.2em] text-text-muted"
+            className="mb-3 text-[14px] uppercase tracking-[0.1em] sm:tracking-[0.2em] text-text-muted"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
             {t('stats.ranking')}
@@ -227,7 +227,7 @@ export default function ErrorTypeChart({ data }) {
         {/* Donut */}
         <div className="flex flex-col items-center justify-start lg:col-span-2">
           <p
-            className="mb-2 w-full text-[14px] uppercase tracking-[0.2em] text-text-muted lg:text-center"
+            className="mb-2 w-full text-[14px] uppercase tracking-[0.1em] sm:tracking-[0.2em] text-text-muted lg:text-center"
             style={{ fontFamily: 'JetBrains Mono, monospace' }}
           >
             {t('stats.distribution')}

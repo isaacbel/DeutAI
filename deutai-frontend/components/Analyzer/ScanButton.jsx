@@ -10,11 +10,11 @@ export default function ScanButton({ onClick, disabled, loading }) {
     <button
       onClick={onClick}
       disabled={disabled || loading}
-      className="w-full py-[15px] rounded-xl font-bold font-mono relative overflow-hidden transition-all duration-300 select-none"
+      className="w-full min-h-12 py-[15px] px-3 rounded-xl font-bold font-mono relative overflow-hidden transition-all duration-300 select-none"
       style={{
         fontFamily: 'JetBrains Mono, monospace',
         fontSize: '15px',
-        letterSpacing: '2.5px',
+        letterSpacing: '1.4px',
         ...(isActive ? {
           background: 'var(--color-primary)',
           border: '1px solid var(--color-primary)',

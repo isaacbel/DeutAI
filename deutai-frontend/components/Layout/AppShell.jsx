@@ -70,7 +70,7 @@ export default function AppShell({ children }) {
               exit={{ opacity: 0, scale: 0.7 }}
               transition={{ type: 'spring', stiffness: 360, damping: 26 }}
               onClick={() => setSidebarOpen(true)}
-              className={`md:hidden fixed top-4 ${lang === 'ar' ? 'left-4' : 'right-4'} z-50 w-10 h-10 rounded-xl flex items-center justify-center`}
+              className={`md:hidden fixed top-3 ${lang === 'ar' ? 'left-3' : 'right-3'} z-50 w-11 h-11 rounded-xl flex items-center justify-center`}
               style={{
                 background: 'var(--color-bg-sidebar)',
                 border: '1px solid var(--color-border)',
@@ -79,7 +79,7 @@ export default function AppShell({ children }) {
               }}
               aria-label={t('nav.openMenu')}
             >
-              <Menu size={17} strokeWidth={2} />
+              <Menu size={19} strokeWidth={2} />
             </motion.button>
           )}
         </AnimatePresence>

@@ -99,6 +99,7 @@ function SidebarItem({ item, isSelected, onSelect, onDelete, t, lang }) {
         borderRadius: '10px',
         cursor: 'pointer',
         marginBottom: '4px',
+        minHeight: '72px',
         background: isSelected
           ? 'rgba(156,123,172,0.1)'
           : hovered ? 'rgba(156,123,172,0.04)' : 'transparent',
@@ -172,7 +173,7 @@ function SidebarItem({ item, isSelected, onSelect, onDelete, t, lang }) {
             position: 'absolute', bottom: '9px', right: '9px',
             background: confirmDel ? 'rgba(180,40,40,0.15)' : 'rgba(242,248,252,0.98)',
             border: confirmDel ? '1px solid rgba(180,40,40,0.4)' : '1px solid var(--color-border)',
-            borderRadius: '6px', padding: '4px 9px', cursor: 'pointer',
+            borderRadius: '6px', padding: '4px 9px', cursor: 'pointer', minHeight: '44px',
             fontSize: '11px',
             color: confirmDel ? '#c0392b' : 'var(--color-text-muted)',
             transition: 'all 0.12s',
@@ -336,8 +337,6 @@ export default function HistoryPage() {
   return (
     <AppShell>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
-
         .hp { display:flex; min-height:100vh; overflow:hidden; background:var(--color-bg-ice); }
 
         .hp-side {
@@ -383,9 +382,10 @@ export default function HistoryPage() {
         .card-animate-3 { animation-delay: 0.25s; }
 
         @media(max-width:820px){
-          .hp { flex-direction:column; min-height:100%; overflow:auto; }
+          .hp { flex-direction:column; min-height:100svh; overflow:auto; }
           .hp-side { width:100%; height:auto; border-right:none; border-bottom:1px solid var(--color-border); }
-          .hp-side-list { max-height:200px; }
+          .hp-side-head { padding: 14px; }
+          .hp-side-list { max-height:240px; padding: 8px; }
           .hp-main { height:auto; overflow:visible; }
           .hp-main > div { height:auto !important; overflow:visible !important; }
         }
@@ -422,7 +422,7 @@ export default function HistoryPage() {
                 onClick={() => router.push('/analyze')}
                 style={{
                   fontSize: '12px',
-                  padding: '7px 12px', borderRadius: '8px', cursor: 'pointer',
+                  padding: '8px 12px', borderRadius: '8px', cursor: 'pointer', minHeight: '44px',
                   background: 'rgba(156,123,172,0.1)', border: '1px solid rgba(156,123,172,0.3)',
                   color: 'var(--color-primary)', letterSpacing: '1px', transition: 'all 0.14s',
                 }}
@@ -467,7 +467,7 @@ export default function HistoryPage() {
                   onClick={() => router.push('/analyze')}
                   style={{
                     fontSize: '12px',
-                    padding: '8px 14px', borderRadius: '8px', cursor: 'pointer',
+                    padding: '8px 14px', borderRadius: '8px', cursor: 'pointer', minHeight: '44px',
                     background: 'rgba(156,123,172,0.1)', border: '1px solid rgba(156,123,172,0.3)',
                     color: 'var(--color-primary)', letterSpacing: '1px',
                   }}
@@ -496,7 +496,7 @@ export default function HistoryPage() {
                 disabled={clearing}
                 style={{
                   width: '100%', fontSize: '12px',
-                  padding: '9px', borderRadius: '8px',
+                  padding: '9px', borderRadius: '8px', minHeight: '44px',
                   cursor: clearing ? 'not-allowed' : 'pointer',
                   background: confirmClear ? 'rgba(180,40,40,0.1)' : 'rgba(156,123,172,0.05)',
                   border: confirmClear ? '1px solid rgba(180,40,40,0.3)' : '1px solid var(--color-border)',

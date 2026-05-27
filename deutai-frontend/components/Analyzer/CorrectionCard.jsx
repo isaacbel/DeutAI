@@ -67,8 +67,8 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
       style={{
         background: 'white',
         border: '1px solid var(--color-border)',
-        borderRadius: '24px',
-        padding: '28px',
+        borderRadius: '16px',
+        padding: 'clamp(18px, 4vw, 28px)',
         boxShadow: '0 4px 24px rgba(156, 123, 172, 0.06)',
         backdropFilter: 'blur(10px)',
       }}
@@ -82,7 +82,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
         </div>
         <span
           className="text-base uppercase font-semibold"
-          style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.2em', color: 'var(--color-primary)' }}
+          style={{ fontFamily: 'Inter, sans-serif', letterSpacing: '0.12em', color: 'var(--color-primary)' }}
         >
           {t('errorCard.correction')}
         </span>
@@ -132,7 +132,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
                 borderRadius: '16px',
                 background: 'rgba(204, 85, 85, 0.04)',
                 border: '1px solid rgba(204, 85, 85, 0.12)',
-                padding: '16px 18px',
+                padding: '14px 16px',
                 height: '100%',
               }}
             >
@@ -160,7 +160,7 @@ export default function CorrectionCard({ correctedSentence, correction, errors =
                 borderRadius: '16px',
                 background: 'rgba(124, 176, 120, 0.04)',
                 border: '1px solid rgba(124, 176, 120, 0.12)',
-                padding: '16px 18px',
+                padding: '14px 16px',
                 height: '100%',
               }}
             >

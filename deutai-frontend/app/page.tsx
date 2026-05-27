@@ -138,9 +138,9 @@ export default function RootPage() {
   };
 
   const tabStyle = (active: boolean) => ({
-    padding: '6px 12px',
+    padding: '10px 12px',
     borderRadius: '10px',
-    fontSize: '12px',
+    fontSize: '14px',
     fontFamily: 'JetBrains Mono, monospace',
     fontWeight: active ? 'bold' : 'normal',
     color: active ? 'white' : 'var(--color-text-secondary)',
@@ -149,6 +149,7 @@ export default function RootPage() {
     transition: 'all 0.3s ease',
     cursor: 'pointer',
     outline: 'none',
+    minHeight: '44px',
   });
 
   useEffect(() => {
@@ -184,8 +185,6 @@ export default function RootPage() {
   return (
     <div className="min-h-screen bg-bg-main text-text-primary overflow-x-hidden" dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500&display=swap');
-
         *, *::before, *::after { box-sizing: border-box; }
 
         .lp-blob {
@@ -212,6 +211,7 @@ export default function RootPage() {
         .lp-cta-primary {
           display: inline-flex; align-items: center; justify-content: center;
           padding: 14px 36px; border-radius: 14px;
+          min-height: 44px;
           background: var(--color-accent); color: white;
           font-family: 'JetBrains Mono', monospace;
           font-size: 14px; font-weight: 600; letter-spacing: 1px;
@@ -225,6 +225,7 @@ export default function RootPage() {
         .lp-cta-secondary {
           display: inline-flex; align-items: center; justify-content: center;
           padding: 13px 36px; border-radius: 14px;
+          min-height: 44px;
           background: transparent; color: var(--color-primary);
           font-family: 'JetBrains Mono', monospace;
           font-size: 14px; font-weight: 500; letter-spacing: 1px;
@@ -311,6 +312,7 @@ export default function RootPage() {
           .lp-section { padding: 0 16px 56px; }
           .lp-section-header { margin-bottom: 36px !important; }
           .lp-step-num { font-size: 26px !important; width: 40px !important; }
+          .lp-step { padding: 18px 16px; gap: 14px; }
         }
 
         /* ── Divider ── */
@@ -323,7 +325,7 @@ export default function RootPage() {
         /* ── Hero logo ── */
         .hero-logo { width: 520px; height: 520px; }
         @media (max-width: 640px) {
-          .hero-logo { width: 320px; height: 320px; }
+          .hero-logo { width: min(280px, 82vw); height: min(280px, 82vw); }
           .hero-section { padding-top: 72px !important; padding-bottom: 40px !important; }
         }
 
@@ -395,8 +397,9 @@ export default function RootPage() {
 
         /* Mobile: ≤ 640px */
         @media (max-width: 640px) {
-          .lp-nav { padding: 0 14px; height: 56px; }
+          .lp-nav { padding: 0 10px; height: 60px; }
           .lp-nav-brand { display: none; }
+          .lp-nav-left img { width: 48px !important; height: 48px !important; }
 
           .lp-feat-grid {
             grid-template-columns: 1fr;
@@ -434,7 +437,7 @@ export default function RootPage() {
         /* Very small: ≤ 400px */
         @media (max-width: 400px) {
           .lp-nav-right { gap: 6px; }
-          .lp-cta-secondary { padding: 8px 14px; font-size: 12px; }
+          .lp-cta-secondary { padding: 8px 14px; font-size: 14px; }
         }
       `}</style>
 
@@ -443,7 +446,7 @@ export default function RootPage() {
       {/* ── Nav ── */}
       <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
         <div className="lp-nav-left">
-          <Image src="/hero-image.png" alt="DeutAI" width={65} height={65} style={{ objectFit: 'contain' }} />
+          <Image src="/hero-image.png" alt="DeutAI" width={65} height={65} sizes="65px" style={{ objectFit: 'contain' }} />
           <span className="lp-nav-brand" style={{ fontSize: '15px' }}>
             DEUTAI
           </span>
@@ -545,7 +548,7 @@ export default function RootPage() {
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
           {/* marginBottom reduced from 28px → 12px; logo size reduced from 400px → 280px */}
           <div className="hero-1" style={{ marginBottom: '12px', filter: 'drop-shadow(0 0 60px rgba(156,123,172,0.18))' }}>
-            <Image src="/hero-image.png" className="hero-logo" alt="DeutAI" width={520} height={520} style={{ objectFit: 'contain' }} priority />
+            <Image src="/hero-image.png" className="hero-logo" alt="DeutAI" width={520} height={520} sizes="(max-width: 640px) 82vw, 520px" style={{ objectFit: 'contain' }} priority />
           </div>
 
           {/* margin-bottom reduced from 20px → 16px */}
@@ -606,7 +609,7 @@ export default function RootPage() {
                 </div>
                 <span style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '11px',
+                  fontSize: '14px',
                   fontWeight: 600,
                   color: 'var(--color-text-secondary)',
                   letterSpacing: '1px',
@@ -659,7 +662,7 @@ export default function RootPage() {
                 <div style={{ marginBottom: '16px', direction: 'ltr', textAlign: 'left' }}>
                   <p style={{
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '13px',
+                    fontSize: '14px',
                     textTransform: 'uppercase',
                     color: 'var(--color-text-secondary)',
                     letterSpacing: '1px',
@@ -702,7 +705,7 @@ export default function RootPage() {
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
                       <span style={{
                         fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '11px',
+                        fontSize: '14px',
                         fontWeight: 'bold',
                         color: 'var(--color-success)',
                         textTransform: 'uppercase',
@@ -713,7 +716,7 @@ export default function RootPage() {
                       }}>
                         {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][demoIndex].badge}
                       </span>
-                      <span style={{ fontSize: '12px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
+                      <span style={{ fontSize: '14px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
                         Confidence: 99%
                       </span>
                     </div>
@@ -739,7 +742,7 @@ export default function RootPage() {
                     <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '10px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
                       <p style={{
                         fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '12px',
+                        fontSize: '14px',
                         fontWeight: 600,
                         color: 'var(--color-text-secondary)',
                         margin: '0 0 4px 0'
@@ -769,7 +772,7 @@ export default function RootPage() {
                     color: 'var(--color-primary)'
                   }}>
                     <div className="w-6 h-6 rounded-full border-2 border-primary/20" style={{ animation: 'spin-slow 0.8s linear infinite', borderTopColor: 'var(--color-primary)' }} />
-                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '13px', letterSpacing: '2px', fontWeight: 600 }}>
+                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '14px', letterSpacing: '1px', fontWeight: 600 }}>
                       {lang === 'ar' ? 'جاري الفحص بالذكاء الاصطناعي...' : 'KI-ANALYSE LÄUFT...'}
                     </span>
                   </div>
@@ -945,7 +948,7 @@ export default function RootPage() {
       <footer className="lp-footer" style={{ position: 'relative', zIndex: 1, maxWidth: '100%', background: 'var(--color-bg-sidebar)' }}>
         <div style={{ display: 'flex', width: '100%', maxWidth: '1040px', margin: '0 auto', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
           <div className="lp-footer-brand">
-            <Image src="/hero-image.png" alt="DeutAI" width={48} height={48} style={{ objectFit: 'contain' }} />
+            <Image src="/hero-image.png" alt="DeutAI" width={48} height={48} sizes="48px" style={{ objectFit: 'contain' }} />
             <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
               <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '18px', fontWeight: 600, color: 'var(--color-primary)', letterSpacing: '1px' }}>
                 DeutAI

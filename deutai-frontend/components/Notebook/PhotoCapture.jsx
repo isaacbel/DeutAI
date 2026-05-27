@@ -110,13 +110,13 @@ export default function PhotoCapture({ onCapture, loading }) {
           <div className="absolute bottom-3 left-0 right-0 flex justify-center gap-3">
             <button
               onClick={capturePhoto}
-              className="btn-gold px-6 py-3 text-sm"
+              className="btn-gold px-6 py-3 text-sm min-h-12"
             >
               📸 {t('notebook.capture')}
             </button>
             <button
               onClick={stopCamera}
-              className="btn-outline px-4 py-3 text-sm"
+              className="btn-outline px-4 py-3 text-sm min-h-12"
             >
               ✕ {t('notebook.cancel')}
             </button>
@@ -152,14 +152,14 @@ export default function PhotoCapture({ onCapture, loading }) {
             <button
               onClick={startCamera}
               disabled={loading}
-              className="btn-gold w-full py-3 text-sm"
+              className="btn-gold w-full py-3 text-sm min-h-12"
             >
               {t('notebook.takePhoto')}
             </button>
             <button
               onClick={() => fileRef.current?.click()}
               disabled={loading}
-              className="btn-outline w-full py-3 text-sm"
+              className="btn-outline w-full py-3 text-sm min-h-12"
             >
               {t('notebook.importImage')}
             </button>

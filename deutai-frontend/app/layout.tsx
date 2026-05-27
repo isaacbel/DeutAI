@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import { Cairo, Inter } from "next/font/google";
+import { Cairo, Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n/LanguageProvider";
 import { AuthProvider } from "@/lib/auth";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const cairo = Cairo({ subsets: ["arabic", "latin"], variable: "--font-cairo" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const cairo = Cairo({ subsets: ["arabic", "latin"], variable: "--font-cairo", display: "swap" });
+const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", display: "swap" });
 
 export const metadata: Metadata = {
   title: "DeutAI",
@@ -17,15 +18,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ar" dir="rtl" className={`${inter.variable} ${cairo.variable} h-full`}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
-      </head>
+    <html lang="ar" dir="rtl" className={`${inter.variable} ${cairo.variable} ${jetbrainsMono.variable} h-full`}>
       <body className="min-h-full text-text-primary antialiased" style={{ background: 'var(--color-bg-main)' }}>
         <LanguageProvider>
           <AuthProvider>

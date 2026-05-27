@@ -52,7 +52,7 @@ export default function StatsSummary({ stats }) {
           >
             <div className="flex items-center justify-between">
               <span
-                className="text-[13px] uppercase tracking-[.18em] font-semibold"
+                className="text-[14px] uppercase tracking-[.08em] sm:tracking-[.18em] font-semibold"
                 style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--color-text-muted)' }}
               >
                 {item.label}
@@ -65,6 +65,8 @@ export default function StatsSummary({ stats }) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
+                minWidth: '32px',
+                minHeight: '32px',
               }}>
                 <Icon size={14} style={{ color: item.color }} />
               </div>

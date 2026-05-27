@@ -33,8 +33,6 @@ const ERROR_TYPE_LABEL_KEYS = {
 };
 
 const PAGE_STYLES = `
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;600&display=swap');
-
   @keyframes shimmer {
     0%   { background-position: -800px 0; }
     100% { background-position: 800px 0; }
@@ -164,6 +162,42 @@ const PAGE_STYLES = `
     border: 1px solid var(--color-border);
     background: white;
   }
+  @media (max-width: 640px) {
+    .page-root {
+      min-height: 100svh;
+      height: auto;
+      overflow: visible;
+    }
+    .page-header {
+      padding: 10px 14px;
+      min-height: 64px;
+      height: auto;
+      gap: 12px;
+    }
+    .header-title {
+      font-size: 14px;
+      letter-spacing: 1.5px;
+    }
+    .header-sub {
+      display: none;
+    }
+    .count-badge {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      font-size: 14px;
+      padding: 8px 10px;
+    }
+    .page-scroll {
+      overflow-y: visible;
+      padding: 16px 14px 48px;
+    }
+    .filter-wrap button {
+      min-height: 44px;
+      font-size: 14px !important;
+      padding: 8px 12px !important;
+    }
+  }
 `;
 
 export default function FlashcardsPage() {
@@ -271,8 +305,9 @@ export default function FlashcardsPage() {
                           key={opt.value}
                           onClick={() => setSelectedType(opt.value)}
                           style={{
-                            fontSize: '13px',
-                            padding: '6px 12px',
+                            fontSize: '14px',
+                            padding: '8px 12px',
+                            minHeight: '44px',
                             borderRadius: '999px',
                             border: active ? '1px solid rgba(156,123,172,0.45)' : '1px solid var(--color-border)',
                             background: active ? 'rgba(156,123,172,0.15)' : 'white',

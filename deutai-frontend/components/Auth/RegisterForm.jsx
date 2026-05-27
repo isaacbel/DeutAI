@@ -117,7 +117,7 @@ export default function RegisterForm() {
           placeholder="you@example.com"
           required
           disabled={loading}
-          className="input-dark px-4 py-3 text-sm"
+          className="input-dark px-4 py-3 text-base"
           style={{ fontFamily: 'Inter, sans-serif' }}
         />
       </div>
@@ -136,7 +136,7 @@ export default function RegisterForm() {
           placeholder={t('auth.minCharsPlaceholder')}
           required
           disabled={loading}
-          className="input-dark px-4 py-3 text-sm"
+          className="input-dark px-4 py-3 text-base"
           style={{ fontFamily: 'Inter, sans-serif' }}
         />
       </div>
@@ -155,7 +155,7 @@ export default function RegisterForm() {
           placeholder="••••••••"
           required
           disabled={loading}
-          className="input-dark px-4 py-3 text-sm"
+          className="input-dark px-4 py-3 text-base"
           style={{
             fontFamily: 'Inter, sans-serif',
             borderColor: confirm && password !== confirm ? 'var(--color-error)' : undefined,
@@ -184,7 +184,7 @@ export default function RegisterForm() {
 
       <p className="text-sm text-center text-text-muted" style={{ fontFamily: 'Inter, sans-serif' }}>
         {t('auth.alreadyRegistered')}{' '}
-        <Link href="/login" className="hover:underline" style={{ color: 'var(--color-primary)' }}>
+        <Link href="/login" className="inline-flex min-h-11 items-center hover:underline" style={{ color: 'var(--color-primary)' }}>
           {t('landing.signIn')}
         </Link>
       </p>

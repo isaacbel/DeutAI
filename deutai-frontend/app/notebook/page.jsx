@@ -118,7 +118,7 @@ export default function NotebookPage() {
           className="sticky top-0 z-30 px-4 py-3 flex items-center gap-3"
           style={{ background: 'rgba(242,248,252,0.92)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--color-border)' }}
         >
-          <Link href="/analyze" className="text-text-muted hover:text-primary transition-colors text-sm">
+          <Link href="/analyze" className="inline-flex min-h-11 min-w-11 items-center justify-center text-text-muted hover:text-primary transition-colors text-sm">
             ←
           </Link>
           <div>
@@ -130,7 +130,7 @@ export default function NotebookPage() {
         </header>
 
         {/* Step indicators */}
-        <div className="flex px-4 pt-4 gap-2">
+        <div className="flex px-3 sm:px-4 pt-4 gap-2">
           {stepLabels.map((s, i) => {
             const isActive = step === s.key || (step === STEP.SCANNING && s.key === STEP.OCR);
             // FIX: SCANNING step sits between OCR and RESULT — treat it as step > OCR for progress bar
@@ -143,7 +143,7 @@ export default function NotebookPage() {
                   style={{ background: isDone ? 'var(--color-primary)' : isActive ? 'var(--color-primary)' : 'var(--color-border)' }}
                 />
                 <span
-                  className="text-[11px] tracking-wider"
+                  className="text-[14px] sm:text-[11px] tracking-normal sm:tracking-wider"
                   style={{
                     color: isActive || isDone ? 'var(--color-primary)' : 'var(--color-text-muted)',
                   }}
@@ -156,7 +156,7 @@ export default function NotebookPage() {
         </div>
 
         {/* Content */}
-        <div className="px-4 py-4 max-w-2xl mx-auto">
+        <div className="px-3 sm:px-4 py-4 max-w-2xl mx-auto">
           {error && (
             <div className="mb-4 px-4 py-3 rounded-lg text-sm text-error" style={{ background: 'rgba(204,85,85,0.06)', border: '1px solid rgba(204,85,85,0.2)' }}>
               ⚠ {error}
@@ -208,7 +208,7 @@ export default function NotebookPage() {
               <div className="flex flex-col sm:flex-row gap-2">
                 <button
                   onClick={handleReset}
-                  className="px-4 py-[14px] rounded-xl text-[14px] transition-all whitespace-nowrap sm:w-auto w-full text-center"
+                  className="px-4 py-[14px] min-h-12 rounded-xl text-[14px] transition-all whitespace-nowrap sm:w-auto w-full text-center"
                   style={{
                     border: '1px solid var(--color-border)',
                     background: 'white',

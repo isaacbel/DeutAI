@@ -9,7 +9,7 @@ export default function FlashcardList({ flashcards, onDelete }) {
       <div style={{
         display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center',
-        padding: '80px 24px', gap: '20px',
+        padding: '56px 16px', gap: '20px',
       }}>
         <div style={{
           width: '56px', height: '56px',
@@ -49,7 +49,6 @@ export default function FlashcardList({ flashcards, onDelete }) {
           from { opacity: 0; transform: translateY(10px); }
           to   { opacity: 1; transform: translateY(0); }
         }
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;600&display=swap');
       `}</style>
 
       {/* Full-width scrollable list */}

@@ -36,7 +36,7 @@ export default function TextInput({ value, onChange, disabled }) {
           dir="ltr"
           lang="de"
           rows={5}
-          className="w-full px-5 py-4 text-[15px] resize-none rounded-xl outline-none transition-all duration-200"
+          className="w-full px-4 sm:px-5 py-4 text-base resize-none rounded-xl outline-none transition-all duration-200"
           style={{
             background: 'white',
             border: `1px solid ${isOver ? 'rgba(204,85,85,0.5)' : 'var(--color-border)'}`,
@@ -63,7 +63,7 @@ export default function TextInput({ value, onChange, disabled }) {
       </div>
 
       {/* Footer row */}
-      <div className="flex items-center justify-between mt-2 px-1">
+      <div className="flex items-start justify-between gap-3 mt-2 px-1">
         <span
           className="text-[15px] font-mono transition-all"
           style={{

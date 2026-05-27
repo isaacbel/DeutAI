@@ -19,7 +19,7 @@ function PeriodSelector({ period, onChange, t }) {
 
   return (
     <div
-      className="flex flex-wrap items-center gap-2 p-3 rounded-xl mb-4"
+      className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-2 p-3 rounded-xl mb-4"
       style={{ background: 'white', border: '1px solid var(--color-border)' }}
     >
       {PERIOD_OPTIONS.map(opt => {
@@ -28,7 +28,7 @@ function PeriodSelector({ period, onChange, t }) {
           <button
             key={opt.key}
             onClick={() => onChange(opt.key)}
-            className="px-3.5 py-[7px] rounded-lg text-[14px] transition-all"
+            className="min-h-11 px-3.5 py-2 rounded-lg text-[14px] transition-all"
             style={{
               background: active ? 'rgba(156,123,172,0.15)' : 'transparent',
               border: `1px solid ${active ? 'rgba(156,123,172,0.5)' : 'transparent'}`,
@@ -119,8 +119,8 @@ export default function StatsPage() {
             borderBottom: '1px solid var(--color-border)',
           }}
         >
-          <div className="mx-auto max-w-6xl flex items-center justify-between">
-            <div>
+          <div className="mx-auto max-w-6xl flex items-start justify-between gap-3">
+            <div className="min-w-0">
               <div className="flex items-center gap-2 mb-2">
                 <span
                   className="text-[13px] font-semibold px-2.5 py-[4px] rounded-full tracking-[.12em] uppercase"
@@ -136,12 +136,12 @@ export default function StatsPage() {
                 </span>
               </div>
               <h1
-                className="text-[17px] font-bold tracking-[.18em]"
+                className="text-[16px] sm:text-[17px] font-bold tracking-[.1em] sm:tracking-[.18em]"
                 style={{ color: 'var(--color-text-primary)' }}
               >
                 {t('stats.title')}
               </h1>
-              <p className="text-[14px] uppercase tracking-[.22em] mt-1" style={{ color: 'var(--color-text-muted)' }}>
+              <p className="text-[14px] uppercase tracking-[.12em] sm:tracking-[.22em] mt-1" style={{ color: 'var(--color-text-muted)' }}>
                 {t('stats.subtitle')}
               </p>
             </div>
@@ -159,13 +159,13 @@ export default function StatsPage() {
           {/* Error state */}
           {error && (
             <div
-              className="flex items-center justify-between p-4 rounded-xl text-[15px]"
+              className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-xl text-[15px]"
               style={{ background: 'rgba(204,85,85,0.06)', border: '1px solid rgba(204,85,85,0.2)', color: 'var(--color-error)' }}
             >
               <span>⚠ {error}</span>
               <button
                 onClick={() => loadStats()}
-                className="flex items-center gap-1.5 text-[14px] px-3 py-1.5 rounded-lg transition-all"
+                className="flex min-h-11 items-center justify-center gap-1.5 text-[14px] px-3 py-2 rounded-lg transition-all"
                 style={{ background: 'white', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
               >
                 <RefreshCw size={13} />
@@ -209,7 +209,7 @@ export default function StatsPage() {
                   className="xl:col-span-3 rounded-xl overflow-hidden"
                   style={{ background: 'white', border: '1px solid var(--color-border)' }}
                 >
-                  <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid var(--color-border)' }}>
+                  <div className="px-4 sm:px-5 py-4 flex items-start justify-between gap-3" style={{ borderBottom: '1px solid var(--color-border)' }}>
                     <div>
                       <p className="text-[15px] font-semibold" style={{ color: 'var(--color-text-primary)' }}>
                         {t('stats.errorsByType')}
@@ -223,7 +223,7 @@ export default function StatsPage() {
                       {t('stats.typesLabel')}
                     </span>
                   </div>
-                  <div className="p-5">
+                  <div className="p-4 sm:p-5">
                     <ErrorTypeChart data={stats.errorsByType} />
                   </div>
                 </div>
@@ -233,7 +233,7 @@ export default function StatsPage() {
                   className="xl:col-span-2 rounded-xl overflow-hidden"
                   style={{ background: 'white', border: '1px solid var(--color-border)' }}
                 >
-                  <div className="px-5 py-4 flex items-center justify-between" style={{ borderBottom: '1px solid var(--color-border)' }}>
+                  <div className="px-4 sm:px-5 py-4 flex items-start justify-between gap-3" style={{ borderBottom: '1px solid var(--color-border)' }}>
                     <div>
                       <p className="text-[15px] font-semibold" style={{ color: 'var(--color-text-primary)' }}>
                         {t('stats.analysisActivity')}
@@ -244,7 +244,7 @@ export default function StatsPage() {
                     </div>
                     <TrendingUp size={17} className="opacity-70 flex-shrink-0" style={{ color: 'var(--color-primary)' }} />
                   </div>
-                  <div className="p-5">
+                  <div className="p-4 sm:p-5">
                     <EvolutionChart data={stats.evolution} period={period} />
                   </div>
                 </div>

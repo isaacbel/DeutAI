@@ -23,7 +23,7 @@ export default function DifficultySelector({ value, onChange }) {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => onChange(lvl.id)}
-            className="rounded-xl px-4 py-3 text-left transition-all duration-200"
+            className="rounded-xl px-4 py-3 min-h-16 text-left transition-all duration-200"
             style={{
               background: active ? 'rgba(156,123,172,0.10)' : 'white',
               border: active ? '1px solid rgba(156,123,172,0.35)' : '1px solid var(--color-border)',

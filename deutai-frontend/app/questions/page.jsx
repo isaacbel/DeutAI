@@ -62,27 +62,23 @@ export default function QuestionsPage() {
   return (
     <AppShell>
       <div className="min-h-screen relative overflow-hidden" style={{ background: 'var(--color-bg-ice)', color: 'var(--color-text-primary)' }} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
-        {/* Background blobs */}
+        {/* Background wash */}
         <div
-          className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] opacity-20 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(156,123,172,0.4) 0%, transparent 70%)' }}
-        />
-        <div
-          className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full blur-[100px] opacity-10 pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(76,177,255,0.3) 0%, transparent 70%)' }}
+          className="absolute inset-0 opacity-100 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse 75% 35% at 50% 0%, rgba(156,123,172,0.08) 0%, transparent 65%)' }}
         />
 
-        <div className="max-w-5xl mx-auto px-6 py-12 lg:py-16 relative z-10">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16 relative z-10">
 
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-12"
+            className="mb-8 sm:mb-12"
           >
             <div
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg mb-4"
+              className="inline-flex min-h-11 items-center gap-2 px-3 py-2 rounded-lg mb-4"
               style={{ background: 'rgba(156,123,172,0.1)', border: '1px solid rgba(156,123,172,0.2)' }}
             >
               <Brain size={14} style={{ color: 'var(--color-primary)' }} />
@@ -90,10 +86,10 @@ export default function QuestionsPage() {
                 {t('questions.modeTest')}
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', Georgia, serif", color: 'var(--color-text-primary)' }}>
+            <h1 className="text-[30px] sm:text-4xl md:text-5xl font-bold mb-4" style={{ fontFamily: "'Playfair Display', Georgia, serif", color: 'var(--color-text-primary)' }}>
               {t('questions.title')}
             </h1>
-            <p className="text-lg" style={{ color: 'var(--color-text-muted)', maxWidth: '600px' }}>
+            <p className="text-[16px] sm:text-lg leading-relaxed" style={{ color: 'var(--color-text-muted)', maxWidth: '600px' }}>
               {t('questions.subtitle')}
             </p>
           </motion.div>
@@ -111,7 +107,7 @@ export default function QuestionsPage() {
                   transition={{ duration: 0.5, delay: 0.1 + idx * 0.1 }}
                   whileHover={{ scale: 1.02, y: -4 }}
                   whileTap={{ scale: 0.98 }}
-                  className={`group relative flex flex-col p-6 lg:p-8 rounded-3xl overflow-hidden ${lang === 'ar' ? 'text-right' : 'text-left'}`}
+                  className={`group relative flex flex-col p-5 sm:p-6 lg:p-8 rounded-2xl min-h-[220px] overflow-hidden ${lang === 'ar' ? 'text-right' : 'text-left'}`}
                   style={{
                     background: 'white',
                     border: '1px solid var(--color-border)',
@@ -136,7 +132,7 @@ export default function QuestionsPage() {
                       <Icon size={24} />
                     </div>
                     <div
-                      className="w-8 h-8 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-300"
+                      className="w-11 h-11 rounded-full flex items-center justify-center opacity-100 sm:opacity-0 group-hover:opacity-100 transform sm:translate-x-4 group-hover:translate-x-0 transition-all duration-300"
                       style={{ background: 'rgba(156,123,172,0.12)', color: 'var(--color-primary)' }}
                     >
                        <ChevronRight size={16} style={lang === 'ar' ? { transform: 'scaleX(-1)' } : {}} /> {/* Fix #16 */}

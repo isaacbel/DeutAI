@@ -34,7 +34,7 @@ export default function LoginPage() {
   if (!ready) return null;
 
   return (
-    <div className="min-h-screen flex flex-col justify-center px-4 py-12 relative overflow-hidden" style={{ background: 'var(--color-bg-ice)' }} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
+    <div className="min-h-[100svh] flex flex-col justify-center px-4 py-8 sm:py-12 relative overflow-hidden" style={{ background: 'var(--color-bg-ice)' }} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
       <div className={`absolute top-4 z-20 ${lang === 'ar' ? 'left-4' : 'right-4'}`}>
         <LanguageSwitcher isMobile={true} />
       </div>
@@ -44,10 +44,10 @@ export default function LoginPage() {
       <div className={`absolute top-[-100px] ${lang === 'ar' ? 'left-[-100px]' : 'right-[-100px]'} w-64 h-64 rounded-full blur-3xl`} style={{ background: 'rgba(156,123,172,0.15)' }} />
 
       <div className="w-full max-w-sm mx-auto relative z-10">
-        <div className="text-center mb-10">
+        <div className="text-center mb-6 sm:mb-10">
           <h1
-            className="text-3xl font-bold text-gold"
-            style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '4px' }}
+          className="text-2xl sm:text-3xl font-bold text-gold"
+          style={{ fontFamily: 'JetBrains Mono, monospace', letterSpacing: '3px' }}
           >
             DeutAI
           </h1>
@@ -56,7 +56,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <div className="auth-card p-6">
+        <div className="auth-card p-5 sm:p-6">
           <LoginForm />
         </div>
       </div>
