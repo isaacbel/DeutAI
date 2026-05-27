@@ -39,10 +39,12 @@ const resetPasswordSchema = Joi.object({
 });
 
 function validationResponse(res, error) {
+  const details = error.details.map((detail) => detail.message);
+
   return res.status(400).json({
     error: 'VALIDATION_ERROR',
-    message: 'Invalid request body.',
-    details: error.details.map((detail) => detail.message),
+    message: details.join(' '),
+    details,
   });
 }
 

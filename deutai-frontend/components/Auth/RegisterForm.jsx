@@ -18,14 +18,23 @@ export default function RegisterForm() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
+  function passwordError(value) {
+    if (value.length < 8) return t('auth.errorPasswordTooShort');
+    if (!/[A-Za-z]/.test(value) || !/[0-9]/.test(value)) {
+      return 'Password must contain at least one letter and one number.';
+    }
+    return '';
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
     if (password !== confirm) {
       setError(t('auth.errorPasswordsDoNotMatch'));
       return;
     }
-    if (password.length < 8) {
-      setError(t('auth.errorPasswordTooShort'));
+    const weakPasswordMessage = passwordError(password);
+    if (weakPasswordMessage) {
+      setError(weakPasswordMessage);
       return;
     }
     setError('');
@@ -38,7 +47,7 @@ export default function RegisterForm() {
         if (data.error === 'EMAIL_EXISTS') {
           setError(t('auth.errorEmailAlreadyExists'));
         } else {
-          setError(data.message || t('auth.errorUnableToCreateAccount'));
+          setError(data.message || data.details?.join(' ') || t('auth.errorUnableToCreateAccount'));
         }
         return;
       }
