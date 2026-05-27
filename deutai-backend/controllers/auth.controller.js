@@ -5,7 +5,7 @@ const Joi = require('joi');
 const pool = require('../config/db');
 const { sendPasswordResetEmail } = require('../services/email.service');
 
-const SALT_ROUNDS = 12;
+const SALT_ROUNDS = 10; // 12 rounds is too slow for Render free tier (~10s), 10 is still secure
 
 const registerSchema = Joi.object({
   email: Joi.string().email().required(),
@@ -39,6 +39,7 @@ async function register(req, res, next) {
   if (error) {
     return res.status(400).json({
       error: 'VALIDATION_ERROR',
+      message: error.details.map((d) => d.message).join(', '),
       details: error.details.map((d) => d.message),
     });
   }
@@ -52,7 +53,7 @@ async function register(req, res, next) {
     );
 
     if (existing.rows.length > 0) {
-      return res.status(409).json({ error: 'EMAIL_EXISTS' });
+      return res.status(409).json({ error: 'EMAIL_EXISTS', message: 'Cette adresse e-mail est déjà utilisée.' });
     }
 
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);

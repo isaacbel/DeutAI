@@ -77,6 +77,7 @@ export const translations = {
     errorPasswordsDoNotMatch: { ar: "كلمتا المرور غير متطابقتين.", de: "Passwoerter stimmen nicht ueberein." },
     errorPasswordTooShort: { ar: "يجب أن تحتوي كلمة المرور على 8 أحرف على الأقل.", de: "Das Passwort muss mindestens 8 Zeichen lang sein." },
     errorUnableToCreateAccount: { ar: "تعذّر إنشاء الحساب.", de: "Konto konnte nicht erstellt werden." },
+    errorEmailAlreadyExists: { ar: "هذا البريد الإلكتروني مسجّل بالفعل. جرّب تسجيل الدخول.", de: "Diese E-Mail ist bereits registriert. Bitte anmelden." },
     successAccountCreated: { ar: "تم إنشاء الحساب بنجاح! جاري تسجيل الدخول...", de: "Konto erfolgreich erstellt! Anmeldung laeuft..." },
     passwordPlaceholder: { ar: "••••••••", de: "••••••••" },
     minCharsPlaceholder: { ar: "8 أحرف على الأقل", de: "Mindestens 8 Zeichen" },

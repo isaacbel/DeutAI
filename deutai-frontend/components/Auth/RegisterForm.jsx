@@ -35,7 +35,11 @@ export default function RegisterForm() {
       const res = await register(email, password);
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        setError(data.message || t('auth.errorUnableToCreateAccount'));
+        if (data.error === 'EMAIL_EXISTS') {
+          setError(t('auth.errorEmailAlreadyExists'));
+        } else {
+          setError(data.message || t('auth.errorUnableToCreateAccount'));
+        }
         return;
       }
 
