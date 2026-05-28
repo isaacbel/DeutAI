@@ -298,13 +298,61 @@ export default function RootPage() {
 
         /* ── Footer ── */
         .lp-footer {
-          display: flex; align-items: center; justify-content: space-between;
-          flex-wrap: wrap; gap: 16px;
-          padding: 36px 28px;
-          max-width: 1040px; margin: 0 auto;
+          width: 100%; background: var(--color-bg-sidebar);
           border-top: 1px solid var(--color-border);
         }
+        .lp-footer-inner {
+          max-width: 1040px; margin: 0 auto;
+          padding: 48px 28px 28px;
+          display: flex; flex-direction: column; gap: 36px;
+        }
+        .lp-footer-top {
+          display: flex; align-items: flex-start; justify-content: space-between;
+          flex-wrap: wrap; gap: 32px;
+        }
         .lp-footer-brand { display: flex; align-items: center; gap: 14px; }
+        .lp-footer-brand-text { display: flex; flex-direction: column; gap: 4px; }
+        .lp-footer-tagline {
+          font-family: var(--font-inter), sans-serif;
+          font-size: 14px; color: var(--color-text-muted); line-height: 1.6;
+          max-width: 280px; margin-top: 12px;
+        }
+        .lp-footer-links {
+          display: flex; gap: 40px; flex-wrap: wrap;
+        }
+        .lp-footer-link-col { display: flex; flex-direction: column; gap: 10px; }
+        .lp-footer-link-label {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+          color: var(--color-text-secondary); font-weight: 600; margin-bottom: 2px;
+        }
+        .lp-footer-link {
+          font-family: var(--font-inter), sans-serif;
+          font-size: 14px; color: var(--color-text-muted);
+          text-decoration: none;
+          transition: color 0.18s;
+        }
+        .lp-footer-link:hover { color: var(--color-primary); }
+        .lp-footer-bottom {
+          display: flex; align-items: center; justify-content: space-between;
+          flex-wrap: wrap; gap: 12px;
+          padding-top: 24px;
+          border-top: 1px solid var(--color-border);
+        }
+        .lp-footer-copy {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 12px; color: var(--color-text-muted); letter-spacing: 1px;
+        }
+        .lp-footer-powered {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 12px; color: var(--color-text-muted); letter-spacing: 2px;
+        }
+        @media (max-width: 640px) {
+          .lp-footer-inner { padding: 36px 20px 20px; gap: 28px; }
+          .lp-footer-top { flex-direction: column; gap: 28px; }
+          .lp-footer-links { gap: 24px; }
+          .lp-footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+        }
 
         /* ── Section padding ── */
         .lp-section { padding: 0 24px 80px; }
@@ -421,10 +469,7 @@ export default function RootPage() {
 
           .lp-step { padding: 18px; gap: 14px; }
 
-          .lp-footer {
-            flex-direction: column; align-items: flex-start;
-            padding: 28px 20px; gap: 20px;
-          }
+          /* .lp-footer mobile handled by its own @media block above */
 
           .lp-stat { padding: 20px 16px; min-width: 90px; }
 
@@ -945,22 +990,55 @@ export default function RootPage() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="lp-footer" style={{ position: 'relative', zIndex: 1, maxWidth: '100%', background: 'var(--color-bg-sidebar)' }}>
-        <div style={{ display: 'flex', width: '100%', maxWidth: '1040px', margin: '0 auto', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px' }}>
-          <div className="lp-footer-brand">
-            <Image src="/hero-image.png" alt="DeutAI" width={48} height={48} sizes="48px" style={{ objectFit: 'contain' }} />
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
-              <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '18px', fontWeight: 600, color: 'var(--color-primary)', letterSpacing: '1px' }}>
-                DeutAI
-              </span>
-              <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '14px', color: 'var(--color-text-muted)', letterSpacing: '3px' }}>
-                {t('app.deutaiSystem404')}
-              </span>
+      <footer className="lp-footer" style={{ position: 'relative', zIndex: 1 }}>
+        <div className="lp-footer-inner">
+
+          {/* Top row: brand + nav links */}
+          <div className="lp-footer-top">
+
+            {/* Brand */}
+            <div>
+              <div className="lp-footer-brand">
+                <Image src="/hero-image.png" alt="DeutAI" width={44} height={44} sizes="44px" style={{ objectFit: 'contain' }} />
+                <div className="lp-footer-brand-text">
+                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '20px', fontWeight: 700, color: 'var(--color-primary)', letterSpacing: '0.5px' }}>
+                    DeutAI
+                  </span>
+                </div>
+              </div>
+              <p className="lp-footer-tagline">
+                {lang === 'ar'
+                  ? 'مساعد الذكاء الاصطناعي لتصحيح اللغة الألمانية وتعزيز الحفظ.'
+                  : 'KI-gestützter Assistent zur Korrektur der deutschen Sprache und Gedächtnisförderung.'}
+              </p>
+            </div>
+
+            {/* Nav link columns */}
+            <div className="lp-footer-links">
+              <div className="lp-footer-link-col">
+                <span className="lp-footer-link-label">{lang === 'ar' ? 'التطبيق' : 'App'}</span>
+                <Link href="/register" className="lp-footer-link">{t('nav.start')}</Link>
+                <Link href="/login" className="lp-footer-link">{t('nav.login')}</Link>
+              </div>
+              <div className="lp-footer-link-col">
+                <span className="lp-footer-link-label">{lang === 'ar' ? 'الأدوات' : 'Tools'}</span>
+                <Link href="/analyze" className="lp-footer-link">{t('sidebar.analyze')}</Link>
+                <Link href="/flashcards" className="lp-footer-link">{t('sidebar.flashcards')}</Link>
+                <Link href="/questions" className="lp-footer-link">{t('sidebar.questions')}</Link>
+              </div>
             </div>
           </div>
-          <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '15px', color: 'var(--color-text-muted)', letterSpacing: '3px' }}>
-            {t('app.poweredByAi')}
-          </span>
+
+          {/* Bottom row: copyright + powered */}
+          <div className="lp-footer-bottom">
+            <span className="lp-footer-copy">
+              © 2026 DeutAI — {lang === 'ar' ? 'جميع الحقوق محفوظة' : 'Alle Rechte vorbehalten'}
+            </span>
+            <span className="lp-footer-powered">
+              {t('app.poweredByAi')}
+            </span>
+          </div>
+
         </div>
       </footer>
     </div>
