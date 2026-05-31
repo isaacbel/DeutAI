@@ -169,7 +169,7 @@ export default function RootPage() {
         /* ── Nav ── */
         .lp-nav {
           position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-          height: 85px;
+          height: 100px;
           background: rgba(242,248,252,0.9);
           backdrop-filter: blur(20px) saturate(1.5);
           border-bottom: 1px solid var(--color-border);
@@ -419,9 +419,9 @@ export default function RootPage() {
 
         /* Mobile: ≤ 640px */
         @media (max-width: 640px) {
-          .lp-nav { padding: 0 10px; height: 75px; }
+          .lp-nav { padding: 0 10px; height: 85px; }
           .lp-nav-brand { display: none; }
-          .lp-nav-left img { width: 70px !important; height: 70px !important; }
+          .lp-nav-left img { width: 95px !important; height: 95px !important; }
 
           .lp-feat-grid {
             grid-template-columns: 1fr;
@@ -479,7 +479,7 @@ export default function RootPage() {
       {/* ── Nav ── */}
       <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
         <div className="lp-nav-left">
-          <Image src="/hero-image.png" alt="DeutAI" width={100} height={100} sizes="100px" style={{ objectFit: 'contain' }} />
+          <Image src="/hero-image.png" alt="DeutAI" width={150} height={150} sizes="150px" style={{ objectFit: 'contain' }} />
         </div>
         <div className="lp-nav-right">
           <LanguageSwitcher isMobile={true} />
@@ -576,11 +576,6 @@ export default function RootPage() {
         }}>📝</div>
 
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: lang === 'ar' ? 'right' : 'center', maxWidth: '720px', padding: '0 24px' }}>
-          {/* marginBottom reduced from 28px → 12px; logo size reduced from 400px → 280px */}
-          <div className="hero-1" style={{ marginBottom: '12px', filter: 'drop-shadow(0 0 60px rgba(156,123,172,0.18))' }}>
-            <Image src="/hero-image.png" className="hero-logo" alt="DeutAI" width={520} height={520} sizes="(max-width: 640px) 82vw, 520px" style={{ objectFit: 'contain' }} priority />
-          </div>
-
           {/* margin-bottom reduced from 20px → 16px */}
           <h1 className="hero-2" style={{
             fontFamily: "'Inter', sans-serif",
