@@ -462,14 +462,14 @@ export default function RootPage() {
         .playground-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-          padding: 24px;
+          gap: 28px;
+          padding: 28px;
         }
         @media (max-width: 960px) {
           .playground-grid {
             grid-template-columns: 1fr;
-            gap: 20px;
-            padding: 16px;
+            gap: 24px;
+            padding: 20px;
           }
         }
       `}</style>
@@ -609,7 +609,7 @@ export default function RootPage() {
         </div>
 
         {/* Interactive Demo Widget */}
-        <div className="hero-4" style={{ position: 'relative', zIndex: 1, marginTop: '48px', width: '100%', maxWidth: '1080px', padding: '0 24px', animation: 'hero-rise 0.7s ease 0.6s both' }}>
+        <div className="hero-4" style={{ position: 'relative', zIndex: 1, marginTop: '48px', width: '100%', maxWidth: '1240px', padding: '0 24px', animation: 'hero-rise 0.7s ease 0.6s both' }}>
           <div style={{
             background: 'white',
             border: '1px solid var(--color-border)',
@@ -652,20 +652,20 @@ export default function RootPage() {
               <div style={{
                 background: 'var(--color-bg-sidebar)',
                 border: '1px solid var(--color-border)',
-                borderRadius: '16px',
-                padding: '20px',
+                borderRadius: '18px',
+                padding: '24px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '16px',
+                gap: '20px',
                 textAlign: 'left'
               }}>
                 <div style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '14px',
+                  fontSize: '15px',
                   fontWeight: 'bold',
                   color: 'var(--color-primary)',
                   borderBottom: '1px solid var(--color-border)',
-                  paddingBottom: '8px',
+                  paddingBottom: '10px',
                   textAlign: lang === 'ar' ? 'right' : 'left'
                 }}>
                   {lang === 'ar' ? 'مثال ١: ترتيب الكلمات' : 'Beispiel 1: Wortstellung'}
@@ -686,10 +686,11 @@ export default function RootPage() {
                     background: '#fcf8f8',
                     border: '1px dashed #eed5d5',
                     borderRadius: '12px',
-                    padding: '12px 14px',
-                    fontSize: '15px',
+                    padding: '14px 18px',
+                    fontSize: '17px',
                     fontFamily: 'var(--font-sans), sans-serif',
-                    color: '#c55'
+                    color: '#c55',
+                    fontWeight: 500
                   }}>
                     <span>Gestern <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich habe</span> Deutsch <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>gelernen</span>.</span>
                   </div>
@@ -699,39 +700,52 @@ export default function RootPage() {
                   border: '1px solid rgba(124, 176, 120, 0.25)',
                   background: 'rgba(124, 176, 120, 0.05)',
                   borderRadius: '12px',
-                  padding: '14px',
+                  padding: '16px',
                   direction: 'ltr'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span style={{
-                      fontFamily: 'JetBrains Mono, monospace',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      color: 'var(--color-success)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      background: 'rgba(124, 176, 120, 0.15)',
-                      padding: '2px 6px',
-                      borderRadius: '4px'
-                    }}>
-                      {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][0].badge}
-                    </span>
-                    <span style={{ fontSize: '12px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                      <span style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '11px',
+                        fontWeight: 'bold',
+                        color: 'var(--color-success)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        background: 'rgba(124, 176, 120, 0.15)',
+                        padding: '2.5px 7px',
+                        borderRadius: '5px'
+                      }}>
+                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][0].badge}
+                      </span>
+                      <span style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '11px',
+                        color: 'var(--color-text-secondary)',
+                        background: '#e1ebf5',
+                        padding: '2.5px 7px',
+                        borderRadius: '5px',
+                        fontWeight: 600
+                      }}>
+                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][0].errorType}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '11px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
                       Confidence: 99%
                     </span>
                   </div>
 
                   <p style={{
-                    fontSize: '16px',
-                    fontWeight: 600,
+                    fontSize: '19px',
+                    fontWeight: 700,
                     color: '#2a5a2a',
-                    margin: '0 0 10px 0',
+                    margin: '0 0 12px 0',
                     fontFamily: 'var(--font-sans), sans-serif'
                   }}>
                     <span>Gestern <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>habe ich</span> Deutsch <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gelernt</span>.</span>
                   </p>
 
-                  <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '8px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
+                  <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '10px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
                     <p style={{
                       fontFamily: 'JetBrains Mono, monospace',
                       fontSize: '12px',
@@ -742,10 +756,10 @@ export default function RootPage() {
                       {lang === 'ar' ? 'شرح القاعدة:' : 'Regelerklärung:'}
                     </p>
                     <p style={{
-                      fontSize: '13px',
+                      fontSize: '14px',
                       color: 'var(--color-text-muted)',
                       margin: 0,
-                      lineHeight: 1.5
+                      lineHeight: 1.6
                     }}>
                       {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][0].explanation}
                     </p>
@@ -757,20 +771,20 @@ export default function RootPage() {
               <div style={{
                 background: 'var(--color-bg-sidebar)',
                 border: '1px solid var(--color-border)',
-                borderRadius: '16px',
-                padding: '20px',
+                borderRadius: '18px',
+                padding: '24px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '16px',
+                gap: '20px',
                 textAlign: 'left'
               }}>
                 <div style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '14px',
+                  fontSize: '15px',
                   fontWeight: 'bold',
                   color: 'var(--color-primary)',
                   borderBottom: '1px solid var(--color-border)',
-                  paddingBottom: '8px',
+                  paddingBottom: '10px',
                   textAlign: lang === 'ar' ? 'right' : 'left'
                 }}>
                   {lang === 'ar' ? 'مثال ٢: الجملة الفرعية' : 'Beispiel 2: Nebensatz'}
@@ -791,10 +805,11 @@ export default function RootPage() {
                     background: '#fcf8f8',
                     border: '1px dashed #eed5d5',
                     borderRadius: '12px',
-                    padding: '12px 14px',
-                    fontSize: '15px',
+                    padding: '14px 18px',
+                    fontSize: '17px',
                     fontFamily: 'var(--font-sans), sans-serif',
-                    color: '#c55'
+                    color: '#c55',
+                    fontWeight: 500
                   }}>
                     <span>Weil <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich bin</span> müde, <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich gehe</span> schlafen.</span>
                   </div>
@@ -804,39 +819,52 @@ export default function RootPage() {
                   border: '1px solid rgba(124, 176, 120, 0.25)',
                   background: 'rgba(124, 176, 120, 0.05)',
                   borderRadius: '12px',
-                  padding: '14px',
+                  padding: '16px',
                   direction: 'ltr'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span style={{
-                      fontFamily: 'JetBrains Mono, monospace',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      color: 'var(--color-success)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      background: 'rgba(124, 176, 120, 0.15)',
-                      padding: '2px 6px',
-                      borderRadius: '4px'
-                    }}>
-                      {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][1].badge}
-                    </span>
-                    <span style={{ fontSize: '12px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                      <span style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '11px',
+                        fontWeight: 'bold',
+                        color: 'var(--color-success)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        background: 'rgba(124, 176, 120, 0.15)',
+                        padding: '2.5px 7px',
+                        borderRadius: '5px'
+                      }}>
+                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][1].badge}
+                      </span>
+                      <span style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '11px',
+                        color: 'var(--color-text-secondary)',
+                        background: '#e1ebf5',
+                        padding: '2.5px 7px',
+                        borderRadius: '5px',
+                        fontWeight: 600
+                      }}>
+                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][1].errorType}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '11px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
                       Confidence: 99%
                     </span>
                   </div>
 
                   <p style={{
-                    fontSize: '16px',
-                    fontWeight: 600,
+                    fontSize: '19px',
+                    fontWeight: 700,
                     color: '#2a5a2a',
-                    margin: '0 0 10px 0',
+                    margin: '0 0 12px 0',
                     fontFamily: 'var(--font-sans), sans-serif'
                   }}>
                     <span>Weil ich müde <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>bin</span>, <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gehe ich</span> schlafen.</span>
                   </p>
 
-                  <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '8px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
+                  <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '10px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
                     <p style={{
                       fontFamily: 'JetBrains Mono, monospace',
                       fontSize: '12px',
@@ -847,10 +875,10 @@ export default function RootPage() {
                       {lang === 'ar' ? 'شرح القاعدة:' : 'Regelerklärung:'}
                     </p>
                     <p style={{
-                      fontSize: '13px',
+                      fontSize: '14px',
                       color: 'var(--color-text-muted)',
                       margin: 0,
-                      lineHeight: 1.5
+                      lineHeight: 1.6
                     }}>
                       {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][1].explanation}
                     </p>
@@ -862,20 +890,20 @@ export default function RootPage() {
               <div style={{
                 background: 'var(--color-bg-sidebar)',
                 border: '1px solid var(--color-border)',
-                borderRadius: '16px',
-                padding: '20px',
+                borderRadius: '18px',
+                padding: '24px',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '16px',
+                gap: '20px',
                 textAlign: 'left'
               }}>
                 <div style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '14px',
+                  fontSize: '15px',
                   fontWeight: 'bold',
                   color: 'var(--color-primary)',
                   borderBottom: '1px solid var(--color-border)',
-                  paddingBottom: '8px',
+                  paddingBottom: '10px',
                   textAlign: lang === 'ar' ? 'right' : 'left'
                 }}>
                   {lang === 'ar' ? 'مثال ٣: اسم المفعول' : 'Beispiel 3: Partizip II'}
@@ -896,10 +924,11 @@ export default function RootPage() {
                     background: '#fcf8f8',
                     border: '1px dashed #eed5d5',
                     borderRadius: '12px',
-                    padding: '12px 14px',
-                    fontSize: '15px',
+                    padding: '14px 18px',
+                    fontSize: '17px',
                     fontFamily: 'var(--font-sans), sans-serif',
-                    color: '#c55'
+                    color: '#c55',
+                    fontWeight: 500
                   }}>
                     <span>Er hat ein großes Haus <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>gekaufte</span>.</span>
                   </div>
@@ -909,39 +938,52 @@ export default function RootPage() {
                   border: '1px solid rgba(124, 176, 120, 0.25)',
                   background: 'rgba(124, 176, 120, 0.05)',
                   borderRadius: '12px',
-                  padding: '14px',
+                  padding: '16px',
                   direction: 'ltr'
                 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                    <span style={{
-                      fontFamily: 'JetBrains Mono, monospace',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      color: 'var(--color-success)',
-                      textTransform: 'uppercase',
-                      letterSpacing: '1px',
-                      background: 'rgba(124, 176, 120, 0.15)',
-                      padding: '2px 6px',
-                      borderRadius: '4px'
-                    }}>
-                      {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][2].badge}
-                    </span>
-                    <span style={{ fontSize: '12px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                      <span style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '11px',
+                        fontWeight: 'bold',
+                        color: 'var(--color-success)',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                        background: 'rgba(124, 176, 120, 0.15)',
+                        padding: '2.5px 7px',
+                        borderRadius: '5px'
+                      }}>
+                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][2].badge}
+                      </span>
+                      <span style={{
+                        fontFamily: 'JetBrains Mono, monospace',
+                        fontSize: '11px',
+                        color: 'var(--color-text-secondary)',
+                        background: '#e1ebf5',
+                        padding: '2.5px 7px',
+                        borderRadius: '5px',
+                        fontWeight: 600
+                      }}>
+                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][2].errorType}
+                      </span>
+                    </div>
+                    <span style={{ fontSize: '11px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
                       Confidence: 99%
                     </span>
                   </div>
 
                   <p style={{
-                    fontSize: '16px',
-                    fontWeight: 600,
+                    fontSize: '19px',
+                    fontWeight: 700,
                     color: '#2a5a2a',
-                    margin: '0 0 10px 0',
+                    margin: '0 0 12px 0',
                     fontFamily: 'var(--font-sans), sans-serif'
                   }}>
                     <span>Er hat ein großes Haus <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gekauft</span>.</span>
                   </p>
 
-                  <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '8px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
+                  <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '10px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
                     <p style={{
                       fontFamily: 'JetBrains Mono, monospace',
                       fontSize: '12px',
@@ -952,10 +994,10 @@ export default function RootPage() {
                       {lang === 'ar' ? 'شرح القاعدة:' : 'Regelerklärung:'}
                     </p>
                     <p style={{
-                      fontSize: '13px',
+                      fontSize: '14px',
                       color: 'var(--color-text-muted)',
                       margin: 0,
-                      lineHeight: 1.5
+                      lineHeight: 1.6
                     }}>
                       {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][2].explanation}
                     </p>
