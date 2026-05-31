@@ -18,12 +18,12 @@ export default function LanguageSwitcher({ isMobile = false }) {
         onMouseLeave={() => setHovered(false)}
         className="flex min-h-12 items-center gap-2 px-4 py-2.5 rounded-xl transition-all duration-300 cursor-pointer"
         style={{
-          background: hovered ? 'rgba(156, 123, 172, 0.12)' : 'rgba(255, 255, 255, 0.8)',
-          border: '1px solid ' + (hovered ? 'rgba(156, 123, 172, 0.35)' : 'rgba(156, 123, 172, 0.18)'),
-          color: 'var(--color-text-primary)',
+          background: hovered ? 'rgba(156, 123, 172, 0.15)' : 'rgba(255, 255, 255, 0.9)',
+          border: '1.5px solid ' + (hovered ? '#5A3D68' : 'rgba(156, 123, 172, 0.4)'),
+          color: '#5A3D68',
           boxShadow: hovered 
-            ? '0 4px 20px rgba(156, 123, 172, 0.15), 0 2px 6px rgba(156, 123, 172, 0.08)' 
-            : '0 4px 16px rgba(156, 123, 172, 0.06)',
+            ? '0 4px 20px rgba(156, 123, 172, 0.2), 0 2px 6px rgba(156, 123, 172, 0.12)' 
+            : '0 4px 16px rgba(156, 123, 172, 0.08)',
           backdropFilter: 'blur(8px)',
           transform: hovered ? 'translateY(-1px)' : 'translateY(0)',
         }}
@@ -31,12 +31,12 @@ export default function LanguageSwitcher({ isMobile = false }) {
         <Globe 
           size={16} 
           style={{ 
-            color: 'var(--color-primary)', 
+            color: '#5A3D68', 
             transition: 'transform 0.5s ease', 
             transform: hovered ? 'rotate(180deg)' : 'rotate(0deg)' 
           }} 
         />
-        <span className="font-mono text-[14px] font-bold tracking-wide" style={{ color: 'var(--color-primary)' }}>
+        <span className="font-mono text-[14px] font-bold tracking-wide" style={{ color: '#5A3D68' }}>
           {lang === 'ar' ? 'العربية' : 'Deutsch'}
         </span>
       </button>
@@ -50,12 +50,12 @@ export default function LanguageSwitcher({ isMobile = false }) {
       onMouseLeave={() => setHovered(false)}
       className="w-11 h-11 flex flex-col items-center justify-center rounded-xl transition-all duration-300 cursor-pointer"
       style={{
-        background: hovered ? 'rgba(156, 123, 172, 0.12)' : 'rgba(255, 255, 255, 0.8)',
-        border: '1px solid ' + (hovered ? 'rgba(156, 123, 172, 0.35)' : 'rgba(156, 123, 172, 0.18)'),
-        color: 'var(--color-primary)',
+        background: hovered ? 'rgba(156, 123, 172, 0.15)' : 'rgba(255, 255, 255, 0.9)',
+        border: '1.5px solid ' + (hovered ? '#5A3D68' : 'rgba(156, 123, 172, 0.4)'),
+        color: '#5A3D68',
         boxShadow: hovered 
-          ? '0 4px 20px rgba(156, 123, 172, 0.15), 0 2px 6px rgba(156, 123, 172, 0.08)' 
-          : '0 4px 16px rgba(156, 123, 172, 0.06)',
+          ? '0 4px 20px rgba(156, 123, 172, 0.2), 0 2px 6px rgba(156, 123, 172, 0.12)' 
+          : '0 4px 16px rgba(156, 123, 172, 0.08)',
         backdropFilter: 'blur(8px)',
         transform: hovered ? 'translateY(-1px)' : 'translateY(0)',
       }}

@@ -123,34 +123,7 @@ export default function RootPage() {
   const localizedFeatures = lang === 'ar' ? FEATURES_AR : FEATURES_DE;
   const localizedHowItWorks = lang === 'ar' ? HOW_IT_WORKS_AR : HOW_IT_WORKS_DE;
 
-  const [demoIndex, setDemoIndex] = useState(0);
-  const [isScanning, setIsScanning] = useState(false);
-  const [showCorrection, setShowCorrection] = useState(true);
-
-  const triggerDemo = (index: number) => {
-    setDemoIndex(index);
-    setIsScanning(true);
-    setShowCorrection(false);
-    setTimeout(() => {
-      setIsScanning(false);
-      setShowCorrection(true);
-    }, 900);
-  };
-
-  const tabStyle = (active: boolean) => ({
-    padding: '10px 12px',
-    borderRadius: '10px',
-    fontSize: '14px',
-    fontFamily: 'JetBrains Mono, monospace',
-    fontWeight: active ? 'bold' : 'normal',
-    color: active ? 'white' : 'var(--color-text-secondary)',
-    background: active ? 'var(--color-primary)' : 'transparent',
-    border: active ? '1px solid var(--color-primary)' : '1px solid transparent',
-    transition: 'all 0.3s ease',
-    cursor: 'pointer',
-    outline: 'none',
-    minHeight: '44px',
-  });
+  // Playground states removed since all examples are now displayed statically side-by-side
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -196,7 +169,7 @@ export default function RootPage() {
         /* ── Nav ── */
         .lp-nav {
           position: fixed; top: 0; left: 0; right: 0; z-index: 50;
-          height: 70px;
+          height: 85px;
           background: rgba(242,248,252,0.9);
           backdrop-filter: blur(20px) saturate(1.5);
           border-bottom: 1px solid var(--color-border);
@@ -226,14 +199,15 @@ export default function RootPage() {
           display: inline-flex; align-items: center; justify-content: center;
           padding: 13px 36px; border-radius: 14px;
           min-height: 44px;
-          background: transparent; color: var(--color-primary);
+          background: rgba(156, 123, 172, 0.06); color: #5A3D68;
           font-family: 'JetBrains Mono', monospace;
-          font-size: 14px; font-weight: 500; letter-spacing: 1px;
-          border: 1.5px solid rgba(156,123,172,0.4);
-          transition: border-color 0.2s, background 0.2s, transform 0.2s;
+          font-size: 14px; font-weight: 600; letter-spacing: 1px;
+          border: 1.5px solid rgba(156, 123, 172, 0.45);
+          box-shadow: 0 4px 16px rgba(156, 123, 172, 0.06);
+          transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s;
           text-decoration: none; white-space: nowrap;
         }
-        .lp-cta-secondary:hover { border-color: var(--color-primary); background: rgba(156,123,172,0.06); transform: translateY(-2px); }
+        .lp-cta-secondary:hover { border-color: #5A3D68; background: rgba(156, 123, 172, 0.15); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(156, 123, 172, 0.12); }
 
         /* ── Feature cards ── */
         .lp-feat-card {
@@ -445,9 +419,9 @@ export default function RootPage() {
 
         /* Mobile: ≤ 640px */
         @media (max-width: 640px) {
-          .lp-nav { padding: 0 10px; height: 60px; }
+          .lp-nav { padding: 0 10px; height: 75px; }
           .lp-nav-brand { display: none; }
-          .lp-nav-left img { width: 48px !important; height: 48px !important; }
+          .lp-nav-left img { width: 70px !important; height: 70px !important; }
 
           .lp-feat-grid {
             grid-template-columns: 1fr;
@@ -484,6 +458,20 @@ export default function RootPage() {
           .lp-nav-right { gap: 6px; }
           .lp-cta-secondary { padding: 8px 14px; font-size: 14px; }
         }
+
+        .playground-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 20px;
+          padding: 24px;
+        }
+        @media (max-width: 960px) {
+          .playground-grid {
+            grid-template-columns: 1fr;
+            gap: 20px;
+            padding: 16px;
+          }
+        }
       `}</style>
 
 
@@ -491,10 +479,7 @@ export default function RootPage() {
       {/* ── Nav ── */}
       <nav className="lp-nav" style={{ flexDirection: lang === 'ar' ? 'row-reverse' : 'row' }}>
         <div className="lp-nav-left">
-          <Image src="/hero-image.png" alt="DeutAI" width={65} height={65} sizes="65px" style={{ objectFit: 'contain' }} />
-          <span className="lp-nav-brand" style={{ fontSize: '15px' }}>
-            DEUTAI
-          </span>
+          <Image src="/hero-image.png" alt="DeutAI" width={100} height={100} sizes="100px" style={{ objectFit: 'contain' }} />
         </div>
         <div className="lp-nav-right">
           <LanguageSwitcher isMobile={true} />
@@ -626,88 +611,75 @@ export default function RootPage() {
               {t('landing.signIn')}
             </Link>
           </div>
+        </div>
 
-          {/* Interactive Demo Widget */}
-          <div className="hero-4" style={{ marginTop: '48px', width: '100%', maxWidth: '640px', textAlign: 'left', animation: 'hero-rise 0.7s ease 0.6s both' }}>
+        {/* Interactive Demo Widget */}
+        <div className="hero-4" style={{ position: 'relative', zIndex: 1, marginTop: '48px', width: '100%', maxWidth: '1080px', padding: '0 24px', animation: 'hero-rise 0.7s ease 0.6s both' }}>
+          <div style={{
+            background: 'white',
+            border: '1px solid var(--color-border)',
+            borderRadius: '20px',
+            overflow: 'hidden',
+            boxShadow: '0 20px 40px rgba(156, 123, 172, 0.08), 0 1px 3px rgba(156, 123, 172, 0.02)',
+            position: 'relative'
+          }}>
+            {/* macOS Style Window header */}
             <div style={{
-              background: 'white',
-              border: '1px solid var(--color-border)',
-              borderRadius: '20px',
-              overflow: 'hidden',
-              boxShadow: '0 20px 40px rgba(156, 123, 172, 0.08), 0 1px 3px rgba(156, 123, 172, 0.02)',
-              position: 'relative'
+              background: 'var(--color-bg-sidebar)',
+              padding: '14px 20px',
+              borderBottom: '1px solid var(--color-rule-border)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexDirection: lang === 'ar' ? 'row-reverse' : 'row'
             }}>
-              {/* macOS Style Window header */}
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }} />
+                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
+                <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }} />
+              </div>
+              <span style={{
+                fontFamily: 'JetBrains Mono, monospace',
+                fontSize: '14px',
+                fontWeight: 600,
+                color: 'var(--color-text-secondary)',
+                letterSpacing: '1px',
+                textTransform: 'uppercase'
+              }}>
+                {lang === 'ar' ? 'مختبر الذكاء الاصطناعي التفاعلي' : 'DEUTAI PLAYGROUND'}
+              </span>
+              <div style={{ width: '42px' }} />
+            </div>
+
+            {/* Side-by-side grid */}
+            <div className="playground-grid">
+              {/* Card 1: Wortstellung */}
               <div style={{
                 background: 'var(--color-bg-sidebar)',
-                padding: '12px 18px',
-                borderBottom: '1px solid var(--color-rule-border)',
+                border: '1px solid var(--color-border)',
+                borderRadius: '16px',
+                padding: '20px',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                flexDirection: lang === 'ar' ? 'row-reverse' : 'row'
+                flexDirection: 'column',
+                gap: '16px',
+                textAlign: 'left'
               }}>
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ff5f56' }} />
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#ffbd2e' }} />
-                  <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#27c93f' }} />
-                </div>
-                <span style={{
+                <div style={{
                   fontFamily: 'JetBrains Mono, monospace',
                   fontSize: '14px',
-                  fontWeight: 600,
-                  color: 'var(--color-text-secondary)',
-                  letterSpacing: '1px',
-                  textTransform: 'uppercase'
+                  fontWeight: 'bold',
+                  color: 'var(--color-primary)',
+                  borderBottom: '1px solid var(--color-border)',
+                  paddingBottom: '8px',
+                  textAlign: lang === 'ar' ? 'right' : 'left'
                 }}>
-                  {lang === 'ar' ? 'مختبر الذكاء الاصطناعي التفاعلي' : 'DEUTAI PLAYGROUND'}
-                </span>
-                <div style={{ width: '42px' }} />
-              </div>
+                  {lang === 'ar' ? 'مثال ١: ترتيب الكلمات' : 'Beispiel 1: Wortstellung'}
+                </div>
 
-              {/* Tabs / Examples selection */}
-              <div style={{
-                padding: '16px',
-                borderBottom: '1px solid var(--color-rule-border)',
-                display: 'flex',
-                gap: '8px',
-                flexWrap: 'wrap',
-                justifyContent: 'center',
-                background: '#fafbfc'
-              }}>
-                {lang === 'ar' ? (
-                  <>
-                    <button onClick={() => triggerDemo(0)} style={tabStyle(demoIndex === 0)}>مثال ١: ترتيب الكلمات</button>
-                    <button onClick={() => triggerDemo(1)} style={tabStyle(demoIndex === 1)}>مثال ٢: الجملة الفرعية</button>
-                    <button onClick={() => triggerDemo(2)} style={tabStyle(demoIndex === 2)}>مثال ٣: اسم المفعول</button>
-                  </>
-                ) : (
-                  <>
-                    <button onClick={() => triggerDemo(0)} style={tabStyle(demoIndex === 0)}>Beispiel 1: Wortstellung</button>
-                    <button onClick={() => triggerDemo(1)} style={tabStyle(demoIndex === 1)}>Beispiel 2: Nebensatz</button>
-                    <button onClick={() => triggerDemo(2)} style={tabStyle(demoIndex === 2)}>Beispiel 3: Partizip II</button>
-                  </>
-                )}
-              </div>
-
-              {/* Input Area */}
-              <div style={{ padding: '24px', position: 'relative' }}>
-                {/* Glowing scanline animation */}
-                {isScanning && (
-                  <div style={{
-                    position: 'absolute',
-                    top: 0, left: 0, right: 0, height: '4px',
-                    background: 'linear-gradient(to right, transparent, var(--color-primary), transparent)',
-                    boxShadow: '0 0 12px var(--color-primary), 0 0 20px var(--color-primary)',
-                    animation: 'scanLineDemo 1.2s ease-in-out infinite',
-                    zIndex: 10
-                  }} />
-                )}
-
-                <div style={{ marginBottom: '16px', direction: 'ltr', textAlign: 'left' }}>
+                <div style={{ direction: 'ltr' }}>
                   <p style={{
                     fontFamily: 'JetBrains Mono, monospace',
-                    fontSize: '14px',
+                    fontSize: '12px',
                     textTransform: 'uppercase',
                     color: 'var(--color-text-secondary)',
                     letterSpacing: '1px',
@@ -719,109 +691,281 @@ export default function RootPage() {
                     background: '#fcf8f8',
                     border: '1px dashed #eed5d5',
                     borderRadius: '12px',
-                    padding: '14px 18px',
-                    fontSize: '17px',
+                    padding: '12px 14px',
+                    fontSize: '15px',
                     fontFamily: 'var(--font-sans), sans-serif',
                     color: '#c55'
                   }}>
-                    {demoIndex === 0 && (
-                      <span>Gestern <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich habe</span> Deutsch <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>gelernen</span>.</span>
-                    )}
-                    {demoIndex === 1 && (
-                      <span>Weil <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich bin</span> müde, <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich gehe</span> schlafen.</span>
-                    )}
-                    {demoIndex === 2 && (
-                      <span>Er hat ein großes Haus <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>gekaufte</span>.</span>
-                    )}
+                    <span>Gestern <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich habe</span> Deutsch <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>gelernen</span>.</span>
                   </div>
                 </div>
 
-                {/* AI Correction Area */}
-                {showCorrection && !isScanning && (
-                  <div style={{
-                    animation: 'fadeIn 0.4s ease-out',
-                    border: '1px solid rgba(124, 176, 120, 0.25)',
-                    background: 'rgba(124, 176, 120, 0.05)',
-                    borderRadius: '12px',
-                    padding: '18px',
-                    direction: 'ltr',
-                    textAlign: 'left'
-                  }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                      <span style={{
-                        fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '14px',
-                        fontWeight: 'bold',
-                        color: 'var(--color-success)',
-                        textTransform: 'uppercase',
-                        letterSpacing: '1.5px',
-                        background: 'rgba(124, 176, 120, 0.15)',
-                        padding: '3px 8px',
-                        borderRadius: '6px'
-                      }}>
-                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][demoIndex].badge}
-                      </span>
-                      <span style={{ fontSize: '14px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
-                        Confidence: 99%
-                      </span>
-                    </div>
-
-                    <p style={{
-                      fontSize: '18px',
-                      fontWeight: 600,
-                      color: '#2a5a2a',
-                      margin: '0 0 10px 0',
-                      fontFamily: 'var(--font-sans), sans-serif'
+                <div style={{
+                  border: '1px solid rgba(124, 176, 120, 0.25)',
+                  background: 'rgba(124, 176, 120, 0.05)',
+                  borderRadius: '12px',
+                  padding: '14px',
+                  direction: 'ltr'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      color: 'var(--color-success)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      background: 'rgba(124, 176, 120, 0.15)',
+                      padding: '2px 6px',
+                      borderRadius: '4px'
                     }}>
-                      {demoIndex === 0 && (
-                        <span>Gestern <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>habe ich</span> Deutsch <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gelernt</span>.</span>
-                      )}
-                      {demoIndex === 1 && (
-                        <span>Weil ich müde <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>bin</span>, <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gehe ich</span> schlafen.</span>
-                      )}
-                      {demoIndex === 2 && (
-                        <span>Er hat ein großes Haus <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gekauft</span>.</span>
-                      )}
-                    </p>
-
-                    <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '10px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
-                      <p style={{
-                        fontFamily: 'JetBrains Mono, monospace',
-                        fontSize: '14px',
-                        fontWeight: 600,
-                        color: 'var(--color-text-secondary)',
-                        margin: '0 0 4px 0'
-                      }}>
-                        {lang === 'ar' ? 'شرح القاعدة:' : 'Regelerklärung:'}
-                      </p>
-                      <p style={{
-                        fontSize: '14px',
-                        color: 'var(--color-text-muted)',
-                        margin: 0,
-                        lineHeight: 1.6
-                      }}>
-                        {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][demoIndex].explanation}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {isScanning && (
-                  <div style={{
-                    height: '148px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '12px',
-                    color: 'var(--color-primary)'
-                  }}>
-                    <div className="w-6 h-6 rounded-full border-2 border-primary/20" style={{ animation: 'spin-slow 0.8s linear infinite', borderTopColor: 'var(--color-primary)' }} />
-                    <span style={{ fontFamily: 'JetBrains Mono, monospace', fontSize: '14px', letterSpacing: '1px', fontWeight: 600 }}>
-                      {lang === 'ar' ? 'جاري الفحص بالذكاء الاصطناعي...' : 'KI-ANALYSE LÄUFT...'}
+                      {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][0].badge}
+                    </span>
+                    <span style={{ fontSize: '12px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
+                      Confidence: 99%
                     </span>
                   </div>
-                )}
+
+                  <p style={{
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    color: '#2a5a2a',
+                    margin: '0 0 10px 0',
+                    fontFamily: 'var(--font-sans), sans-serif'
+                  }}>
+                    <span>Gestern <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>habe ich</span> Deutsch <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gelernt</span>.</span>
+                  </p>
+
+                  <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '8px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
+                    <p style={{
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: 'var(--color-text-secondary)',
+                      margin: '0 0 4px 0'
+                    }}>
+                      {lang === 'ar' ? 'شرح القاعدة:' : 'Regelerklärung:'}
+                    </p>
+                    <p style={{
+                      fontSize: '13px',
+                      color: 'var(--color-text-muted)',
+                      margin: 0,
+                      lineHeight: 1.5
+                    }}>
+                      {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][0].explanation}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 2: Nebensatz */}
+              <div style={{
+                background: 'var(--color-bg-sidebar)',
+                border: '1px solid var(--color-border)',
+                borderRadius: '16px',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+                textAlign: 'left'
+              }}>
+                <div style={{
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  color: 'var(--color-primary)',
+                  borderBottom: '1px solid var(--color-border)',
+                  paddingBottom: '8px',
+                  textAlign: lang === 'ar' ? 'right' : 'left'
+                }}>
+                  {lang === 'ar' ? 'مثال ٢: الجملة الفرعية' : 'Beispiel 2: Nebensatz'}
+                </div>
+
+                <div style={{ direction: 'ltr' }}>
+                  <p style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-text-secondary)',
+                    letterSpacing: '1px',
+                    margin: '0 0 6px 0'
+                  }}>
+                    {lang === 'ar' ? 'النص الأصلي (مع أخطاء):' : 'Originaler Text (mit Fehlern):'}
+                  </p>
+                  <div style={{
+                    background: '#fcf8f8',
+                    border: '1px dashed #eed5d5',
+                    borderRadius: '12px',
+                    padding: '12px 14px',
+                    fontSize: '15px',
+                    fontFamily: 'var(--font-sans), sans-serif',
+                    color: '#c55'
+                  }}>
+                    <span>Weil <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich bin</span> müde, <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>ich gehe</span> schlafen.</span>
+                  </div>
+                </div>
+
+                <div style={{
+                  border: '1px solid rgba(124, 176, 120, 0.25)',
+                  background: 'rgba(124, 176, 120, 0.05)',
+                  borderRadius: '12px',
+                  padding: '14px',
+                  direction: 'ltr'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      color: 'var(--color-success)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      background: 'rgba(124, 176, 120, 0.15)',
+                      padding: '2px 6px',
+                      borderRadius: '4px'
+                    }}>
+                      {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][1].badge}
+                    </span>
+                    <span style={{ fontSize: '12px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
+                      Confidence: 99%
+                    </span>
+                  </div>
+
+                  <p style={{
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    color: '#2a5a2a',
+                    margin: '0 0 10px 0',
+                    fontFamily: 'var(--font-sans), sans-serif'
+                  }}>
+                    <span>Weil ich müde <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>bin</span>, <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gehe ich</span> schlafen.</span>
+                  </p>
+
+                  <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '8px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
+                    <p style={{
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: 'var(--color-text-secondary)',
+                      margin: '0 0 4px 0'
+                    }}>
+                      {lang === 'ar' ? 'شرح القاعدة:' : 'Regelerklärung:'}
+                    </p>
+                    <p style={{
+                      fontSize: '13px',
+                      color: 'var(--color-text-muted)',
+                      margin: 0,
+                      lineHeight: 1.5
+                    }}>
+                      {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][1].explanation}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Card 3: Partizip II */}
+              <div style={{
+                background: 'var(--color-bg-sidebar)',
+                border: '1px solid var(--color-border)',
+                borderRadius: '16px',
+                padding: '20px',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '16px',
+                textAlign: 'left'
+              }}>
+                <div style={{
+                  fontFamily: 'JetBrains Mono, monospace',
+                  fontSize: '14px',
+                  fontWeight: 'bold',
+                  color: 'var(--color-primary)',
+                  borderBottom: '1px solid var(--color-border)',
+                  paddingBottom: '8px',
+                  textAlign: lang === 'ar' ? 'right' : 'left'
+                }}>
+                  {lang === 'ar' ? 'مثال ٣: اسم المفعول' : 'Beispiel 3: Partizip II'}
+                </div>
+
+                <div style={{ direction: 'ltr' }}>
+                  <p style={{
+                    fontFamily: 'JetBrains Mono, monospace',
+                    fontSize: '12px',
+                    textTransform: 'uppercase',
+                    color: 'var(--color-text-secondary)',
+                    letterSpacing: '1px',
+                    margin: '0 0 6px 0'
+                  }}>
+                    {lang === 'ar' ? 'النص الأصلي (مع أخطاء):' : 'Originaler Text (mit Fehlern):'}
+                  </p>
+                  <div style={{
+                    background: '#fcf8f8',
+                    border: '1px dashed #eed5d5',
+                    borderRadius: '12px',
+                    padding: '12px 14px',
+                    fontSize: '15px',
+                    fontFamily: 'var(--font-sans), sans-serif',
+                    color: '#c55'
+                  }}>
+                    <span>Er hat ein großes Haus <span style={{ textDecoration: 'line-through', opacity: 0.7 }}>gekaufte</span>.</span>
+                  </div>
+                </div>
+
+                <div style={{
+                  border: '1px solid rgba(124, 176, 120, 0.25)',
+                  background: 'rgba(124, 176, 120, 0.05)',
+                  borderRadius: '12px',
+                  padding: '14px',
+                  direction: 'ltr'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                    <span style={{
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      color: 'var(--color-success)',
+                      textTransform: 'uppercase',
+                      letterSpacing: '1px',
+                      background: 'rgba(124, 176, 120, 0.15)',
+                      padding: '2px 6px',
+                      borderRadius: '4px'
+                    }}>
+                      {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][2].badge}
+                    </span>
+                    <span style={{ fontSize: '12px', color: 'var(--color-success)', fontWeight: 600, fontFamily: 'JetBrains Mono, monospace' }}>
+                      Confidence: 99%
+                    </span>
+                  </div>
+
+                  <p style={{
+                    fontSize: '16px',
+                    fontWeight: 600,
+                    color: '#2a5a2a',
+                    margin: '0 0 10px 0',
+                    fontFamily: 'var(--font-sans), sans-serif'
+                  }}>
+                    <span>Er hat ein großes Haus <span style={{ color: 'var(--color-success)', borderBottom: '2px solid var(--color-success)' }}>gekauft</span>.</span>
+                  </p>
+
+                  <div style={{ borderTop: '1px solid rgba(124, 176, 120, 0.15)', paddingTop: '8px', direction: lang === 'ar' ? 'rtl' : 'ltr', textAlign: lang === 'ar' ? 'right' : 'left' }}>
+                    <p style={{
+                      fontFamily: 'JetBrains Mono, monospace',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: 'var(--color-text-secondary)',
+                      margin: '0 0 4px 0'
+                    }}>
+                      {lang === 'ar' ? 'شرح القاعدة:' : 'Regelerklärung:'}
+                    </p>
+                    <p style={{
+                      fontSize: '13px',
+                      color: 'var(--color-text-muted)',
+                      margin: 0,
+                      lineHeight: 1.5
+                    }}>
+                      {DEMO_EXAMPLES[lang === 'ar' ? 'ar' : 'de'][2].explanation}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
