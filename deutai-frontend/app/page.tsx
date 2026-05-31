@@ -348,7 +348,7 @@ export default function RootPage() {
         .hero-logo { width: 520px; height: 520px; }
         @media (max-width: 640px) {
           .hero-logo { width: min(280px, 82vw); height: min(280px, 82vw); }
-          .hero-section { padding-top: 72px !important; padding-bottom: 40px !important; }
+          .hero-section { padding-top: 130px !important; padding-bottom: 40px !important; }
         }
 
         /* ── Animations ── */
@@ -496,7 +496,7 @@ export default function RootPage() {
       <section className="hero-section" style={{
         position: 'relative', minHeight: '100vh',
         display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'center', paddingTop: '80px', paddingBottom: '60px',
+        justifyContent: 'center', paddingTop: '160px', paddingBottom: '60px',
         overflow: 'hidden',
         background: 'var(--color-bg-main)',
       }}>
