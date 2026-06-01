@@ -270,9 +270,6 @@ export default function GrammarPage() {
       </div>
 
       <style>{`
-        /* ── Fonts ── */
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;500;600&family=Cairo:wght@400;500;600&display=swap');
-
         /* ── Grammar page root ── */
         .grammar-page {
           min-height: 100vh;
@@ -304,14 +301,14 @@ export default function GrammarPage() {
           justify-content: space-between;
         }
         .nav-brand {
-          font-family: 'Playfair Display', Georgia, serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 1rem;
           font-weight: 700;
           color: var(--color-primary);
           letter-spacing: 0.03em;
         }
         .nav-link {
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 0.82rem;
           font-weight: 600;
           color: var(--color-text-secondary);
@@ -335,7 +332,7 @@ export default function GrammarPage() {
         }
         .hero-inner { max-width: 680px; margin: 0 auto; }
         .hero-eyebrow {
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 0.7rem;
           font-weight: 600;
           letter-spacing: 0.22em;
@@ -344,7 +341,7 @@ export default function GrammarPage() {
           margin-bottom: 0.8rem;
         }
         .hero-title {
-          font-family: 'Playfair Display', Georgia, serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: clamp(2.2rem, 6vw, 3.6rem);
           font-weight: 900;
           line-height: 1.12;
@@ -353,11 +350,10 @@ export default function GrammarPage() {
           margin: 0 0 1rem;
         }
         .hero-subtitle {
-          font-family: 'Cormorant Garamond', Georgia, serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 1.15rem;
           color: var(--color-text-muted);
           line-height: 1.7;
-          font-style: italic;
           margin: 0;
         }
         .hero-divider {
@@ -376,7 +372,7 @@ export default function GrammarPage() {
 
         /* ── Section heading ── */
         .section-eyebrow {
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 0.65rem;
           font-weight: 600;
           letter-spacing: 0.25em;
@@ -385,7 +381,7 @@ export default function GrammarPage() {
           margin-bottom: 0.3rem;
         }
         .section-heading {
-          font-family: 'Playfair Display', Georgia, serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: clamp(1.5rem, 4vw, 2.2rem);
           font-weight: 700;
           color: var(--color-primary);
@@ -427,7 +423,7 @@ export default function GrammarPage() {
 
         /* ── Card internals ── */
         .card-label {
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 0.65rem;
           font-weight: 700;
           letter-spacing: 0.18em;
@@ -436,7 +432,7 @@ export default function GrammarPage() {
           margin-bottom: 0.25rem;
         }
         .phrase-text {
-          font-family: 'Playfair Display', Georgia, serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 1.05rem;
           font-weight: 600;
           line-height: 1.4;
@@ -444,7 +440,7 @@ export default function GrammarPage() {
         }
         .lang-badge {
           display: inline-block;
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 0.65rem;
           font-weight: 600;
           letter-spacing: 0.12em;
@@ -453,7 +449,7 @@ export default function GrammarPage() {
           border-radius: 4px;
         }
         .explanation-text {
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 0.83rem;
           line-height: 1.7;
           margin: 0;
@@ -464,7 +460,7 @@ export default function GrammarPage() {
           text-align: center;
           padding: 2rem 1.5rem;
           border-top: 1px solid var(--color-border);
-          font-family: 'Inter', sans-serif;
+          font-family: var(--font-inter), 'Inter', sans-serif;
           font-size: 0.75rem;
           letter-spacing: 0.1em;
           color: var(--color-text-muted);
