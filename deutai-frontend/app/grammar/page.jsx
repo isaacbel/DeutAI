@@ -101,8 +101,8 @@ function QRCode({ phraseId }) {
         text: url,
         width: 88,
         height: 88,
-        colorDark: '#c9b99e',
-        colorLight: '#1a1d2b',
+        colorDark: '#4A4B4B',
+        colorLight: '#ffffff',
         correctLevel: window.QRCode.CorrectLevel.M,
       });
     }
@@ -118,9 +118,9 @@ function QRCode({ phraseId }) {
         height: 88,
         borderRadius: 8,
         overflow: 'hidden',
-        border: '1px solid rgba(201,185,158,0.18)',
+        border: '1px solid var(--color-border)',
         flexShrink: 0,
-        background: '#1a1d2b',
+        background: '#ffffff',
       }}
     />
   );
@@ -141,15 +141,15 @@ function PhraseCard({ phrase, index }) {
         <div style={{ flex: 1 }}>
           {/* Wrong / Original */}
           <div style={{ marginBottom: '0.6rem' }}>
-            <span className="card-label" style={{ color: isCorrect ? '#7dc47a' : '#e07070' }}>
+            <span className="card-label" style={{ color: isCorrect ? 'var(--color-success)' : 'var(--color-error)' }}>
               {isCorrect ? '✅ Richtig!' : '❌ Falsch'}
             </span>
             <p
               className="phrase-text"
               style={{
-                color: isCorrect ? '#a8dba4' : '#e8a0a0',
+                color: isCorrect ? 'var(--color-success)' : 'var(--color-error)',
                 textDecoration: isCorrect ? 'none' : 'line-through',
-                textDecorationColor: '#e07070',
+                textDecorationColor: 'var(--color-error)',
               }}
             >
               {phrase.wrong}
@@ -159,8 +159,8 @@ function PhraseCard({ phrase, index }) {
           {/* Correct — shown only for corrections */}
           {!isCorrect && (
             <div>
-              <span className="card-label" style={{ color: '#7dc47a' }}>✅ Korrekt</span>
-              <p className="phrase-text" style={{ color: '#a8dba4' }}>{phrase.correct}</p>
+              <span className="card-label" style={{ color: 'var(--color-success)' }}>✅ Korrekt</span>
+              <p className="phrase-text" style={{ color: 'var(--color-success)' }}>{phrase.correct}</p>
             </div>
           )}
         </div>
@@ -170,25 +170,25 @@ function PhraseCard({ phrase, index }) {
       </div>
 
       {/* Divider */}
-      <div style={{ height: 1, background: 'linear-gradient(90deg, rgba(201,185,158,0.14) 0%, transparent 100%)', margin: '0 0 1rem' }} />
+      <div style={{ height: 1, background: 'var(--color-border)', margin: '0 0 1rem', opacity: 0.5 }} />
 
       {/* German explanation */}
       <div style={{ marginBottom: '0.85rem' }}>
-        <span className="lang-badge" style={{ background: 'rgba(201,185,158,0.08)', color: '#c9b99e' }}>🇩🇪 Deutsch</span>
-        <p className="explanation-text" style={{ color: '#b8b0a0', marginTop: '0.4rem' }}>
+        <span className="lang-badge" style={{ background: 'var(--color-bg-sidebar)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }}>🇩🇪 Deutsch</span>
+        <p className="explanation-text" style={{ color: 'var(--color-text-primary)', marginTop: '0.4rem' }}>
           {phrase.de}
         </p>
       </div>
 
       {/* Arabic explanation */}
       <div>
-        <span className="lang-badge" style={{ background: 'rgba(107,155,220,0.08)', color: '#8ab4e0' }}>🇩🇿 العربية</span>
+        <span className="lang-badge" style={{ background: 'rgba(76,177,255,0.08)', color: 'var(--color-info)', border: '1px solid rgba(76,177,255,0.2)' }}>🇩🇿 العربية</span>
         <p
           className="explanation-text"
           dir="rtl"
           lang="ar"
           style={{
-            color: '#a8b8cc',
+            color: 'var(--color-text-primary)',
             marginTop: '0.4rem',
             textAlign: 'right',
             fontFamily: '"Noto Naskh Arabic", "Cairo", sans-serif',
@@ -208,7 +208,7 @@ function GrammarSection({ id, level, phrases }) {
       <div style={{ marginBottom: '2rem' }}>
         <div className="section-eyebrow">Niveau</div>
         <h2 className="section-heading">{level}</h2>
-        <div style={{ width: 48, height: 2, background: 'linear-gradient(90deg, #c9b99e, transparent)', borderRadius: 2, marginTop: '0.6rem' }} />
+        <div style={{ width: 48, height: 2, background: 'linear-gradient(90deg, var(--color-primary), transparent)', borderRadius: 2, marginTop: '0.6rem' }} />
       </div>
       <div className="cards-grid">
         {phrases.map((p, i) => (
@@ -237,7 +237,7 @@ export default function GrammarPage() {
           <span className="nav-brand">🇩🇪 Grammatik</span>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
             <a href="#a1" className="nav-link">A1</a>
-            <span style={{ color: 'rgba(201,185,158,0.3)', fontSize: '0.7rem' }}>|</span>
+            <span style={{ color: 'var(--color-border)', fontSize: '0.7rem' }}>|</span>
             <a href="#a2" className="nav-link">A2</a>
           </div>
         </div>
@@ -276,11 +276,11 @@ export default function GrammarPage() {
         /* ── Grammar page root ── */
         .grammar-page {
           min-height: 100vh;
-          background: #0f1118;
+          background: var(--color-bg-ice);
           background-image:
-            radial-gradient(ellipse 80% 50% at 50% -20%, rgba(156,123,172,0.07) 0%, transparent 60%),
-            radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,185,158,0.04) 0%, transparent 50%);
-          color: #d4cfc8;
+            radial-gradient(ellipse 80% 50% at 50% -20%, rgba(156,123,172,0.04) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 40% at 80% 80%, rgba(201,185,158,0.02) 0%, transparent 50%);
+          color: var(--color-text-primary);
           padding-top: 64px; /* nav height */
         }
 
@@ -289,10 +289,10 @@ export default function GrammarPage() {
           position: fixed;
           top: 0; left: 0; right: 0;
           z-index: 100;
-          background: rgba(11,13,20,0.88);
+          background: rgba(242,248,252,0.92);
           backdrop-filter: blur(14px);
           -webkit-backdrop-filter: blur(14px);
-          border-bottom: 1px solid rgba(201,185,158,0.10);
+          border-bottom: 1px solid var(--color-border);
         }
         .grammar-nav-inner {
           max-width: 860px;
@@ -307,14 +307,14 @@ export default function GrammarPage() {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: 1rem;
           font-weight: 700;
-          color: #c9b99e;
+          color: var(--color-primary);
           letter-spacing: 0.03em;
         }
         .nav-link {
           font-family: 'Inter', sans-serif;
           font-size: 0.82rem;
           font-weight: 600;
-          color: #8a8070;
+          color: var(--color-text-secondary);
           letter-spacing: 0.12em;
           text-transform: uppercase;
           text-decoration: none;
@@ -323,15 +323,15 @@ export default function GrammarPage() {
           transition: background 0.2s, color 0.2s;
         }
         .nav-link:hover {
-          background: rgba(201,185,158,0.10);
-          color: #c9b99e;
+          background: rgba(156,123,172,0.08);
+          color: var(--color-primary);
         }
 
         /* ── Hero ── */
         .grammar-hero {
           padding: 4rem 1.5rem 3rem;
           text-align: center;
-          border-bottom: 1px solid rgba(201,185,158,0.08);
+          border-bottom: 1px solid var(--color-border);
         }
         .hero-inner { max-width: 680px; margin: 0 auto; }
         .hero-eyebrow {
@@ -340,7 +340,7 @@ export default function GrammarPage() {
           font-weight: 600;
           letter-spacing: 0.22em;
           text-transform: uppercase;
-          color: #9C7BAC;
+          color: var(--color-primary);
           margin-bottom: 0.8rem;
         }
         .hero-title {
@@ -348,14 +348,14 @@ export default function GrammarPage() {
           font-size: clamp(2.2rem, 6vw, 3.6rem);
           font-weight: 900;
           line-height: 1.12;
-          color: #e8e0d0;
+          color: var(--color-text-primary);
           letter-spacing: -0.01em;
           margin: 0 0 1rem;
         }
         .hero-subtitle {
           font-family: 'Cormorant Garamond', Georgia, serif;
           font-size: 1.15rem;
-          color: #7a7268;
+          color: var(--color-text-muted);
           line-height: 1.7;
           font-style: italic;
           margin: 0;
@@ -363,7 +363,7 @@ export default function GrammarPage() {
         .hero-divider {
           width: 40px;
           height: 1px;
-          background: rgba(201,185,158,0.30);
+          background: var(--color-border);
           margin: 2rem auto 0;
         }
 
@@ -381,14 +381,14 @@ export default function GrammarPage() {
           font-weight: 600;
           letter-spacing: 0.25em;
           text-transform: uppercase;
-          color: #5c5650;
+          color: var(--color-text-muted);
           margin-bottom: 0.3rem;
         }
         .section-heading {
           font-family: 'Playfair Display', Georgia, serif;
           font-size: clamp(1.5rem, 4vw, 2.2rem);
           font-weight: 700;
-          color: #c9b99e;
+          color: var(--color-primary);
           letter-spacing: -0.01em;
           margin: 0;
         }
@@ -402,8 +402,8 @@ export default function GrammarPage() {
 
         /* ── Individual card ── */
         .grammar-card {
-          background: #14171f;
-          border: 1px solid rgba(201,185,158,0.10);
+          background: #ffffff;
+          border: 1px solid var(--color-border);
           border-radius: 14px;
           padding: 1.4rem 1.4rem 1.2rem;
           position: relative;
@@ -416,12 +416,12 @@ export default function GrammarPage() {
           content: '';
           position: absolute;
           inset: 0;
-          background: linear-gradient(135deg, rgba(201,185,158,0.03) 0%, transparent 60%);
+          background: linear-gradient(135deg, rgba(156,123,172,0.03) 0%, transparent 60%);
           pointer-events: none;
         }
         .grammar-card:hover {
-          border-color: rgba(201,185,158,0.26);
-          box-shadow: 0 8px 40px rgba(0,0,0,0.40), 0 0 0 1px rgba(201,185,158,0.08);
+          border-color: rgba(156,123,172,0.4);
+          box-shadow: 0 8px 30px rgba(156,123,172,0.08);
           transform: translateY(-3px);
         }
 
@@ -463,11 +463,11 @@ export default function GrammarPage() {
         .grammar-footer {
           text-align: center;
           padding: 2rem 1.5rem;
-          border-top: 1px solid rgba(201,185,158,0.07);
+          border-top: 1px solid var(--color-border);
           font-family: 'Inter', sans-serif;
           font-size: 0.75rem;
           letter-spacing: 0.1em;
-          color: #3a3830;
+          color: var(--color-text-muted);
         }
 
         /* ── Animation ── */
