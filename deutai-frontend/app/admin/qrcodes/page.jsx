@@ -51,7 +51,7 @@ export default async function AdminQrCodesPage() {
 
   const grammarItems = await Promise.all(
     GRAMMAR_PHRASES.map(async (p) => {
-      const url = `${base}/grammar${p.hash}`;
+      const url = `${base}/grammar/${p.slug}`;
       const dataUrl = await QRCode.toDataURL(url, {
         width: 400,
         margin: 2,
