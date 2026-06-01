@@ -6,6 +6,7 @@ import PhotoCapture from '@/components/Notebook/PhotoCapture';
 import OcrConfirmation from '@/components/Notebook/OcrConfirmation';
 import ResultCards from '@/components/Analyzer/ResultCards';
 import ScanAnimation from '@/components/Analyzer/ScanAnimation';
+import CameraPermissionModal from '@/components/Notebook/CameraPermissionModal';
 import { useAuthStandalone } from '@/lib/auth';
 import { notebookOcr, notebookAnalyze } from '@/lib/api';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
@@ -23,6 +24,7 @@ function withTimeout(promise, ms = 30000) {
 export default function NotebookPage() {
   const { t, lang } = useLanguage();
   const { loading: authLoading } = useAuthStandalone();
+  const [cameraPermission, setCameraPermission] = useState('pending'); // 'pending' | 'granted' | 'denied'
   const [step, setStep] = useState(STEP.CAPTURE);
   const [ocrText, setOcrText] = useState('');
   const [ocrConfidence, setOcrConfidence] = useState('medium');
@@ -110,6 +112,13 @@ export default function NotebookPage() {
 
   return (
     <AppShell>
+      {/* ── Camera permission modal — shown once on first open ── */}
+      <CameraPermissionModal
+        visible={cameraPermission === 'pending'}
+        onGranted={() => setCameraPermission('granted')}
+        onDenied={() => setCameraPermission('denied')}
+      />
+
       <div className="min-h-screen relative" style={{ background: 'var(--color-bg-ice)' }} dir={lang === 'ar' ? 'rtl' : 'ltr'} lang={lang}>
         <div className="absolute inset-0 grid-scan-bg opacity-100 pointer-events-none" />
 
@@ -157,6 +166,20 @@ export default function NotebookPage() {
 
         {/* Content */}
         <div className="px-3 sm:px-4 py-4 max-w-2xl mx-auto">
+          {/* Camera permission denied banner */}
+          {cameraPermission === 'denied' && (
+            <div
+              className="mb-4 px-4 py-3 rounded-xl text-sm flex items-start gap-3"
+              style={{ background: 'rgba(156,123,172,0.07)', border: '1px solid rgba(156,123,172,0.22)', color: 'var(--color-text-secondary)' }}
+            >
+              <span style={{ fontSize: '1.1rem', lineHeight: 1 }}>📷</span>
+              <span>
+                <strong style={{ color: 'var(--color-primary)' }}>Camera access was denied.</strong>
+                {' '}You can still upload images from your device. To enable the camera later, update your browser permissions.
+              </span>
+            </div>
+          )}
+
           {error && (
             <div className="mb-4 px-4 py-3 rounded-lg text-sm text-error" style={{ background: 'rgba(204,85,85,0.06)', border: '1px solid rgba(204,85,85,0.2)' }}>
               ⚠ {error}

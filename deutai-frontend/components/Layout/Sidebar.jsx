@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { PenTool, Layers, BarChart2, History, LogOut, Zap, X, Brain } from 'lucide-react';
+import { PenTool, Layers, BarChart2, History, LogOut, Zap, X, Brain, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuthStandalone } from '@/lib/auth';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
@@ -12,6 +12,7 @@ const NAV_ITEMS = [
   { href: '/analyze', icon: PenTool, labelKey: 'sidebar.analyze' },
   { href: '/flashcards', icon: Layers, labelKey: 'sidebar.flashcards' },
   { href: '/questions', icon: Brain, labelKey: 'sidebar.questions' },
+  { href: '/grammar', icon: BookOpen, labelKey: 'sidebar.grammar' },
   { href: '/stats', icon: BarChart2, labelKey: 'sidebar.stats' },
   { href: '/history', icon: History, labelKey: 'sidebar.history' },
 ];
